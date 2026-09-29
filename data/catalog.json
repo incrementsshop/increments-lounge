@@ -1,0 +1,4391 @@
+{
+ "generatedAt": "2026-09-28T23:21:59Z",
+ "store": "increments.ca",
+ "currency": "CAD",
+ "featured": {
+  "name": "Still Becoming",
+  "line": "Three colours. One chapter. Yours."
+ },
+ "products": [
+  {
+   "id": 9208298274965,
+   "handle": "worn-sweat",
+   "title": "Worn Sweat",
+   "url": "https://increments.ca/products/worn-sweat",
+   "zone": "lounge",
+   "chapter": null,
+   "featured": false,
+   "description": "Worn Sweat (Faded) Charcoal / Cloudstone / Chestnut\n\"worn in. not worn out.\"\nComfort fit, incredibly soft, and made to last through every chapter. The Worn Hoodie is garment-washed for a perfectly faded finish that only gets better with time. Finished with a puff print logo for a subtle, elevated touch.\nThree colours. One story. Yours.\n52% Cotton\nPuff Print Logo\nGarment-washed finish",
+   "price": 82.0,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Cloudstone",
+     "hex": "#d9d3c8",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/6.png",
+     "available": true
+    },
+    {
+     "name": "Chestnut",
+     "hex": "#6e4330",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/4.png",
+     "available": true
+    },
+    {
+     "name": "Charcoal",
+     "hex": "#3b3b3d",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/2.png",
+     "available": false
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 47323525382293,
+     "available": true,
+     "price": 82.0,
+     "colour": "Cloudstone",
+     "size": "S"
+    },
+    {
+     "id": 47323525415061,
+     "available": true,
+     "price": 82.0,
+     "colour": "Cloudstone",
+     "size": "M"
+    },
+    {
+     "id": 47323525447829,
+     "available": true,
+     "price": 82.0,
+     "colour": "Cloudstone",
+     "size": "L"
+    },
+    {
+     "id": 47323525480597,
+     "available": false,
+     "price": 82.0,
+     "colour": "Cloudstone",
+     "size": "XL"
+    },
+    {
+     "id": 47323525513365,
+     "available": true,
+     "price": 82.0,
+     "colour": "Chestnut",
+     "size": "S"
+    },
+    {
+     "id": 47323525546133,
+     "available": true,
+     "price": 82.0,
+     "colour": "Chestnut",
+     "size": "M"
+    },
+    {
+     "id": 47323525578901,
+     "available": true,
+     "price": 82.0,
+     "colour": "Chestnut",
+     "size": "L"
+    },
+    {
+     "id": 47323525611669,
+     "available": true,
+     "price": 82.0,
+     "colour": "Chestnut",
+     "size": "XL"
+    },
+    {
+     "id": 47323525644437,
+     "available": false,
+     "price": 82.0,
+     "colour": "Charcoal",
+     "size": "S"
+    },
+    {
+     "id": 47323525677205,
+     "available": false,
+     "price": 82.0,
+     "colour": "Charcoal",
+     "size": "M"
+    },
+    {
+     "id": 47323525709973,
+     "available": false,
+     "price": 82.0,
+     "colour": "Charcoal",
+     "size": "L"
+    },
+    {
+     "id": 47323525742741,
+     "available": false,
+     "price": 82.0,
+     "colour": "Charcoal",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/6.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623785_d714d86a-7caa-4e7c-bac9-ae1a2f0097b1.webp",
+     "w": 2048,
+     "h": 3072
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/EE29CD04-3AC6-47E0-9A33-D964169E466D2.png",
+     "w": 1024,
+     "h": 1536
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/4.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/2.png",
+     "w": 1080,
+     "h": 1350
+    }
+   ],
+   "publishedAt": "2026-05-03T03:26:29-04:00"
+  },
+  {
+   "id": 9208297554069,
+   "handle": "the-becoming-sweat",
+   "title": "Still Becoming Sweat",
+   "url": "https://increments.ca/products/the-becoming-sweat",
+   "zone": "window",
+   "chapter": null,
+   "featured": true,
+   "description": "Still Becoming Sweat (Solid) Scarlet / Evergreen / Midnight\n\"still becoming.\"\nComfort fit, impossibly soft, and made to move with you. The Becoming Sweat is the perfect match to your chapter. Finished with a puff print logo for a subtle, elevated touch.\nThree colours. One chapter. Yours.\n52% Cotton\nPuff Print Logo",
+   "price": 82.0,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Scarlet",
+     "hex": "#8c2027",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/12.png",
+     "available": true
+    },
+    {
+     "name": "Evergreen",
+     "hex": "#22402f",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/8.png",
+     "available": true
+    },
+    {
+     "name": "Midnight",
+     "hex": "#1d2335",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/10.png",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 47323524333717,
+     "available": true,
+     "price": 82.0,
+     "colour": "Scarlet",
+     "size": "S"
+    },
+    {
+     "id": 47323524366485,
+     "available": true,
+     "price": 82.0,
+     "colour": "Scarlet",
+     "size": "M"
+    },
+    {
+     "id": 47323524399253,
+     "available": true,
+     "price": 82.0,
+     "colour": "Scarlet",
+     "size": "L"
+    },
+    {
+     "id": 47323524432021,
+     "available": false,
+     "price": 82.0,
+     "colour": "Scarlet",
+     "size": "XL"
+    },
+    {
+     "id": 47323524464789,
+     "available": true,
+     "price": 82.0,
+     "colour": "Evergreen",
+     "size": "S"
+    },
+    {
+     "id": 47323524497557,
+     "available": true,
+     "price": 82.0,
+     "colour": "Evergreen",
+     "size": "M"
+    },
+    {
+     "id": 47323524530325,
+     "available": true,
+     "price": 82.0,
+     "colour": "Evergreen",
+     "size": "L"
+    },
+    {
+     "id": 47323524563093,
+     "available": false,
+     "price": 82.0,
+     "colour": "Evergreen",
+     "size": "XL"
+    },
+    {
+     "id": 47323524595861,
+     "available": true,
+     "price": 82.0,
+     "colour": "Midnight",
+     "size": "S"
+    },
+    {
+     "id": 47323524628629,
+     "available": true,
+     "price": 82.0,
+     "colour": "Midnight",
+     "size": "M"
+    },
+    {
+     "id": 47323524661397,
+     "available": false,
+     "price": 82.0,
+     "colour": "Midnight",
+     "size": "L"
+    },
+    {
+     "id": 47323524694165,
+     "available": false,
+     "price": 82.0,
+     "colour": "Midnight",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/12.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/8.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/10.png",
+     "w": 1080,
+     "h": 1350
+    }
+   ],
+   "publishedAt": "2026-05-03T03:20:06-04:00"
+  },
+  {
+   "id": 9208279662741,
+   "handle": "the-worn-hoodie",
+   "title": "Worn Hoodie",
+   "url": "https://increments.ca/products/the-worn-hoodie",
+   "zone": "lounge",
+   "chapter": null,
+   "featured": false,
+   "description": "Worn Hoodie (Faded) Charcoal / Cloudstone / Chestnut\n\"worn in. not worn out.\"\nComfort fit, incredibly soft, and made to last through every chapter. The Worn Hoodie is garment-washed for a perfectly faded finish that only gets better with time. Finished with a puff print logo for a subtle, elevated touch.\nThree colours. One story. Yours.\n52% Cotton\nPuff Print Logo\nGarment-washed finish",
+   "price": 88.0,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Cloudstone",
+     "hex": "#d9d3c8",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/5.png",
+     "available": true
+    },
+    {
+     "name": "Charcoal",
+     "hex": "#3b3b3d",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/1.png",
+     "available": true
+    },
+    {
+     "name": "Chestnut",
+     "hex": "#6e4330",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/3.png",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 47323513290901,
+     "available": true,
+     "price": 88.0,
+     "colour": "Cloudstone",
+     "size": "S"
+    },
+    {
+     "id": 47323513323669,
+     "available": true,
+     "price": 88.0,
+     "colour": "Cloudstone",
+     "size": "M"
+    },
+    {
+     "id": 47323513356437,
+     "available": true,
+     "price": 88.0,
+     "colour": "Cloudstone",
+     "size": "L"
+    },
+    {
+     "id": 47323513389205,
+     "available": true,
+     "price": 88.0,
+     "colour": "Cloudstone",
+     "size": "XL"
+    },
+    {
+     "id": 47323513028757,
+     "available": true,
+     "price": 88.0,
+     "colour": "Charcoal",
+     "size": "S"
+    },
+    {
+     "id": 47323513061525,
+     "available": true,
+     "price": 88.0,
+     "colour": "Charcoal",
+     "size": "M"
+    },
+    {
+     "id": 47323513094293,
+     "available": true,
+     "price": 88.0,
+     "colour": "Charcoal",
+     "size": "L"
+    },
+    {
+     "id": 47323513127061,
+     "available": true,
+     "price": 88.0,
+     "colour": "Charcoal",
+     "size": "XL"
+    },
+    {
+     "id": 47323513159829,
+     "available": true,
+     "price": 88.0,
+     "colour": "Chestnut",
+     "size": "S"
+    },
+    {
+     "id": 47323513192597,
+     "available": true,
+     "price": 88.0,
+     "colour": "Chestnut",
+     "size": "M"
+    },
+    {
+     "id": 47323513225365,
+     "available": true,
+     "price": 88.0,
+     "colour": "Chestnut",
+     "size": "L"
+    },
+    {
+     "id": 47323513258133,
+     "available": true,
+     "price": 88.0,
+     "colour": "Chestnut",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/5.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/EE29CD04-3AC6-47E0-9A33-D964169E466D.png",
+     "w": 1024,
+     "h": 1536
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/1.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/3.png",
+     "w": 1080,
+     "h": 1350
+    }
+   ],
+   "publishedAt": "2026-05-03T03:11:47-04:00"
+  },
+  {
+   "id": 9208277401749,
+   "handle": "the-becoming-hoodie",
+   "title": "Still Becoming Hoodie",
+   "url": "https://increments.ca/products/the-becoming-hoodie",
+   "zone": "window",
+   "chapter": null,
+   "featured": true,
+   "description": "Still Becoming Hoodie (Solid) Scarlet / Evergreen / Midnight\n\"Still Becoming.\"\nComfort fit, incredibly soft, and made to be worn through everything. The Becoming Hoodie isn't about where you are, it's about where you're going. Finished with a puff print logo for a subtle, elevated touch.\nThree colours. One chapter. Yours.\n52% Cotton\nPuff Print Logo",
+   "price": 88.0,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Scarlet",
+     "hex": "#8c2027",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/11.png",
+     "available": true
+    },
+    {
+     "name": "Midnight",
+     "hex": "#1d2335",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/9_8f58326c-619c-43b5-86ff-fbbade2f73f0.png",
+     "available": true
+    },
+    {
+     "name": "Evergreen",
+     "hex": "#22402f",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623084.webp",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 47323506114709,
+     "available": true,
+     "price": 88.0,
+     "colour": "Scarlet",
+     "size": "S"
+    },
+    {
+     "id": 47323506147477,
+     "available": true,
+     "price": 88.0,
+     "colour": "Scarlet",
+     "size": "M"
+    },
+    {
+     "id": 47323506180245,
+     "available": true,
+     "price": 88.0,
+     "colour": "Scarlet",
+     "size": "L"
+    },
+    {
+     "id": 47323506213013,
+     "available": false,
+     "price": 88.0,
+     "colour": "Scarlet",
+     "size": "XL"
+    },
+    {
+     "id": 47323505852565,
+     "available": true,
+     "price": 88.0,
+     "colour": "Midnight",
+     "size": "S"
+    },
+    {
+     "id": 47323505885333,
+     "available": true,
+     "price": 88.0,
+     "colour": "Midnight",
+     "size": "M"
+    },
+    {
+     "id": 47323505918101,
+     "available": true,
+     "price": 88.0,
+     "colour": "Midnight",
+     "size": "L"
+    },
+    {
+     "id": 47323505950869,
+     "available": true,
+     "price": 88.0,
+     "colour": "Midnight",
+     "size": "XL"
+    },
+    {
+     "id": 47323505983637,
+     "available": true,
+     "price": 88.0,
+     "colour": "Evergreen",
+     "size": "S"
+    },
+    {
+     "id": 47323506016405,
+     "available": true,
+     "price": 88.0,
+     "colour": "Evergreen",
+     "size": "M"
+    },
+    {
+     "id": 47323506049173,
+     "available": false,
+     "price": 88.0,
+     "colour": "Evergreen",
+     "size": "L"
+    },
+    {
+     "id": 47323506081941,
+     "available": false,
+     "price": 88.0,
+     "colour": "Evergreen",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/11.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623113_e43ed25d-668d-4501-8d6f-abc9086c5b74.webp",
+     "w": 1365,
+     "h": 2048
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623084.webp",
+     "w": 1365,
+     "h": 2048
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/33A6A45D-BDF3-4BAE-88AA-ABE76634AB3E.png",
+     "w": 1024,
+     "h": 1536
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/9_8f58326c-619c-43b5-86ff-fbbade2f73f0.png",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/7.png",
+     "w": 1080,
+     "h": 1350
+    }
+   ],
+   "publishedAt": "2026-05-03T02:49:05-04:00"
+  },
+  {
+   "id": 8698038386837,
+   "handle": "active-long-sleeves",
+   "title": "Impact Long Sleeve",
+   "url": "https://increments.ca/products/active-long-sleeves",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our impact long sleeves are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 50.42,
+   "available": true,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Midnight",
+     "hex": "#1d2335",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28463.jpg",
+     "available": true
+    },
+    {
+     "name": "Cherry",
+     "hex": "#6d1524",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28483.jpg",
+     "available": true
+    },
+    {
+     "name": "Espresso",
+     "hex": "#3c2a21",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28443.jpg",
+     "available": true
+    },
+    {
+     "name": "Slate Black",
+     "hex": "#26272a",
+     "image": null,
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730366521493,
+     "available": true,
+     "price": 50.42,
+     "size": "S",
+     "colour": "Midnight"
+    },
+    {
+     "id": 45730377367701,
+     "available": true,
+     "price": 50.42,
+     "size": "S",
+     "colour": "Cherry"
+    },
+    {
+     "id": 45730377400469,
+     "available": true,
+     "price": 50.42,
+     "size": "S",
+     "colour": "Espresso"
+    },
+    {
+     "id": 45745503699093,
+     "available": true,
+     "price": 50.42,
+     "size": "S",
+     "colour": "Slate Black"
+    },
+    {
+     "id": 45730366554261,
+     "available": true,
+     "price": 50.42,
+     "size": "M",
+     "colour": "Midnight"
+    },
+    {
+     "id": 45730377433237,
+     "available": true,
+     "price": 50.42,
+     "size": "M",
+     "colour": "Cherry"
+    },
+    {
+     "id": 45730377466005,
+     "available": true,
+     "price": 50.42,
+     "size": "M",
+     "colour": "Espresso"
+    },
+    {
+     "id": 45745503731861,
+     "available": true,
+     "price": 50.42,
+     "size": "M",
+     "colour": "Slate Black"
+    },
+    {
+     "id": 45730366587029,
+     "available": true,
+     "price": 50.42,
+     "size": "L",
+     "colour": "Midnight"
+    },
+    {
+     "id": 45730377498773,
+     "available": true,
+     "price": 50.42,
+     "size": "L",
+     "colour": "Cherry"
+    },
+    {
+     "id": 45730377531541,
+     "available": true,
+     "price": 50.42,
+     "size": "L",
+     "colour": "Espresso"
+    },
+    {
+     "id": 45745503764629,
+     "available": true,
+     "price": 50.42,
+     "size": "L",
+     "colour": "Slate Black"
+    },
+    {
+     "id": 45730366619797,
+     "available": false,
+     "price": 50.42,
+     "size": "XL",
+     "colour": "Midnight"
+    },
+    {
+     "id": 45730377564309,
+     "available": false,
+     "price": 50.42,
+     "size": "XL",
+     "colour": "Cherry"
+    },
+    {
+     "id": 45730377597077,
+     "available": false,
+     "price": 50.42,
+     "size": "XL",
+     "colour": "Espresso"
+    },
+    {
+     "id": 45745503797397,
+     "available": false,
+     "price": 50.42,
+     "size": "XL",
+     "colour": "Slate Black"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28463.jpg",
+     "w": 1290,
+     "h": 1822
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28473_aef02e2c-06f6-4cbd-a022-f002f0f32303.jpg",
+     "w": 1290,
+     "h": 1805
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28443.jpg",
+     "w": 1290,
+     "h": 1867
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28453.jpg",
+     "w": 1290,
+     "h": 1885
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28483.jpg",
+     "w": 1290,
+     "h": 1816
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2849_3.jpg",
+     "w": 1290,
+     "h": 1846
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:58-05:00"
+  },
+  {
+   "id": 8698037895317,
+   "handle": "active-tee",
+   "title": "ActiveCore Tee",
+   "url": "https://increments.ca/products/active-tee",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our ActiveCore Tees are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 44.27,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Slate Black",
+     "hex": "#26272a",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28333.jpg",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730364522645,
+     "available": false,
+     "price": 44.27,
+     "colour": "Slate Black",
+     "size": "S"
+    },
+    {
+     "id": 45730364588181,
+     "available": false,
+     "price": 44.27,
+     "colour": "Slate Black",
+     "size": "M"
+    },
+    {
+     "id": 45730364555413,
+     "available": true,
+     "price": 44.27,
+     "colour": "Slate Black",
+     "size": "L"
+    },
+    {
+     "id": 45730364620949,
+     "available": true,
+     "price": 44.27,
+     "colour": "Slate Black",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28333.jpg",
+     "w": 1290,
+     "h": 1634
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:58-05:00"
+  },
+  {
+   "id": 8698035732629,
+   "handle": "cropped-long-sleeves",
+   "title": "Flow Cropped Long Sleeve",
+   "url": "https://increments.ca/products/cropped-long-sleeves",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our Flow Cropped Long Sleeves are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 50.42,
+   "available": true,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Bubble Gum",
+     "hex": "#e8a7c1",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_5631_a79dcfe5-703a-425d-8896-83767a40c1e3.png",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730355216533,
+     "available": true,
+     "price": 50.42,
+     "size": "S",
+     "colour": "Bubble Gum"
+    },
+    {
+     "id": 45730355249301,
+     "available": false,
+     "price": 50.42,
+     "size": "M",
+     "colour": "Bubble Gum"
+    },
+    {
+     "id": 45730355282069,
+     "available": false,
+     "price": 50.42,
+     "size": "L",
+     "colour": "Bubble Gum"
+    },
+    {
+     "id": 45730355314837,
+     "available": false,
+     "price": 50.42,
+     "size": "XL",
+     "colour": "Bubble Gum"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_5631_a79dcfe5-703a-425d-8896-83767a40c1e3.png",
+     "w": 1290,
+     "h": 1280
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_5630_a681e408-c7c1-4405-b54b-7018b9b5f624.png",
+     "w": 1290,
+     "h": 1651
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:57-05:00"
+  },
+  {
+   "id": 8698028458133,
+   "handle": "scrunch-leggings",
+   "title": "CurveLift Leggings",
+   "url": "https://increments.ca/products/scrunch-leggings",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our CurveLift Leggings are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 66.91,
+   "available": true,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Bubble Gum",
+     "hex": "#e8a7c1",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_5631_da8759c8-b1f3-4a8a-b14c-874c5d1a2027.png",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730314125461,
+     "available": true,
+     "price": 66.91,
+     "size": "S",
+     "colour": "Bubble Gum"
+    },
+    {
+     "id": 45730314158229,
+     "available": true,
+     "price": 66.91,
+     "size": "M",
+     "colour": "Bubble Gum"
+    },
+    {
+     "id": 45730314190997,
+     "available": false,
+     "price": 66.91,
+     "size": "L",
+     "colour": "Bubble Gum"
+    },
+    {
+     "id": 45730314223765,
+     "available": false,
+     "price": 66.91,
+     "size": "XL",
+     "colour": "Bubble Gum"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_5631_da8759c8-b1f3-4a8a-b14c-874c5d1a2027.png",
+     "w": 1281,
+     "h": 1282
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_5630_2a212356-5dc6-479a-a255-2f6397d71e46.png",
+     "w": 1290,
+     "h": 1667
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:57-05:00"
+  },
+  {
+   "id": 8698026000533,
+   "handle": "leggings",
+   "title": "Essential Leggings",
+   "url": "https://increments.ca/products/leggings",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our Essential Leggings are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 66.91,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Espresso",
+     "hex": "#3c2a21",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2844_3.jpg",
+     "available": true
+    },
+    {
+     "name": "Midnight",
+     "hex": "#1d2335",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2846_3.jpg",
+     "available": true
+    },
+    {
+     "name": "Cherry",
+     "hex": "#6d1524",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2848_3.jpg",
+     "available": true
+    },
+    {
+     "name": "Slate Black",
+     "hex": "#26272a",
+     "image": null,
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730269790357,
+     "available": false,
+     "price": 66.91,
+     "colour": "Espresso",
+     "size": "S"
+    },
+    {
+     "id": 45730269823125,
+     "available": false,
+     "price": 66.91,
+     "colour": "Espresso",
+     "size": "M"
+    },
+    {
+     "id": 45730269855893,
+     "available": true,
+     "price": 66.91,
+     "colour": "Espresso",
+     "size": "L"
+    },
+    {
+     "id": 45730269888661,
+     "available": false,
+     "price": 66.91,
+     "colour": "Espresso",
+     "size": "XL"
+    },
+    {
+     "id": 45730269921429,
+     "available": true,
+     "price": 66.91,
+     "colour": "Midnight",
+     "size": "S"
+    },
+    {
+     "id": 45730269954197,
+     "available": true,
+     "price": 66.91,
+     "colour": "Midnight",
+     "size": "M"
+    },
+    {
+     "id": 45730269986965,
+     "available": true,
+     "price": 66.91,
+     "colour": "Midnight",
+     "size": "L"
+    },
+    {
+     "id": 45730270019733,
+     "available": false,
+     "price": 66.91,
+     "colour": "Midnight",
+     "size": "XL"
+    },
+    {
+     "id": 45730270052501,
+     "available": true,
+     "price": 66.91,
+     "colour": "Cherry",
+     "size": "S"
+    },
+    {
+     "id": 45730270085269,
+     "available": false,
+     "price": 66.91,
+     "colour": "Cherry",
+     "size": "M"
+    },
+    {
+     "id": 45730270118037,
+     "available": false,
+     "price": 66.91,
+     "colour": "Cherry",
+     "size": "L"
+    },
+    {
+     "id": 45730270150805,
+     "available": false,
+     "price": 66.91,
+     "colour": "Cherry",
+     "size": "XL"
+    },
+    {
+     "id": 45745503862933,
+     "available": true,
+     "price": 66.91,
+     "colour": "Slate Black",
+     "size": "S"
+    },
+    {
+     "id": 45745503895701,
+     "available": true,
+     "price": 66.91,
+     "colour": "Slate Black",
+     "size": "M"
+    },
+    {
+     "id": 45745503928469,
+     "available": true,
+     "price": 66.91,
+     "colour": "Slate Black",
+     "size": "L"
+    },
+    {
+     "id": 45745503961237,
+     "available": false,
+     "price": 66.91,
+     "colour": "Slate Black",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2848_3.jpg",
+     "w": 1290,
+     "h": 1816
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2849_3.jpg",
+     "w": 1290,
+     "h": 1846
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2844_3.jpg",
+     "w": 1290,
+     "h": 1867
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2845_3.jpg",
+     "w": 1290,
+     "h": 1885
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2846_3.jpg",
+     "w": 1290,
+     "h": 1822
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28473.jpg",
+     "w": 1290,
+     "h": 1805
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:56-05:00"
+  },
+  {
+   "id": 8698016104597,
+   "handle": "bandeau",
+   "title": "Luxe Bandeau",
+   "url": "https://increments.ca/products/bandeau",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our Luxe Bandeau are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 45.44,
+   "available": true,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Cloudstone",
+     "hex": "#d9d3c8",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2825_3.jpg",
+     "available": true
+    },
+    {
+     "name": "Sapphire",
+     "hex": "#243f78",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28293.jpg",
+     "available": true
+    },
+    {
+     "name": "Rose Quartz",
+     "hex": "#e6c4c2",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28403.jpg",
+     "available": true
+    },
+    {
+     "name": "Slate Black",
+     "hex": "#26272a",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2819_3.jpg",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730229551253,
+     "available": true,
+     "price": 45.44,
+     "size": "S",
+     "colour": "Cloudstone"
+    },
+    {
+     "id": 45730230763669,
+     "available": false,
+     "price": 45.44,
+     "size": "S",
+     "colour": "Sapphire"
+    },
+    {
+     "id": 45730230796437,
+     "available": false,
+     "price": 45.44,
+     "size": "S",
+     "colour": "Rose Quartz"
+    },
+    {
+     "id": 45730230829205,
+     "available": true,
+     "price": 45.44,
+     "size": "S",
+     "colour": "Slate Black"
+    },
+    {
+     "id": 45730229584021,
+     "available": true,
+     "price": 45.44,
+     "size": "M",
+     "colour": "Cloudstone"
+    },
+    {
+     "id": 45730230861973,
+     "available": true,
+     "price": 45.44,
+     "size": "M",
+     "colour": "Sapphire"
+    },
+    {
+     "id": 45730230894741,
+     "available": true,
+     "price": 45.44,
+     "size": "M",
+     "colour": "Rose Quartz"
+    },
+    {
+     "id": 45730230927509,
+     "available": true,
+     "price": 45.44,
+     "size": "M",
+     "colour": "Slate Black"
+    },
+    {
+     "id": 45730229616789,
+     "available": true,
+     "price": 45.44,
+     "size": "L",
+     "colour": "Cloudstone"
+    },
+    {
+     "id": 45730230960277,
+     "available": true,
+     "price": 45.44,
+     "size": "L",
+     "colour": "Sapphire"
+    },
+    {
+     "id": 45730230993045,
+     "available": true,
+     "price": 45.44,
+     "size": "L",
+     "colour": "Rose Quartz"
+    },
+    {
+     "id": 45730231025813,
+     "available": true,
+     "price": 45.44,
+     "size": "L",
+     "colour": "Slate Black"
+    },
+    {
+     "id": 45730229649557,
+     "available": true,
+     "price": 45.44,
+     "size": "XL",
+     "colour": "Cloudstone"
+    },
+    {
+     "id": 45730231058581,
+     "available": true,
+     "price": 45.44,
+     "size": "XL",
+     "colour": "Sapphire"
+    },
+    {
+     "id": 45730231091349,
+     "available": true,
+     "price": 45.44,
+     "size": "XL",
+     "colour": "Rose Quartz"
+    },
+    {
+     "id": 45730231124117,
+     "available": true,
+     "price": 45.44,
+     "size": "XL",
+     "colour": "Slate Black"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2819_3.jpg",
+     "w": 1290,
+     "h": 1944
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2822_3.jpg",
+     "w": 1290,
+     "h": 1929
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2825_3.jpg",
+     "w": 1256,
+     "h": 1903
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2826_3.jpg",
+     "w": 1270,
+     "h": 1880
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28403.jpg",
+     "w": 1290,
+     "h": 1815
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28413.jpg",
+     "w": 1290,
+     "h": 1792
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28293.jpg",
+     "w": 1290,
+     "h": 1892
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28303.jpg",
+     "w": 1290,
+     "h": 1882
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:55-05:00"
+  },
+  {
+   "id": 8698012893333,
+   "handle": "shorts",
+   "title": "Performance Shorts",
+   "url": "https://increments.ca/products/shorts",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our Performance Shorts are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 41.42,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Cloudstone",
+     "hex": "#d9d3c8",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2825_3.jpg",
+     "available": true
+    },
+    {
+     "name": "Sapphire",
+     "hex": "#243f78",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28293.jpg",
+     "available": false
+    },
+    {
+     "name": "Rose Quartz",
+     "hex": "#e6c4c2",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28313.jpg",
+     "available": true
+    },
+    {
+     "name": "Slate Black",
+     "hex": "#26272a",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2819_3.jpg",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730235908245,
+     "available": true,
+     "price": 41.42,
+     "colour": "Cloudstone",
+     "size": "S"
+    },
+    {
+     "id": 45730235875477,
+     "available": true,
+     "price": 41.42,
+     "colour": "Cloudstone",
+     "size": "M"
+    },
+    {
+     "id": 45730235842709,
+     "available": true,
+     "price": 41.42,
+     "colour": "Cloudstone",
+     "size": "L"
+    },
+    {
+     "id": 45730222276757,
+     "available": false,
+     "price": 41.42,
+     "colour": "Cloudstone",
+     "size": "XL"
+    },
+    {
+     "id": 45730236006549,
+     "available": false,
+     "price": 41.42,
+     "colour": "Sapphire",
+     "size": "S"
+    },
+    {
+     "id": 45730235973781,
+     "available": false,
+     "price": 41.42,
+     "colour": "Sapphire",
+     "size": "M"
+    },
+    {
+     "id": 45730235941013,
+     "available": false,
+     "price": 41.42,
+     "colour": "Sapphire",
+     "size": "L"
+    },
+    {
+     "id": 45730222309525,
+     "available": false,
+     "price": 41.42,
+     "colour": "Sapphire",
+     "size": "XL"
+    },
+    {
+     "id": 45730236104853,
+     "available": true,
+     "price": 41.42,
+     "colour": "Rose Quartz",
+     "size": "S"
+    },
+    {
+     "id": 45730236072085,
+     "available": false,
+     "price": 41.42,
+     "colour": "Rose Quartz",
+     "size": "M"
+    },
+    {
+     "id": 45730236039317,
+     "available": true,
+     "price": 41.42,
+     "colour": "Rose Quartz",
+     "size": "L"
+    },
+    {
+     "id": 45730222342293,
+     "available": true,
+     "price": 41.42,
+     "colour": "Rose Quartz",
+     "size": "XL"
+    },
+    {
+     "id": 45730236203157,
+     "available": true,
+     "price": 41.42,
+     "colour": "Slate Black",
+     "size": "S"
+    },
+    {
+     "id": 45730236170389,
+     "available": true,
+     "price": 41.42,
+     "colour": "Slate Black",
+     "size": "M"
+    },
+    {
+     "id": 45730236137621,
+     "available": false,
+     "price": 41.42,
+     "colour": "Slate Black",
+     "size": "L"
+    },
+    {
+     "id": 45730222375061,
+     "available": false,
+     "price": 41.42,
+     "colour": "Slate Black",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28313.jpg",
+     "w": 1266,
+     "h": 1734
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28323.jpg",
+     "w": 1290,
+     "h": 1802
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28293.jpg",
+     "w": 1290,
+     "h": 1892
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28303.jpg",
+     "w": 1290,
+     "h": 1882
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2819_3.jpg",
+     "w": 1290,
+     "h": 1944
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2822_3.jpg",
+     "w": 1290,
+     "h": 1929
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2825_3.jpg",
+     "w": 1256,
+     "h": 1903
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2826_3.jpg",
+     "w": 1270,
+     "h": 1880
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:55-05:00"
+  },
+  {
+   "id": 8698011910293,
+   "handle": "flare-leggings",
+   "title": "Radiant Flare Leggings",
+   "url": "https://increments.ca/products/flare-leggings",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our Radiant Flare Leggings are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 70.1,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Cloudstone",
+     "hex": "#d9d3c8",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2823_3.jpg",
+     "available": true
+    },
+    {
+     "name": "Rose Quartz",
+     "hex": "#e6c4c2",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2840_3.jpg",
+     "available": true
+    },
+    {
+     "name": "Sapphire",
+     "hex": "#243f78",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00001.jpg",
+     "available": true
+    },
+    {
+     "name": "Slate Black",
+     "hex": "#26272a",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28203.jpg",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730220212373,
+     "available": true,
+     "price": 70.1,
+     "colour": "Cloudstone",
+     "size": "S"
+    },
+    {
+     "id": 45730233188501,
+     "available": true,
+     "price": 70.1,
+     "colour": "Cloudstone",
+     "size": "M"
+    },
+    {
+     "id": 45730233221269,
+     "available": true,
+     "price": 70.1,
+     "colour": "Cloudstone",
+     "size": "L"
+    },
+    {
+     "id": 45730233254037,
+     "available": false,
+     "price": 70.1,
+     "colour": "Cloudstone",
+     "size": "XL"
+    },
+    {
+     "id": 45730220245141,
+     "available": false,
+     "price": 70.1,
+     "colour": "Rose Quartz",
+     "size": "S"
+    },
+    {
+     "id": 45730233286805,
+     "available": true,
+     "price": 70.1,
+     "colour": "Rose Quartz",
+     "size": "M"
+    },
+    {
+     "id": 45730233319573,
+     "available": false,
+     "price": 70.1,
+     "colour": "Rose Quartz",
+     "size": "L"
+    },
+    {
+     "id": 45730233352341,
+     "available": true,
+     "price": 70.1,
+     "colour": "Rose Quartz",
+     "size": "XL"
+    },
+    {
+     "id": 45730220277909,
+     "available": false,
+     "price": 70.1,
+     "colour": "Sapphire",
+     "size": "S"
+    },
+    {
+     "id": 45730233385109,
+     "available": false,
+     "price": 70.1,
+     "colour": "Sapphire",
+     "size": "M"
+    },
+    {
+     "id": 45730233417877,
+     "available": true,
+     "price": 70.1,
+     "colour": "Sapphire",
+     "size": "L"
+    },
+    {
+     "id": 45730233450645,
+     "available": true,
+     "price": 70.1,
+     "colour": "Sapphire",
+     "size": "XL"
+    },
+    {
+     "id": 45730220310677,
+     "available": true,
+     "price": 70.1,
+     "colour": "Slate Black",
+     "size": "S"
+    },
+    {
+     "id": 45730233483413,
+     "available": true,
+     "price": 70.1,
+     "colour": "Slate Black",
+     "size": "M"
+    },
+    {
+     "id": 45730233516181,
+     "available": false,
+     "price": 70.1,
+     "colour": "Slate Black",
+     "size": "L"
+    },
+    {
+     "id": 45730233548949,
+     "available": true,
+     "price": 70.1,
+     "colour": "Slate Black",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28273.jpg",
+     "w": 1290,
+     "h": 1892
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28283.jpg",
+     "w": 1290,
+     "h": 1919
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28203.jpg",
+     "w": 1290,
+     "h": 1896
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28213.jpg",
+     "w": 1290,
+     "h": 1937
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2823_3.jpg",
+     "w": 1290,
+     "h": 1850
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2824_3.jpg",
+     "w": 1263,
+     "h": 1916
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2840_3.jpg",
+     "w": 1290,
+     "h": 1815
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2841_3.jpg",
+     "w": 1290,
+     "h": 1792
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00001.jpg",
+     "w": 2446,
+     "h": 3479
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00002.jpg",
+     "w": 2610,
+     "h": 3480
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:54-05:00"
+  },
+  {
+   "id": 8698009059477,
+   "handle": "sportsbra",
+   "title": "Momentum Sports Bra",
+   "url": "https://increments.ca/products/sportsbra",
+   "zone": "movement",
+   "chapter": null,
+   "featured": false,
+   "description": "Discover the perfect blend of comfort, performance, and sustainability with our sports bras, designed to keep you moving with ease. Engineered with smart fabric technology, our Momentum Sports Bras are:\nBreathable & Sweat-Wicking: Stay fresh and dry through every workout.\nQuick Dry & Lightweight: Designed for maximum comfort and freedom of movement.\nFour-Way Stretch & Active Stretch: Offers unmatched flexibility and support\nDurable & Recyclable: Built to last while being eco-conscious.\nAnti-Odor & Anti-Bacterial: Keeps you feeling clean and confident all day.\nSizing: Our activewear is designed to hug your body in all the right places with a snug fit. We recommend sizing up if you prefer a looser fit, it all comes down to personal preference!",
+   "price": 45.44,
+   "available": true,
+   "options": [
+    "colour",
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Slate Black",
+     "hex": "#26272a",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00006_3479ee1c-103b-4e11-93e2-90e5ecd22f43.jpg",
+     "available": true
+    },
+    {
+     "name": "Rose Quartz",
+     "hex": "#e6c4c2",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28423.jpg",
+     "available": true
+    },
+    {
+     "name": "Sapphire",
+     "hex": "#243f78",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00002.jpg",
+     "available": false
+    },
+    {
+     "name": "Cloudstone",
+     "hex": "#d9d3c8",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments12546.jpg",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 45730212085909,
+     "available": false,
+     "price": 45.44,
+     "colour": "Slate Black",
+     "size": "S"
+    },
+    {
+     "id": 45730240725141,
+     "available": false,
+     "price": 45.44,
+     "colour": "Slate Black",
+     "size": "M"
+    },
+    {
+     "id": 45730240757909,
+     "available": true,
+     "price": 45.44,
+     "colour": "Slate Black",
+     "size": "L"
+    },
+    {
+     "id": 45730240790677,
+     "available": true,
+     "price": 45.44,
+     "colour": "Slate Black",
+     "size": "XL"
+    },
+    {
+     "id": 45730212118677,
+     "available": false,
+     "price": 45.44,
+     "colour": "Rose Quartz",
+     "size": "S"
+    },
+    {
+     "id": 45730240823445,
+     "available": false,
+     "price": 45.44,
+     "colour": "Rose Quartz",
+     "size": "M"
+    },
+    {
+     "id": 45730240856213,
+     "available": true,
+     "price": 45.44,
+     "colour": "Rose Quartz",
+     "size": "L"
+    },
+    {
+     "id": 45730240888981,
+     "available": true,
+     "price": 45.44,
+     "colour": "Rose Quartz",
+     "size": "XL"
+    },
+    {
+     "id": 45730212151445,
+     "available": false,
+     "price": 45.44,
+     "colour": "Sapphire",
+     "size": "S"
+    },
+    {
+     "id": 45730240921749,
+     "available": false,
+     "price": 45.44,
+     "colour": "Sapphire",
+     "size": "M"
+    },
+    {
+     "id": 45730240954517,
+     "available": false,
+     "price": 45.44,
+     "colour": "Sapphire",
+     "size": "L"
+    },
+    {
+     "id": 45730240987285,
+     "available": false,
+     "price": 45.44,
+     "colour": "Sapphire",
+     "size": "XL"
+    },
+    {
+     "id": 45730212184213,
+     "available": false,
+     "price": 45.44,
+     "colour": "Cloudstone",
+     "size": "S"
+    },
+    {
+     "id": 45730241020053,
+     "available": false,
+     "price": 45.44,
+     "colour": "Cloudstone",
+     "size": "M"
+    },
+    {
+     "id": 45730241052821,
+     "available": true,
+     "price": 45.44,
+     "colour": "Cloudstone",
+     "size": "L"
+    },
+    {
+     "id": 45730241085589,
+     "available": false,
+     "price": 45.44,
+     "colour": "Cloudstone",
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments12546.jpg",
+     "w": 4094,
+     "h": 6141
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2820_3.jpg",
+     "w": 1290,
+     "h": 1896
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2821_3.jpg",
+     "w": 1290,
+     "h": 1937
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2823_3.jpg",
+     "w": 1290,
+     "h": 1850
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2824_3.jpg",
+     "w": 1263,
+     "h": 1916
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28423.jpg",
+     "w": 1290,
+     "h": 1863
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_28433.jpg",
+     "w": 1290,
+     "h": 1792
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2827_3.jpg",
+     "w": 1290,
+     "h": 1892
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_2828_3.jpg",
+     "w": 1290,
+     "h": 1919
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00006_3479ee1c-103b-4e11-93e2-90e5ecd22f43.jpg",
+     "w": 2400,
+     "h": 3200
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00002.jpg",
+     "w": 2610,
+     "h": 3480
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/image00002_e43230a0-e871-4117-8e39-4bb47fdc64af.jpg",
+     "w": 1944,
+     "h": 2592
+    }
+   ],
+   "publishedAt": "2025-02-02T17:28:53-05:00"
+  },
+  {
+   "id": 7747397025941,
+   "handle": "socks",
+   "title": "Socks",
+   "url": "https://increments.ca/products/socks",
+   "zone": "till",
+   "chapter": null,
+   "featured": false,
+   "description": "A percentage of this purchase will be donated to mental health organizations.",
+   "price": 30.0,
+   "available": true,
+   "options": [
+    "size",
+    "colour",
+    "style"
+   ],
+   "colours": [
+    {
+     "name": "White & Grey",
+     "hex": "#e4e3df",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8407.jpg",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "O/S"
+   ],
+   "styles": [
+    "Crew Socks - Single Pair",
+    "Quarter Socks - Single Pair",
+    "Bundle - 2 Crew & 1 Quarter",
+    "Bundle - 2 Quarter &  1 Crew"
+   ],
+   "variants": [
+    {
+     "id": 42990824587413,
+     "available": true,
+     "price": 35.0,
+     "size": "O/S",
+     "colour": "White & Grey",
+     "style": "Crew Socks - Single Pair"
+    },
+    {
+     "id": 42990832681109,
+     "available": true,
+     "price": 30.0,
+     "size": "O/S",
+     "colour": "White & Grey",
+     "style": "Quarter Socks - Single Pair"
+    },
+    {
+     "id": 42997466529941,
+     "available": true,
+     "price": 50.0,
+     "size": "O/S",
+     "colour": "White & Grey",
+     "style": "Bundle - 2 Crew & 1 Quarter"
+    },
+    {
+     "id": 43500053921941,
+     "available": true,
+     "price": 55.0,
+     "size": "O/S",
+     "colour": "White & Grey",
+     "style": "Bundle - 2 Quarter &  1 Crew"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-09-28at3.04.36PM.png",
+     "w": 1175,
+     "h": 1746
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/MG_1586.jpg",
+     "w": 3648,
+     "h": 5472
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/IMG_8090.jpg",
+     "w": 982,
+     "h": 816
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/MG_1757.jpg",
+     "w": 3214,
+     "h": 3904
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8407.jpg",
+     "w": 3024,
+     "h": 4032
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_0253.heic",
+     "w": 2978,
+     "h": 3971
+    }
+   ],
+   "publishedAt": "2023-09-28T15:09:18-04:00"
+  },
+  {
+   "id": 7747396632725,
+   "handle": "the-classic-cap",
+   "title": "FC01 Caps",
+   "url": "https://increments.ca/products/the-classic-cap",
+   "zone": "till",
+   "chapter": null,
+   "featured": false,
+   "description": "These caps are designed to curate a monochromatic look including 3-D embroidery, minimal side stitching and internal panel printing. This cap includes a silver metal closure to provide a secure fit. These caps are 100% cotton, high quality and attain comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 42.33,
+   "available": true,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Black",
+     "hex": "#141414",
+     "image": null,
+     "available": true
+    },
+    {
+     "name": "Army Green",
+     "hex": "#4b5230",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/DSC01667.jpg",
+     "available": true
+    },
+    {
+     "name": "Cream",
+     "hex": "#eee4cf",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/5A8DD548-499A-471A-B72C-B91D975255D02.jpg",
+     "available": true
+    },
+    {
+     "name": "White",
+     "hex": "#f4f3ef",
+     "image": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/DSC01496.jpg",
+     "available": true
+    }
+   ],
+   "sizes": [
+    "O/S"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 42990823047317,
+     "available": true,
+     "price": 42.33,
+     "size": "O/S",
+     "colour": "Black"
+    },
+    {
+     "id": 42990823080085,
+     "available": true,
+     "price": 42.33,
+     "size": "O/S",
+     "colour": "Army Green"
+    },
+    {
+     "id": 42990823112853,
+     "available": true,
+     "price": 42.33,
+     "size": "O/S",
+     "colour": "Cream"
+    },
+    {
+     "id": 43428513153173,
+     "available": true,
+     "price": 42.33,
+     "size": "O/S",
+     "colour": "White"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/increments13copy.jpg",
+     "w": 2880,
+     "h": 3600
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/DSC01667.jpg",
+     "w": 1815,
+     "h": 2048
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/DSC01496.jpg",
+     "w": 1365,
+     "h": 2048
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/5A8DD548-499A-471A-B72C-B91D975255D02.jpg",
+     "w": 1202,
+     "h": 1602
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/increments11copy_b11c0cc3-e9aa-4cf6-9747-501e8156832f.jpg",
+     "w": 2880,
+     "h": 3600
+    }
+   ],
+   "publishedAt": "2023-09-28T14:34:04-04:00"
+  },
+  {
+   "id": 7925736603797,
+   "handle": "fc02-hoodie",
+   "title": "FC01 Navy Blue Hoodie",
+   "url": "https://increments.ca/products/fc02-hoodie",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These hoodies are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The hoodies acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed and oversized fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 130.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500791464085,
+     "available": false,
+     "price": 130.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500791496853,
+     "available": false,
+     "price": 130.0,
+     "size": "S"
+    },
+    {
+     "id": 43500791529621,
+     "available": false,
+     "price": 130.0,
+     "size": "M"
+    },
+    {
+     "id": 43500791562389,
+     "available": false,
+     "price": 130.0,
+     "size": "L"
+    },
+    {
+     "id": 43500791595157,
+     "available": false,
+     "price": 130.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500791627925,
+     "available": false,
+     "price": 130.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.12.25PM.png",
+     "w": 1236,
+     "h": 1110
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.33.27PM.png",
+     "w": 1172,
+     "h": 1135
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8241.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2023-06-22T20:12:55-04:00"
+  },
+  {
+   "id": 7925736997013,
+   "handle": "fc02-forest-green-hoodie",
+   "title": "FC01 Forest Green Hoodie",
+   "url": "https://increments.ca/products/fc02-forest-green-hoodie",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These hoodies are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The hoodies acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed and oversized fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 130.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500792086677,
+     "available": false,
+     "price": 130.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500792119445,
+     "available": false,
+     "price": 130.0,
+     "size": "S"
+    },
+    {
+     "id": 43500792152213,
+     "available": false,
+     "price": 130.0,
+     "size": "M"
+    },
+    {
+     "id": 43500792184981,
+     "available": false,
+     "price": 130.0,
+     "size": "L"
+    },
+    {
+     "id": 43500792217749,
+     "available": false,
+     "price": 130.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500792250517,
+     "available": false,
+     "price": 130.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.11.00PM.png",
+     "w": 1134,
+     "h": 991
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.33.27PM_8581d70c-4ca4-42c7-9319-ea63a0a5130e.png",
+     "w": 1172,
+     "h": 1135
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8574.jpg",
+     "w": 3024,
+     "h": 4032
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8562.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2023-06-22T20:10:46-04:00"
+  },
+  {
+   "id": 7926047244437,
+   "handle": "fc02-crewneck-black",
+   "title": "FC02 Crewneck - Black",
+   "url": "https://increments.ca/products/fc02-crewneck-black",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These crewnecks are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The crewnecks acquire custom embroidered details using a double threaded stitch. These pieces have a relaxed and oversized fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 85.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Black",
+     "hex": "#141414",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500800606357,
+     "available": false,
+     "price": 85.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500800639125,
+     "available": false,
+     "price": 85.0,
+     "size": "S"
+    },
+    {
+     "id": 43500800671893,
+     "available": false,
+     "price": 85.0,
+     "size": "M"
+    },
+    {
+     "id": 43500800704661,
+     "available": false,
+     "price": 85.0,
+     "size": "L"
+    },
+    {
+     "id": 43500800737429,
+     "available": false,
+     "price": 85.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500800770197,
+     "available": false,
+     "price": 85.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.49.10PM.png",
+     "w": 1155,
+     "h": 1112
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.39.44PM_a1916ca0-1bc0-4f4f-beb1-96d9908815d5.png",
+     "w": 1449,
+     "h": 1130
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/46.jpg",
+     "w": 2048,
+     "h": 2048
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/49.jpg",
+     "w": 2048,
+     "h": 2048
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/50_d613ce9b-3da2-4f30-86b6-daf82844ca47.jpg",
+     "w": 2048,
+     "h": 2048
+    }
+   ],
+   "publishedAt": "2023-06-22T20:10:28-04:00"
+  },
+  {
+   "id": 7926047080597,
+   "handle": "fc02-crewneck-forest-green",
+   "title": "FC02 Crewneck - Forest Green",
+   "url": "https://increments.ca/products/fc02-crewneck-forest-green",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These crewnecks are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The crewnecks acquire custom embroidered details using a double threaded stitch. These pieces have a relaxed and oversized fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 85.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Forest Green",
+     "hex": "#23412f",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500798967957,
+     "available": false,
+     "price": 85.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500799000725,
+     "available": false,
+     "price": 85.0,
+     "size": "S"
+    },
+    {
+     "id": 43500799033493,
+     "available": false,
+     "price": 85.0,
+     "size": "M"
+    },
+    {
+     "id": 43500799066261,
+     "available": false,
+     "price": 85.0,
+     "size": "L"
+    },
+    {
+     "id": 43500799099029,
+     "available": false,
+     "price": 85.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500799131797,
+     "available": false,
+     "price": 85.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.06.02PM.png",
+     "w": 1158,
+     "h": 1076
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.39.44PM_4775c808-e379-4a96-8513-8d6ebc12f9ee.png",
+     "w": 1449,
+     "h": 1130
+    }
+   ],
+   "publishedAt": "2023-06-22T20:06:46-04:00"
+  },
+  {
+   "id": 7926046458005,
+   "handle": "fc02-crewneck-navy-blue",
+   "title": "FC02 Crewneck - Navy Blue",
+   "url": "https://increments.ca/products/fc02-crewneck-navy-blue",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These crewnecks are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The crewnecks acquire custom embroidered details using a double threaded stitch. These pieces have a relaxed and oversized fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 85.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Navy Blue",
+     "hex": "#1f2a44",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500796903573,
+     "available": false,
+     "price": 85.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500796936341,
+     "available": false,
+     "price": 85.0,
+     "size": "S"
+    },
+    {
+     "id": 43500796969109,
+     "available": false,
+     "price": 85.0,
+     "size": "M"
+    },
+    {
+     "id": 43500797001877,
+     "available": false,
+     "price": 85.0,
+     "size": "L"
+    },
+    {
+     "id": 43500797034645,
+     "available": false,
+     "price": 85.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500797067413,
+     "available": false,
+     "price": 85.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.04.10PM.png",
+     "w": 1548,
+     "h": 1400
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.39.44PM.png",
+     "w": 1449,
+     "h": 1130
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/FullSizeRender-2_593e58e7-9570-49c2-a92c-269683bff8b2.jpg",
+     "w": 1536,
+     "h": 2048
+    }
+   ],
+   "publishedAt": "2023-06-22T20:05:06-04:00"
+  },
+  {
+   "id": 7926047211669,
+   "handle": "fc02-crewneck-cream",
+   "title": "FC02 Crewneck - Cream",
+   "url": "https://increments.ca/products/fc02-crewneck-cream",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These crewnecks are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The crewnecks acquire custom embroidered details using a double threaded stitch. These pieces have a relaxed and oversized fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 85.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Cream",
+     "hex": "#eee4cf",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500800213141,
+     "available": false,
+     "price": 85.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500800245909,
+     "available": false,
+     "price": 85.0,
+     "size": "S"
+    },
+    {
+     "id": 43500800278677,
+     "available": false,
+     "price": 85.0,
+     "size": "M"
+    },
+    {
+     "id": 43500800311445,
+     "available": false,
+     "price": 85.0,
+     "size": "L"
+    },
+    {
+     "id": 43500800344213,
+     "available": false,
+     "price": 85.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500800376981,
+     "available": false,
+     "price": 85.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.41.49PM.png",
+     "w": 1233,
+     "h": 1158
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.39.44PM_aaf4b166-7dfc-4b3e-aa3d-43e1e5399087.png",
+     "w": 1449,
+     "h": 1130
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8402.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2023-06-22T20:04:32-04:00"
+  },
+  {
+   "id": 7926043902101,
+   "handle": "fc-long-short-cream",
+   "title": "FC Long Short - Cream",
+   "url": "https://increments.ca/products/fc-long-short-cream",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These long sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 75.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Cream",
+     "hex": "#eee4cf",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500788187285,
+     "available": false,
+     "price": 75.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500788220053,
+     "available": false,
+     "price": 75.0,
+     "size": "S"
+    },
+    {
+     "id": 43500788252821,
+     "available": false,
+     "price": 75.0,
+     "size": "M"
+    },
+    {
+     "id": 43500788285589,
+     "available": false,
+     "price": 75.0,
+     "size": "L"
+    },
+    {
+     "id": 43500788318357,
+     "available": false,
+     "price": 75.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500788351125,
+     "available": false,
+     "price": 75.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.14.10PM.png",
+     "w": 958,
+     "h": 978
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/27_4f308877-95ec-44d3-af4b-bf9e391680e2.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_6a4077e5-29c6-4909-91d5-64178638ffd1.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8445.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2023-06-22T20:00:25-04:00"
+  },
+  {
+   "id": 7925737128085,
+   "handle": "fc02-forest-green-joggers",
+   "title": "FC01 Forest Green Joggers",
+   "url": "https://increments.ca/products/fc02-forest-green-joggers",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These joggers are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The joggers acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 110.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500790120597,
+     "available": false,
+     "price": 110.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500790153365,
+     "available": false,
+     "price": 110.0,
+     "size": "S"
+    },
+    {
+     "id": 43500790186133,
+     "available": false,
+     "price": 110.0,
+     "size": "M"
+    },
+    {
+     "id": 43500790218901,
+     "available": false,
+     "price": 110.0,
+     "size": "L"
+    },
+    {
+     "id": 43500790251669,
+     "available": false,
+     "price": 110.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500790284437,
+     "available": false,
+     "price": 110.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.53.44PM.png",
+     "w": 1384,
+     "h": 1398
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.30.12PM.png",
+     "w": 1374,
+     "h": 1069
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_6b9b5590-a5d3-4506-a914-f8df0d6433ae.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8564.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2023-06-22T19:59:24-04:00"
+  },
+  {
+   "id": 7925736702101,
+   "handle": "fc02-joggers",
+   "title": "FC01 Navy Blue Joggers",
+   "url": "https://increments.ca/products/fc02-joggers",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These joggers are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The joggers acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 110.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500790448277,
+     "available": false,
+     "price": 110.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500790481045,
+     "available": false,
+     "price": 110.0,
+     "size": "S"
+    },
+    {
+     "id": 43500790513813,
+     "available": false,
+     "price": 110.0,
+     "size": "M"
+    },
+    {
+     "id": 43500790546581,
+     "available": false,
+     "price": 110.0,
+     "size": "L"
+    },
+    {
+     "id": 43500790579349,
+     "available": false,
+     "price": 110.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500790612117,
+     "available": false,
+     "price": 110.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at8.53.23PM.png",
+     "w": 1366,
+     "h": 1389
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.30.12PM_8894db5a-cfd4-4bf2-8dcd-86af32bc7f3b.png",
+     "w": 1374,
+     "h": 1069
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_1d96180d-e331-41ef-bba8-b31675c04e7d.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8251.jpg",
+     "w": 3024,
+     "h": 4032
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8290.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:23-04:00"
+  },
+  {
+   "id": 7926044098709,
+   "handle": "fc-long-short-black",
+   "title": "FC Long Short - Black",
+   "url": "https://increments.ca/products/fc-long-short-black",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These long sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 75.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Black",
+     "hex": "#141414",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500788613269,
+     "available": false,
+     "price": 75.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500788646037,
+     "available": false,
+     "price": 75.0,
+     "size": "S"
+    },
+    {
+     "id": 43500788678805,
+     "available": false,
+     "price": 75.0,
+     "size": "M"
+    },
+    {
+     "id": 43500788711573,
+     "available": false,
+     "price": 75.0,
+     "size": "L"
+    },
+    {
+     "id": 43500788744341,
+     "available": false,
+     "price": 75.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500788777109,
+     "available": false,
+     "price": 75.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/24.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/25.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/26.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/27_12102ddd-1066-4c8e-a010-b2677b00c9a4.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_476d5cdc-d9f3-46de-af39-9e0fc639c701.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/47.jpg",
+     "w": 2048,
+     "h": 2048
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:05-04:00"
+  },
+  {
+   "id": 7926042362005,
+   "handle": "fc02-mini-short-black",
+   "title": "FC Mini Short - Black",
+   "url": "https://increments.ca/products/fc02-mini-short-black",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These mini sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 65.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Black",
+     "hex": "#141414",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500784713877,
+     "available": false,
+     "price": 65.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500784746645,
+     "available": false,
+     "price": 65.0,
+     "size": "S"
+    },
+    {
+     "id": 43500784779413,
+     "available": false,
+     "price": 65.0,
+     "size": "M"
+    },
+    {
+     "id": 43500784812181,
+     "available": false,
+     "price": 65.0,
+     "size": "L"
+    },
+    {
+     "id": 43500784844949,
+     "available": false,
+     "price": 65.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500784877717,
+     "available": false,
+     "price": 65.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/4.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/5.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/6.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/13_546f14cd-291b-4b34-a95e-9c0518aff66b.jpg",
+     "w": 3375,
+     "h": 3375
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:05-04:00"
+  },
+  {
+   "id": 7926042067093,
+   "handle": "fc-mini-short-cream",
+   "title": "FC Mini Short - Cream",
+   "url": "https://increments.ca/products/fc-mini-short-cream",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These mini sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 65.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Cream",
+     "hex": "#eee4cf",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500783239317,
+     "available": false,
+     "price": 65.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500783272085,
+     "available": false,
+     "price": 65.0,
+     "size": "S"
+    },
+    {
+     "id": 43500783304853,
+     "available": false,
+     "price": 65.0,
+     "size": "M"
+    },
+    {
+     "id": 43500783337621,
+     "available": false,
+     "price": 65.0,
+     "size": "L"
+    },
+    {
+     "id": 43500783370389,
+     "available": false,
+     "price": 65.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500783403157,
+     "available": false,
+     "price": 65.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/10.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/11.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/12.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/13_3990a4f9-7447-4fda-a781-d4142bd769ee.jpg",
+     "w": 3375,
+     "h": 3375
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:04-04:00"
+  },
+  {
+   "id": 7926041673877,
+   "handle": "fc-mini-short-forest-green",
+   "title": "FC Mini Short - Forest Green",
+   "url": "https://increments.ca/products/fc-mini-short-forest-green",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These mini sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 65.0,
+   "available": true,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Forest Green",
+     "hex": "#23412f",
+     "image": null,
+     "available": true
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500781699221,
+     "available": false,
+     "price": 65.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500781731989,
+     "available": true,
+     "price": 65.0,
+     "size": "S"
+    },
+    {
+     "id": 43500781764757,
+     "available": false,
+     "price": 65.0,
+     "size": "M"
+    },
+    {
+     "id": 43500781797525,
+     "available": false,
+     "price": 65.0,
+     "size": "L"
+    },
+    {
+     "id": 43500781830293,
+     "available": false,
+     "price": 65.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500781863061,
+     "available": false,
+     "price": 65.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/7.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/8.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/9.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/13_9fa55ce3-9a55-459c-8bf1-5a3a2ebdf3a1.jpg",
+     "w": 3375,
+     "h": 3375
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:04-04:00"
+  },
+  {
+   "id": 7926041018517,
+   "handle": "fc-long-short-forest-green",
+   "title": "FC Long Short - Forest Green",
+   "url": "https://increments.ca/products/fc-long-short-forest-green",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These long sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 75.0,
+   "available": true,
+   "options": [
+    "size"
+   ],
+   "colours": [
+    {
+     "name": "Forest Green",
+     "hex": "#23412f",
+     "image": null,
+     "available": true
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500780421269,
+     "available": false,
+     "price": 75.0,
+     "size": "XS"
+    },
+    {
+     "id": 43500780454037,
+     "available": true,
+     "price": 75.0,
+     "size": "S"
+    },
+    {
+     "id": 43500780486805,
+     "available": false,
+     "price": 75.0,
+     "size": "M"
+    },
+    {
+     "id": 43500780519573,
+     "available": false,
+     "price": 75.0,
+     "size": "L"
+    },
+    {
+     "id": 43500780552341,
+     "available": false,
+     "price": 75.0,
+     "size": "XL"
+    },
+    {
+     "id": 43500780585109,
+     "available": false,
+     "price": 75.0,
+     "size": "2XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/17.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/18.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/19.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/27_ae92147b-e797-45d2-87a4-68f5f6ba3359.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_3472a31f-c991-42da-8a99-48952640c3dd.jpg",
+     "w": 3375,
+     "h": 3375
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:03-04:00"
+  },
+  {
+   "id": 7925735981205,
+   "handle": "fc-long-short",
+   "title": "FC Long Short - Navy Blue",
+   "url": "https://increments.ca/products/fc-long-short",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These long sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 75.0,
+   "available": false,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Navy Blue",
+     "hex": "#1f2a44",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500048089237,
+     "available": false,
+     "price": 75.0,
+     "size": "XS",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500048220309,
+     "available": false,
+     "price": 75.0,
+     "size": "S",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500048351381,
+     "available": false,
+     "price": 75.0,
+     "size": "M",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500048482453,
+     "available": false,
+     "price": 75.0,
+     "size": "L",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500048613525,
+     "available": false,
+     "price": 75.0,
+     "size": "XL",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500048744597,
+     "available": false,
+     "price": 75.0,
+     "size": "2XL",
+     "colour": "Navy Blue"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/14.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/15.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/16.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/27.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits.jpg",
+     "w": 3375,
+     "h": 3375
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:03-04:00"
+  },
+  {
+   "id": 7925735817365,
+   "handle": "cf-mini-short",
+   "title": "FC Mini Short - Navy Blue",
+   "url": "https://increments.ca/products/cf-mini-short",
+   "zone": "archive",
+   "chapter": {
+    "name": "FC01 · FC02",
+    "year": 2023
+   },
+   "featured": false,
+   "description": "These mini sweat shorts are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. These shorts acquire custom embroidered details using a double threaded stitch. Our shorts have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 65.0,
+   "available": false,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Navy Blue",
+     "hex": "#1f2a44",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43500050382997,
+     "available": false,
+     "price": 65.0,
+     "size": "XS",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500050514069,
+     "available": false,
+     "price": 65.0,
+     "size": "S",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500050645141,
+     "available": false,
+     "price": 65.0,
+     "size": "M",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500050776213,
+     "available": false,
+     "price": 65.0,
+     "size": "L",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500050907285,
+     "available": false,
+     "price": 65.0,
+     "size": "XL",
+     "colour": "Navy Blue"
+    },
+    {
+     "id": 43500051038357,
+     "available": false,
+     "price": 65.0,
+     "size": "2XL",
+     "colour": "Navy Blue"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/1.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/2.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/3.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/13.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_7f0840ba-e49a-4b44-9854-6ca75fcf71ac.jpg",
+     "w": 3375,
+     "h": 3375
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/FullSizeRender-2.jpg",
+     "w": 1536,
+     "h": 2048
+    }
+   ],
+   "publishedAt": "2023-06-22T19:57:02-04:00"
+  },
+  {
+   "id": 7755479253141,
+   "handle": "pre-order-the-first-chapter-black-joggers",
+   "title": "The First Chapter Black Joggers",
+   "url": "https://increments.ca/products/pre-order-the-first-chapter-black-joggers",
+   "zone": "archive",
+   "chapter": {
+    "name": "The First Chapter",
+    "year": 2022
+   },
+   "featured": false,
+   "description": "These joggers are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The joggers acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 110.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43014809550997,
+     "available": false,
+     "price": 110.0,
+     "size": "XS"
+    },
+    {
+     "id": 43014809583765,
+     "available": false,
+     "price": 110.0,
+     "size": "S"
+    },
+    {
+     "id": 43014809616533,
+     "available": false,
+     "price": 110.0,
+     "size": "M"
+    },
+    {
+     "id": 43014809649301,
+     "available": false,
+     "price": 110.0,
+     "size": "L"
+    },
+    {
+     "id": 43014809682069,
+     "available": false,
+     "price": 110.0,
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/ScreenShot2023-03-31at4.54.53PM.png",
+     "w": 1179,
+     "h": 1176
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/ScreenShot2022-12-04at3.36.17AM_89ac6f32-050a-4f4e-ae28-cfcbb9c3d62d.png",
+     "w": 876,
+     "h": 853
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.30.12PM_1b57c025-3c6c-4038-8cb1-0b309818c62e.png",
+     "w": 1374,
+     "h": 1069
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_ab0fb59a-7e39-42eb-951f-74442829cfb3.jpg",
+     "w": 3375,
+     "h": 3375
+    }
+   ],
+   "publishedAt": "2022-12-04T03:41:19-05:00"
+  },
+  {
+   "id": 7755479089301,
+   "handle": "pre-order-the-first-chapter-black-hoodie",
+   "title": "The First Chapter Black Hoodie",
+   "url": "https://increments.ca/products/pre-order-the-first-chapter-black-hoodie",
+   "zone": "archive",
+   "chapter": {
+    "name": "The First Chapter",
+    "year": 2022
+   },
+   "featured": false,
+   "description": "These hoodies are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The hoodies acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 125.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 43014808895637,
+     "available": false,
+     "price": 125.0,
+     "size": "XS"
+    },
+    {
+     "id": 43014808928405,
+     "available": false,
+     "price": 125.0,
+     "size": "S"
+    },
+    {
+     "id": 43014808961173,
+     "available": false,
+     "price": 125.0,
+     "size": "M"
+    },
+    {
+     "id": 43014808993941,
+     "available": false,
+     "price": 125.0,
+     "size": "L"
+    },
+    {
+     "id": 43014809026709,
+     "available": false,
+     "price": 125.0,
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/ScreenShot2023-03-31at4.54.39PM.png",
+     "w": 1149,
+     "h": 1163
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/ScreenShot2022-12-04at3.36.17AM.png",
+     "w": 876,
+     "h": 853
+    }
+   ],
+   "publishedAt": "2022-12-04T03:38:45-05:00"
+  },
+  {
+   "id": 7747399843989,
+   "handle": "the-first-chapter-cream-joggers",
+   "title": "The First Chapter Cream Joggers",
+   "url": "https://increments.ca/products/the-first-chapter-cream-joggers",
+   "zone": "archive",
+   "chapter": {
+    "name": "The First Chapter",
+    "year": 2022
+   },
+   "featured": false,
+   "description": "These joggers are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The joggers acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 110.0,
+   "available": false,
+   "options": [
+    "size"
+   ],
+   "colours": [],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 42990837203093,
+     "available": false,
+     "price": 110.0,
+     "size": "XS"
+    },
+    {
+     "id": 42990837235861,
+     "available": false,
+     "price": 110.0,
+     "size": "S"
+    },
+    {
+     "id": 42990837268629,
+     "available": false,
+     "price": 110.0,
+     "size": "M"
+    },
+    {
+     "id": 42990837301397,
+     "available": false,
+     "price": 110.0,
+     "size": "L"
+    },
+    {
+     "id": 42990837334165,
+     "available": false,
+     "price": 110.0,
+     "size": "XL"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK_3.jpg",
+     "w": 1500,
+     "h": 1500
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK_2_f8200a22-36ff-48a2-a29f-cb9da58c4480.jpg",
+     "w": 1500,
+     "h": 1500
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Screenshot2023-06-22at7.30.12PM_a26a1e2a-d00c-4b2c-9bcf-b109159093ab.png",
+     "w": 1374,
+     "h": 1069
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/webedits_0c55e13c-f17a-4a50-a3d7-83eac127030d.jpg",
+     "w": 3375,
+     "h": 3375
+    }
+   ],
+   "publishedAt": "2022-11-23T18:31:14-05:00"
+  },
+  {
+   "id": 7747399385237,
+   "handle": "the-first-chapter-cream-hoodie",
+   "title": "The First Chapter Cream Hoodie",
+   "url": "https://increments.ca/products/the-first-chapter-cream-hoodie",
+   "zone": "archive",
+   "chapter": {
+    "name": "The First Chapter",
+    "year": 2022
+   },
+   "featured": false,
+   "description": "These hoodies are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The hoodies acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 125.0,
+   "available": false,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Cream",
+     "hex": "#eee4cf",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 42990833729685,
+     "available": false,
+     "price": 125.0,
+     "size": "XS",
+     "colour": "Cream"
+    },
+    {
+     "id": 42990833762453,
+     "available": false,
+     "price": 125.0,
+     "size": "S",
+     "colour": "Cream"
+    },
+    {
+     "id": 42990833795221,
+     "available": false,
+     "price": 125.0,
+     "size": "M",
+     "colour": "Cream"
+    },
+    {
+     "id": 42990833827989,
+     "available": false,
+     "price": 125.0,
+     "size": "L",
+     "colour": "Cream"
+    },
+    {
+     "id": 42990833860757,
+     "available": false,
+     "price": 125.0,
+     "size": "XL",
+     "colour": "Cream"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK.jpg",
+     "w": 1500,
+     "h": 1500
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK_2.jpg",
+     "w": 1500,
+     "h": 1500
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8495.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2022-11-23T18:26:38-05:00"
+  },
+  {
+   "id": 7747395813525,
+   "handle": "the-first-chapter-hoodie",
+   "title": "The First Chapter Cloud Grey Hoodie",
+   "url": "https://increments.ca/products/the-first-chapter-hoodie",
+   "zone": "archive",
+   "chapter": {
+    "name": "The First Chapter",
+    "year": 2022
+   },
+   "featured": false,
+   "description": "These hoodies are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The hoodies acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 125.0,
+   "available": false,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Cloud Grey",
+     "hex": "#c8c9ca",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 42990818164885,
+     "available": false,
+     "price": 125.0,
+     "size": "XS",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990818230421,
+     "available": false,
+     "price": 125.0,
+     "size": "S",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990818295957,
+     "available": false,
+     "price": 125.0,
+     "size": "M",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990818361493,
+     "available": false,
+     "price": 125.0,
+     "size": "L",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990818427029,
+     "available": false,
+     "price": 125.0,
+     "size": "XL",
+     "colour": "Cloud Grey"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK_c4e706c1-6625-42af-959a-a57732aa6d72.jpg",
+     "w": 1500,
+     "h": 1500
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK_2_e6007504-334b-464d-8248-8a56c897ed44.jpg",
+     "w": 1500,
+     "h": 1500
+    }
+   ],
+   "publishedAt": "2022-11-23T18:06:55-05:00"
+  },
+  {
+   "id": 7747396042901,
+   "handle": "the-first-chapter-joggers",
+   "title": "The First Chapter Cloud Grey Joggers",
+   "url": "https://increments.ca/products/the-first-chapter-joggers",
+   "zone": "archive",
+   "chapter": {
+    "name": "The First Chapter",
+    "year": 2022
+   },
+   "featured": false,
+   "description": "These joggers are unisex, high quality, heavyweight material, 100% cotton and are proudly designed and produced in Canada. The joggers acquire custom embroidered details using a double threaded stitch. Our sets have a relaxed fit to ensure the highest level of comfort.\nA percentage of this purchase will be donated to mental health organizations.",
+   "price": 110.0,
+   "available": false,
+   "options": [
+    "size",
+    "colour"
+   ],
+   "colours": [
+    {
+     "name": "Cloud Grey",
+     "hex": "#c8c9ca",
+     "image": null,
+     "available": false
+    }
+   ],
+   "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "styles": [],
+   "variants": [
+    {
+     "id": 42990820294805,
+     "available": false,
+     "price": 110.0,
+     "size": "XS",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990820360341,
+     "available": false,
+     "price": 110.0,
+     "size": "S",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990820425877,
+     "available": false,
+     "price": 110.0,
+     "size": "M",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990820491413,
+     "available": false,
+     "price": 110.0,
+     "size": "L",
+     "colour": "Cloud Grey"
+    },
+    {
+     "id": 42990820556949,
+     "available": false,
+     "price": 110.0,
+     "size": "XL",
+     "colour": "Cloud Grey"
+    }
+   ],
+   "images": [
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK_3_9100d3db-4589-441b-94e9-c67aa83bde1f.jpg",
+     "w": 1500,
+     "h": 1500
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/products/OK_2_20e5ad0d-fb01-4d58-bc18-ff195106d559.jpg",
+     "w": 1500,
+     "h": 1500
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_8290_d1ed535e-cec1-4bfe-9b8b-9466d92f9be1.jpg",
+     "w": 3024,
+     "h": 4032
+    }
+   ],
+   "publishedAt": "2022-11-23T18:04:51-05:00"
+  }
+ ],
+ "lifestyle": [
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623058.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/increments7copy.jpg"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623410.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623931.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623309.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623913.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623770.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623256.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623974.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623771.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623755.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/increments11copy.jpg"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/increments14copy.jpg"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/increments1copy.jpg"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623851.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623420.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623785.webp"
+  },
+  {
+   "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments20072_9dbc6c89-07df-43ae-aaba-ec2ca88f199a.jpg"
+  }
+ ]
+}

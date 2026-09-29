@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Increments Lounge</title>
+  <meta name="description" content="Step inside the Increments Lounge — a travertine café where the new chapter is on the menu. Shop Still Becoming, Worn and Movement.">
+  <meta name="theme-color" content="#e8dccb">
+  <meta property="og:title" content="The Increments Lounge">
+  <meta property="og:description" content="Life unfolds in increments. Take a seat — the new chapter is on the menu.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623359.webp?width=1200">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e8dccb'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' text-anchor='middle' fill='%232a1d16'%3EI%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Caveat:wght@500&family=Hanken+Grotesk:wght@400;500;600&family=Azeret+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/css/lounge.css">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" crossorigin>
+</head>
+<body class="is-loading">
+  <a class="skip-link" href="#menu" data-open="menu">Skip the lounge — shop the menu</a>
+
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="hotspots" id="hotspots" aria-label="Pieces in view"></div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <a class="wordmark" href="https://increments.ca" aria-label="Increments — visit the shop">
+      <span class="wordmark__name">Increments</span>
+      <span class="wordmark__sub">The Lounge</span>
+    </a>
+    <nav class="topbar__actions" aria-label="Lounge">
+      <button class="chip" type="button" data-open="menu" aria-haspopup="dialog">
+        <span class="chip__label">Menu</span>
+      </button>
+      <button class="chip chip--icon" type="button" data-open="stamps" aria-haspopup="dialog" aria-label="Stamp card">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><circle cx="8.5" cy="12" r="2"/><circle cx="15.5" cy="12" r="2"/></svg>
+        <span class="chip__count" data-stamp-count>0</span>
+      </button>
+      <button class="chip chip--icon" type="button" data-open="tray" aria-haspopup="dialog" aria-label="Your tray, 0 items">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15h18M5 15l1.2 3.2c.2.5.7.8 1.2.8h9.2c.5 0 1-.3 1.2-.8L19 15M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4"/><path d="M12 6.5V8"/></svg>
+        <span class="chip__count" data-tray-count>0</span>
+      </button>
+      <button class="chip chip--icon" type="button" data-sound aria-pressed="false" aria-label="Café sound off">
+        <svg class="i-sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+        <svg class="i-sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Station caption + dock -->
+  <section class="caption" id="caption" aria-live="polite">
+    <p class="caption__eyebrow" data-caption-eyebrow></p>
+    <h1 class="caption__title" data-caption-title>The Increments Lounge</h1>
+    <p class="caption__body" data-caption-body></p>
+    <div class="caption__actions" data-caption-actions></div>
+  </section>
+
+  <nav class="dock" aria-label="Stations">
+    <button class="dock__arrow" type="button" data-step="-1" aria-label="Previous station">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"/></svg>
+    </button>
+    <button class="dock__current" type="button" data-open="stations" aria-haspopup="dialog">
+      <span class="dock__index" data-dock-index>01</span>
+      <span class="dock__name" data-dock-name>Step inside</span>
+      <span class="dock__dots" data-dock-dots aria-hidden="true"></span>
+    </button>
+    <button class="dock__arrow" type="button" data-step="1" aria-label="Next station">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg>
+    </button>
+  </nav>
+
+  <!-- Loader / intro -->
+  <section class="intro" id="intro" aria-labelledby="intro-title">
+    <div class="intro__inner">
+      <p class="intro__eyebrow">Increments presents</p>
+      <h2 class="intro__title" id="intro-title">The <em>Lounge</em></h2>
+      <p class="intro__line">Life unfolds in increments. Take a seat — the new chapter is on the menu.</p>
+      <div class="intro__cup" aria-hidden="true">
+        <svg viewBox="0 0 120 120">
+          <defs><clipPath id="cupClip"><path d="M28 44h58l-6 44a10 10 0 0 1-10 9H44a10 10 0 0 1-10-9z"/></clipPath></defs>
+          <path class="cup__outline" d="M28 44h58l-6 44a10 10 0 0 1-10 9H44a10 10 0 0 1-10-9z"/>
+          <path class="cup__outline" d="M86 54h6a9 9 0 0 1 0 18h-8"/>
+          <g clip-path="url(#cupClip)"><rect class="cup__fill" x="20" y="44" width="80" height="60"/></g>
+          <path class="cup__steam" d="M50 36c-4-6 4-8 0-15M62 36c-4-6 4-8 0-15M74 36c-4-6 4-8 0-15"/>
+        </svg>
+      </div>
+      <p class="intro__status" data-intro-status role="status">Warming the room…</p>
+      <button class="button button--primary intro__enter" type="button" data-enter disabled>Step inside</button>
+      <a class="intro__alt" href="#menu" data-open="menu">Or skip straight to the menu</a>
+    </div>
+  </section>
+
+  <!-- Dialogs are rendered into this layer -->
+  <div class="layer" id="layer"></div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="sr-only" id="announcer" aria-live="polite"></div>
+
+  <noscript>
+    <div class="noscript">
+      <p>The Lounge needs JavaScript. You can shop everything at <a href="https://increments.ca">increments.ca</a>.</p>
+    </div>
+  </noscript>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Material lab</title>
+<style>
+  body { margin: 0; background: #2a1d16; color: #efe6d8; font: 12px ui-monospace, Menlo, monospace; }
+  main { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 10px; padding: 10px; }
+  figure { margin: 0; }
+  canvas { width: 100%; height: auto; display: block; }
+  figcaption { padding: 4px 0 8px; opacity: 0.8; }
+</style>
+</head>
+<body>
+<main id="m"></main>
+<script type="module">
+  import * as S from '../assets/js/scene/stone.js';
+  const m = document.getElementById('m');
+  const show = (name, c) => {
+    const f = document.createElement('figure');
+    const t0 = performance.now();
+    const canvas = typeof c === 'function' ? c() : c;
+    f.append(canvas);
+    const cap = document.createElement('figcaption');
+    cap.textContent = `${name} — ${canvas.width}×${canvas.height} in ${(performance.now() - t0).toFixed(0)}ms`;
+    f.append(cap); m.append(f);
+  };
+  show('floor tiles (classic)', () => S.travertineTiles({ width: 2048, height: 1024, cols: 4, rows: 2 }).map);
+  show('floor 1:1 crop', () => { const src = S.travertineTiles({ width: 2048, height: 1024, cols: 4, rows: 2 }).map; const c = S.makeCanvas(700, 360); c.getContext('2d').drawImage(src, 300, 200, 700, 360, 0, 0, 700, 360); return c; });
+  show('floor bump', () => S.travertineTiles({ width: 1024, height: 512, cols: 4, rows: 2 }).bump);
+  show('slab (warm)', () => S.travertineTiles({ width: 1024, height: 512, cols: 1, rows: 1, grout: 0, palette: S.TRAVERTINE.warm, seed: 9 }).map);
+  show('noce', () => S.travertineTiles({ width: 1024, height: 512, cols: 2, rows: 2, palette: S.TRAVERTINE.noce, seed: 4 }).map);
+  show('walnut', () => S.woodGrain({ width: 512, height: 512 }).map);
+  show('leather', () => S.leather({ width: 512, height: 512 }).map);
+  show('plaster', () => S.plaster({ width: 512, height: 512 }).map);
+  show('cork', () => S.speckle({ width: 512, height: 512 }).map);
+  show('boucle', () => S.boucle({ width: 512, height: 512 }).map);
+  show('rug', () => S.rug({ width: 1024, height: 700 }).map);
+  show('steel', () => S.brushedMetal({}).map);
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>The Increments Lounge</title>
+  <script>
+    // Works on both github.io project pages (/<repo>/…) and a custom domain (/…).
+    // Paths like /counter or /window become station deep links (#counter).
+    (function () {
+      var parts = location.pathname.split('/').filter(Boolean);
+      var onProjectPage = location.hostname.endsWith('github.io') && parts.length > 0;
+      var base = onProjectPage ? '/' + parts[0] + '/' : '/';
+      var rest = onProjectPage ? parts.slice(1) : parts;
+      var stations = ['entrance', 'window', 'counter', 'lounge', 'movement', 'archive', 'board'];
+      var hash = rest.length && stations.indexOf(rest[0].toLowerCase()) >= 0 ? '#' + rest[0].toLowerCase() : '';
+      location.replace(base + location.search + hash);
+    })();
+  </script>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #e8dccb; color: #2a1d16; font: 16px/1.5 Georgia, serif; text-align: center; padding: 24px; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <p>Taking you back to <a href="/">the Lounge</a>…</p>
+</body>
+</html>

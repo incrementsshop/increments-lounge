@@ -1,0 +1,53 @@
+{
+  "_comment": "Merchandising rules for the Lounge. Edit this file, then run `python3 tools/refresh_catalog.py` (or let the GitHub Action do it). Zone rules are checked top to bottom against the product title; the first match wins.",
+
+  "store": {
+    "domain": "increments.ca",
+    "currency": "CAD",
+    "collections": ["/products.json"],
+    "galleryPage": "/pages/gallery"
+  },
+
+  "featured": {
+    "name": "Still Becoming",
+    "line": "Three colours. One chapter. Yours."
+  },
+
+  "zones": [
+    { "zone": "window",   "match": "^Still Becoming" },
+    { "zone": "lounge",   "match": "^Worn" },
+    { "zone": "till",     "match": "(Socks|Caps?)$" },
+    { "zone": "archive",  "match": "^(FC|The First Chapter)" },
+    { "zone": "movement", "match": ".*" }
+  ],
+
+  "chapters": [
+    { "name": "The First Chapter", "year": 2022, "match": "^The First Chapter" },
+    { "name": "FC01 · FC02",       "year": 2023, "match": "^FC" }
+  ],
+
+  "hide": [],
+
+  "swatches": {
+    "Cloudstone":  "#d9d3c8",
+    "Chestnut":    "#6e4330",
+    "Charcoal":    "#3b3b3d",
+    "Scarlet":     "#8c2027",
+    "Evergreen":   "#22402f",
+    "Midnight":    "#1d2335",
+    "Cherry":      "#6d1524",
+    "Espresso":    "#3c2a21",
+    "Slate Black": "#26272a",
+    "Bubble Gum":  "#e8a7c1",
+    "Sapphire":    "#243f78",
+    "Rose Quartz": "#e6c4c2",
+    "Black":       "#141414",
+    "Army Green":  "#4b5230",
+    "Cream":       "#eee4cf",
+    "White":       "#f4f3ef",
+    "Navy Blue":   "#1f2a44",
+    "Forest Green":"#23412f",
+    "Cloud Grey":  "#c8c9ca",
+    "White & Grey":"#e4e3df"
+  }
+}

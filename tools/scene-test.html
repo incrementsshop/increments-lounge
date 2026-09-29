@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Scene test</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#222} canvas{display:block;width:100%;height:100%} #i{position:fixed;left:8px;top:8px;color:#fff;font:12px monospace;background:#0008;padding:4px 6px}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<canvas id="c"></canvas><div id="i"></div>
+<script type="module">
+  // Dev harness: ?cam=x,y,z&look=x,y,z&quality=high  — or ?orbit for free orbit controls.
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { World, detectQuality } from '../assets/js/scene/world.js';
+  import { createMaterials } from '../assets/js/scene/materials.js';
+  import { buildRoom } from '../assets/js/scene/room.js';
+  const q = new URLSearchParams(location.search);
+  const world = new World(document.getElementById('c'), detectQuality());
+  const M = createMaterials(world.renderer, world.quality);
+  buildRoom(world.scene, M, world.quality);
+  const extra = q.get('with');
+  if (extra) {
+    for (const name of extra.split(',')) {
+      const mod = await import(`../assets/js/scene/${name}.js`);
+      await mod.default?.(world.scene, M, world.quality);
+    }
+  }
+  const cam = (q.get('cam') || '1.4,1.75,4.9').split(',').map(Number);
+  const look = (q.get('look') || '-0.6,1.2,-2.6').split(',').map(Number);
+  world.camera.position.set(...cam);
+  world.camera.fov = Number(q.get('fov') || 50); world.camera.updateProjectionMatrix();
+  if (q.has('orbit')) {
+    const c = new OrbitControls(world.camera, world.renderer.domElement);
+    c.target.set(...look); c.update();
+    world.onFrame.push(() => { c.update(); document.getElementById('i').textContent = `cam ${world.camera.position.toArray().map(v=>v.toFixed(2))} look ${c.target.toArray().map(v=>v.toFixed(2))}`; });
+  } else world.camera.lookAt(...look);
+  world.start();
+  window.__world = world;
+</script>
+</body>
+</html>
