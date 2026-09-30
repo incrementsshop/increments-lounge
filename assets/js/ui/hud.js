@@ -43,7 +43,7 @@ export class Hud {
   }
 
   setCounts({ tray, stamps }) {
-    if (tray != null) this.#count(this.trayCount, tray, `Your tray, ${tray} ${tray === 1 ? 'item' : 'items'}`, this.trayButton);
+    if (tray != null) this.#count(this.trayCount, tray, `Your bag, ${tray} ${tray === 1 ? 'item' : 'items'}`, this.trayButton);
     if (stamps != null) this.#count(this.stampCount, stamps);
   }
 

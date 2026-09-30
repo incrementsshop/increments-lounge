@@ -8,15 +8,15 @@ import { CONFIG } from '../config.js';
 import { track } from '../analytics.js';
 
 // ---------------------------------------------------------------------------
-// The tray — a café receipt
+// The bag — a boutique receipt
 // ---------------------------------------------------------------------------
 
 export function openTray(app) {
   track('tray_open', { items: app.tray.count, value: app.tray.subtotal });
   openDialog({
     variant: 'sheet',
-    title: 'Your <em>tray</em>',
-    kicker: 'Order',
+    title: 'Your <em>bag</em>',
+    kicker: 'Your order',
     className: 'tray',
     build(body, api) {
       const render = () => {
@@ -30,8 +30,8 @@ export function openTray(app) {
           ));
         if (!items.length) {
           receipt.append(h('div', { class: 'receipt__empty' },
-            h('p', {}, 'Nothing on your tray yet. The menu’s a good place to start.'),
-            h('button', { class: 'button button--small', type: 'button', onclick: () => { api.close(); app.openMenu(); } }, 'Open the menu')));
+            h('p', {}, 'Nothing in your bag yet. The collection is a good place to start.'),
+            h('button', { class: 'button button--small', type: 'button', onclick: () => { api.close(); app.openMenu(); } }, 'See the collection')));
         } else {
           for (const it of items) {
             const variant = [it.colour, it.size, it.style].filter(Boolean).join(' · ');
@@ -75,7 +75,7 @@ export function openTray(app) {
           style: { marginTop: '8px' },
           onclick: () => track('checkout_click', { items: app.tray.count, value: app.tray.subtotal, storefront: true }),
         }, 'Keep shopping on increments.ca');
-        return [pay, cont, h('p', { class: 'product__note' }, 'You’ll finish up in the Increments checkout, with your tray already in the cart.')];
+        return [pay, cont, h('p', { class: 'product__note' }, 'You’ll finish up in the Increments checkout, with your bag already in the cart.')];
       };
 
       const onChange = () => { if (api.dlg.open) render(); };
@@ -88,21 +88,21 @@ export function openTray(app) {
 }
 
 // ---------------------------------------------------------------------------
-// The menu — full list view; also the whole shop when WebGL isn't available
+// The collection — full list view; also the whole shop when WebGL isn't available
 // ---------------------------------------------------------------------------
 
 export function openMenu(app, { zone } = {}) {
   track('menu_open', { zone });
   const api = openDialog({
     variant: 'full',
-    title: 'The Menu',
+    title: 'The Collection',
     kicker: 'Increments Lounge',
     className: 'menu',
     build(body, api) {
       const inner = h('div', { class: 'menu__inner' });
       inner.append(h('div', { class: 'menu__masthead' },
-        h('h2', { html: 'The <em>Menu</em>' }),
-        h('p', {}, `Now serving: ${app.catalog.featured.name || 'the new chapter'}. ${app.catalog.featured.line || ''}`)));
+        h('h2', { html: 'The <em>Collection</em>' }),
+        h('p', {}, `Now showing: ${app.catalog.featured.name || 'the new chapter'}. ${app.catalog.featured.line || ''}`)));
       for (const section of app.catalog.menu()) {
         const list = h('ul', { class: 'menu__list' });
         for (const p of section.products) {
@@ -128,7 +128,7 @@ export function openMenu(app, { zone } = {}) {
       inner.append(h('div', { class: 'menu__foot' },
         archiveCount ? h('p', {}, h('button', { class: 'pill', type: 'button', onclick: () => openArchive(app) }, `Browse the archive — ${archiveCount} pieces from past chapters`)) : null,
         h('p', {}, 'Prefer the regular shop? ', h('a', { href: `https://${CONFIG.store.domain}` }, `Everything is on ${CONFIG.store.domain}`), '.'),
-        h('p', { style: { fontSize: '12px' } }, `Menu updated ${new Date(app.catalog.generatedAt).toLocaleDateString(CONFIG.store.locale, { dateStyle: 'long' })}.`)));
+        h('p', { style: { fontSize: '12px' } }, `Collection updated ${new Date(app.catalog.generatedAt).toLocaleDateString(CONFIG.store.locale, { dateStyle: 'long' })}.`)));
       body.append(inner);
       if (zone) requestAnimationFrame(() => body.querySelector(`#menu-${zone}`)?.scrollIntoView({ block: 'start' }));
     },

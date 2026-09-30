@@ -90,7 +90,7 @@ export function createFX(scene, anchors, quality) {
   const dustGeo = new THREE.BufferGeometry();
   dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
   dustGeo.setAttribute('aSeed', new THREE.BufferAttribute(dSeed, 1));
-  const dust = new THREE.Points(dustGeo, new THREE.ShaderMaterial({
+  const dustMat = new THREE.ShaderMaterial({
     uniforms,
     vertexShader: /* glsl */`
       uniform float uTime;
@@ -118,9 +118,63 @@ export function createFX(scene, anchors, quality) {
     transparent: true,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
-  }));
+  });
+  const dust = new THREE.Points(dustGeo, dustMat);
   dust.frustumCulled = false;
   group.add(dust);
+
+  // --- Skylight: a soft column of daylight onto the olive, with its own dust -----------
+  if (anchors.skylight) {
+    const { x, z, r, y } = anchors.skylight;
+    const column = new THREE.Mesh(
+      new THREE.CylinderGeometry(r * 0.98, r * 1.3, y, 48, 1, true),
+      new THREE.ShaderMaterial({
+        uniforms: { ...uniforms, uColor: { value: new THREE.Color(0xfff2dc) }, uOpacity: { value: 0.085 } },
+        vertexShader: /* glsl */`
+          varying vec2 vUv;
+          varying vec3 vWorld;
+          void main() {
+            vUv = uv;
+            vec4 wp = modelMatrix * vec4(position, 1.0);
+            vWorld = wp.xyz;
+            gl_Position = projectionMatrix * viewMatrix * wp;
+          }`,
+        fragmentShader: /* glsl */`
+          uniform vec3 uColor;
+          uniform float uOpacity;
+          uniform float uTime;
+          varying vec2 vUv;
+          varying vec3 vWorld;
+          void main() {
+            float t = 1.0 - vUv.y;                       // 0 at the skylight, 1 at the floor
+            float along = pow(1.0 - t, 1.3) * smoothstep(0.0, 0.06, t);
+            float shimmer = 0.85 + 0.15 * sin(vWorld.x * 3.1 + vWorld.z * 2.3 + uTime * 0.2);
+            gl_FragColor = vec4(uColor * uOpacity * along * shimmer, 1.0);
+          }`,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+      }));
+    column.position.set(x, y / 2, z);
+    column.renderOrder = 5;
+    column.frustumCulled = false;
+    group.add(column);
+
+    const n = Math.round(quality.dust * 0.6);
+    const pos = new Float32Array(n * 3), seed = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, rr = r * 1.05 * Math.sqrt(Math.random());
+      pos.set([x + Math.cos(a) * rr, 0.6 + Math.random() * (y - 0.9), z + Math.sin(a) * rr], i * 3);
+      seed[i] = Math.random();
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+    const skyDust = new THREE.Points(g, dustMat);
+    skyDust.frustumCulled = false;
+    group.add(skyDust);
+  }
 
   // --- Steam ------------------------------------------------------------------
   const per = 16;

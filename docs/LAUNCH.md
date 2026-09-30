@@ -7,7 +7,7 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 **Client sign-off**
 - [ ] Walk the client through all seven stations on their own phone (send the preview link).
 - [ ] Confirm copy for each station caption (`assets/js/scene/stations.js`) and the notice-board quotes (`scene/displays.js → TEAM_QUOTES`).
-- [ ] Confirm what's merchandised where (`data/merch.json`). Today: Still Becoming → Window, Worn → Lounge, activewear → Movement, socks & caps → till, FC/First Chapter → Archive.
+- [ ] Confirm what's merchandised where (`data/merch.json`). Today: Still Becoming → the Steps, Worn → the Lounge niche, activewear → Movement, socks & caps → the till, FC/First Chapter → the Archive.
 - [ ] Decide on the stamp-card reward. If yes: create a Shopify discount (e.g. `SMALLSTEPS`, 10%, one use per customer, active only for the run), put it in `config.js → reward.code`.
 - [ ] Set `opensOn` / `closesOn` in `config.js`.
 
@@ -36,10 +36,10 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 **Flows**
 - [ ] Intro → Step inside → all seven stations via arrows, swipe, dock list, keyboard (desktop).
 - [ ] Tap a garment in the room → sheet opens with that colourway selected.
-- [ ] Pick a sold-out size → disabled. Pick an in-stock size → Add to tray → toast + tray count.
-- [ ] Tray → quantity ±, remove, "Pay at the counter" lands in Shopify checkout with the right items. Do one real test order, then refund it.
+- [ ] Pick a sold-out size → disabled. Pick an in-stock size → Add to bag → toast + bag count.
+- [ ] Bag → quantity ±, remove, "Pay at the counter" lands in Shopify checkout with the right items. Do one real test order, then refund it.
 - [ ] "Keep shopping on increments.ca" lands on the store cart with the items.
-- [ ] Menu (top bar) lists everything; each row opens the sheet.
+- [ ] Shop (top bar) opens the Collection list; each row opens the sheet. Tapping a line on the carved plaque opens that piece.
 - [ ] Archive: sold-out pieces show "Chapter closed"; the FC Forest Green shorts show "Last few".
 - [ ] Notice board: write an increment → Pin → appears on the board; Share (phone) / Save (desktop) produces the 1080×1920 card.
 - [ ] Stamp card fills; with a reward code set, the code is applied at checkout.
@@ -47,20 +47,20 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 - [ ] Deep links: `/#counter`, `/counter` (via 404 redirect).
 - [ ] Reduced motion (OS setting): cuts instead of glides.
 - [ ] VoiceOver / TalkBack: skip link, hotspots announced with name + price, dialogs labelled.
-- [ ] Airplane-mode mid-visit: tray and stamps persist on reload.
+- [ ] Airplane-mode mid-visit: bag and stamps persist on reload.
 - [ ] Set `closesOn` to yesterday → closed card shows; set it back.
 
 ## 3. Launch (week 0)
 
 - Soft-launch to the newsletter list 24 h before socials ("You're first in the Lounge").
-- Social: 15–20 s screen-recorded walkthrough (Window → Counter → Lounge) for Reels/TikTok; carousel of the station renders in `docs/shots/`.
+- Social: 15–20 s screen-recorded walkthrough (the Steps → the Collection → the Lounge) for Reels/TikTok; carousel of the station renders in `docs/shots/`.
 - Seed the notice board: post three team "next increments" cards from the composer as stories to show the mechanic.
 - Store: homepage banner + announcement bar "Step into the Lounge →".
 
 ## 4. During the run
 
-- Watch weekly: visitors → entered → product opens → add-to-tray → checkout clicks → Lounge orders (cart attribute in Shopify).
-- Re-merchandise without code: edit `data/merch.json` (e.g. move a colourway that's selling out out of the window).
+- Watch weekly: visitors → entered → product opens → add-to-bag → checkout clicks → Lounge orders (cart attribute in Shopify).
+- Re-merchandise without code: edit `data/merch.json` (e.g. swap which product stands on the Steps).
 - If a colourway sells out, the room updates within the hour (catalog refresh) — sold-out sizes disable, sold-out products drop off the Movement rack.
 
 ## 5. Closing
@@ -76,11 +76,11 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 | Enter rate (enter / open) | `lounge_enter` ÷ `lounge_open` | 70%+ |
 | Stations per visit | `lounge_station_view` per session | 4+ |
 | Product opens per visit | `lounge_product_open` | 1.5+ |
-| Add-to-tray rate | sessions with `lounge_add_to_tray` | benchmark against the store's add-to-cart rate |
-| Checkout click-through | `lounge_checkout_click` ÷ sessions with tray | 40%+ |
+| Add-to-bag rate | sessions with `lounge_add_to_tray` | benchmark against the store's add-to-cart rate |
+| Checkout click-through | `lounge_checkout_click` ÷ sessions with a bag | 40%+ |
 | Lounge orders & revenue | Shopify orders with *Found in: The Increments Lounge* / `utm_source=increments-lounge` | — |
 | Increments created / shared | `lounge_increment_created`, `lounge_increment_shared` | the UGC signal |
-| Menu fallback use | `lounge_menu_open` early in session | if very high, people want the list — surface it more |
+| Collection-list use | `lounge_menu_open` early in session | if very high, people want the list — surface it more |
 | Quality drops | `lounge_quality_change` | should be rare on recent phones |
 
 \* Starting assumptions for a campaign microsite, not guarantees — set real targets after the first week.

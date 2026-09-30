@@ -1,10 +1,11 @@
 {
- "generatedAt": "2026-09-28T23:21:59Z",
+ "generatedAt": "2026-09-30T01:35:49Z",
  "store": "increments.ca",
  "currency": "CAD",
  "featured": {
   "name": "Still Becoming",
-  "line": "Three colours. One chapter. Yours."
+  "line": "Three colours. One chapter. Yours.",
+  "campaignImage": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623359.webp"
  },
  "products": [
   {

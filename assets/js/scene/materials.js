@@ -71,55 +71,69 @@ export function createMaterials(renderer, quality) {
   const plasterMat = std({ map: plasterMap, color: 0xfff3e2, bumpMap: plasterBump, bumpScale: 0.6, roughness: 0.95, envMapIntensity: 0.4 }, [3.2, 3.2]);
   const ceiling = std({ map: plasterMap, color: 0xf7efe3, emissive: 0x6b5641, emissiveIntensity: 0.45, roughness: 1, envMapIntensity: 0.5 }, [4, 4]);
 
-  // --- Wood, leather, fabric ----------------------------------------------
-  const walnutC = S.woodGrain({ width: half, height: half });
-  const walnut = std({ map: tex(walnutC.map, { rotate: Math.PI / 2 }), bumpMap: tex(walnutC.bump, { srgb: false, rotate: Math.PI / 2 }), bumpScale: 0.6, roughness: 0.55 }, [1.2, 1.2]);
+  // Rough-cut travertine for the lettered wall: more voids, deeper relief.
+  const roughC = S.travertineTiles({ width: half, height: half, cols: 1, rows: 3, bond: 0, grout: Math.max(1.5, half / 700), seed: 57, palette: S.TRAVERTINE.warm, pits: 2.4 });
+  const claddingRough = std({ map: tex(roughC.map), bumpMap: tex(roughC.bump, { srgb: false }), bumpScale: 3.2, roughness: 0.75 }, [1.8, 1.8]);
 
-  const oakC = S.woodGrain({ width: half / 2, height: half / 2, seed: 8, base: '#b08a60', dark: '120,84,50', light: '214,180,138' });
+  // Black split-face stone for the one dark wall. One repeat covers the full 4 m height.
+  const blackC = S.blackRelief({ width: hi, height: hi });
+  const blackStone = std({ map: tex(blackC.map), bumpMap: tex(blackC.bump, { srgb: false }), bumpScale: 9, roughness: 0.78, envMapIntensity: 0.6 }, [3, 4]);
+
+  // --- Wood, leather, fabric ----------------------------------------------
+  // Limewashed oak replaces the walnut: pale, matte, grain just visible.
+  const woodC = S.woodGrain({ width: half, height: half, seed: 12, base: '#cdb99c', dark: '150,126,96', light: '240,230,212', density: 0.8 });
+  const wood = std({ map: tex(woodC.map, { rotate: Math.PI / 2 }), bumpMap: tex(woodC.bump, { srgb: false, rotate: Math.PI / 2 }), bumpScale: 0.5, roughness: 0.7 }, [1.2, 1.2]);
+
+  const oakC = S.woodGrain({ width: half / 2, height: half / 2, seed: 8, base: '#b89a74', dark: '120,96,66', light: '222,202,170' });
   const oak = std({ map: tex(oakC.map, { rotate: Math.PI / 2 }), roughness: 0.6 }, [0.8, 0.8]);
 
-  const leatherC = S.leather({ width: half, height: half });
-  const leather = std({ map: tex(leatherC.map), bumpMap: tex(leatherC.bump, { srgb: false }), bumpScale: 0.8, roughness: 0.42, envMapIntensity: 0.9 }, [0.9, 0.9]);
+  // Sand leather for the banquette; the single scarlet from the Still Becoming campaign.
+  const leatherC = S.leather({ width: half, height: half, base: '#b69876' });
+  const leather = std({ map: tex(leatherC.map), bumpMap: tex(leatherC.bump, { srgb: false }), bumpScale: 0.7, roughness: 0.48, envMapIntensity: 0.8 }, [0.9, 0.9]);
+  const scarletC = S.leather({ width: half / 2, height: half / 2, seed: 14, base: '#7c1c23' });
+  const leatherScarlet = std({ map: tex(scarletC.map), bumpMap: tex(scarletC.bump, { srgb: false }), bumpScale: 0.7, roughness: 0.4, envMapIntensity: 0.9 }, [0.6, 0.6]);
 
   const boucleC = S.boucle({ width: half / 2, height: half / 2 });
   const boucle = std({ map: tex(boucleC.map), bumpMap: tex(boucleC.bump, { srgb: false }), bumpScale: 2, roughness: 1 }, [0.35, 0.35]);
 
-  const rugC = S.rug({ width: half, height: Math.round(half * 0.8) });
+  const rugC = S.rug({ width: half, height: Math.round(half * 0.8), base: '#e9e0d1', border: '#b9a282' });
   const rugMap = tex(rugC.map); rugMap.wrapS = rugMap.wrapT = THREE.ClampToEdgeWrapping;
   const rug = new THREE.MeshStandardMaterial({ map: rugMap, bumpMap: tex(rugC.bump, { srgb: false }), bumpScale: 1, roughness: 1 });
 
-  const corkC = S.speckle({ width: half / 2, height: half / 2 });
-  const cork = std({ map: tex(corkC.map), bumpMap: tex(corkC.bump, { srgb: false }), bumpScale: 1, roughness: 1 }, [0.6, 0.6]);
+  const linenC = S.linen({ width: half / 2, height: half / 2 });
+  const linen = std({ map: tex(linenC.map), bumpMap: tex(linenC.bump, { srgb: false }), bumpScale: 0.8, roughness: 1 }, [0.5, 0.5]);
+  const curtain = new THREE.MeshStandardMaterial({ map: tex(linenC.map), color: 0xf4ede2, roughness: 1, side: THREE.DoubleSide, emissive: 0xfff0dc, emissiveIntensity: 0.08 });
+  curtain.map.repeat.set(2, 4);
 
   const steelC = S.brushedMetal({ width: 256, height: 256 });
   const steel = std({ map: tex(steelC.map), color: 0xd8d6d0, metalness: 1, roughness: 0.3, envMapIntensity: 1.1 }, [0.5, 0.5]);
 
   const paperMap = tex(S.paper({ width: 256, height: 256 }));
+  const glowMap = new THREE.CanvasTexture(S.glowGradient());
+  glowMap.colorSpace = THREE.SRGBColorSpace;
 
   return {
     tex,
-    floor, cladding, slab, slabWarm, noce,
+    floor, cladding, claddingRough, blackStone, slab, slabWarm, noce,
     plaster: plasterMat, ceiling,
-    walnut, oak, leather, boucle, rug, cork, steel,
-    paperMap,
+    wood, oak, leather, leatherScarlet, boucle, rug, linen, curtain, steel,
+    paperMap, glowMap,
+    // Hidden-light pieces: the LED line itself, and the soft spill it throws on walls.
+    led: new THREE.MeshBasicMaterial({ color: 0xfff1d8 }),
+    wash: (color = 0xffd7a6, opacity = 0.3) => new THREE.MeshBasicMaterial({
+      map: glowMap, color, transparent: true, opacity, blending: THREE.AdditiveBlending,
+      depthWrite: false, side: THREE.DoubleSide, fog: false,
+    }),
     paper: std({ map: paperMap, roughness: 0.92 }, [0.4, 0.4]),
     brass: new THREE.MeshStandardMaterial({ color: 0xb48f55, metalness: 1, roughness: 0.28, envMapIntensity: 1.2 }),
     blackSteel: new THREE.MeshStandardMaterial({ color: 0x1f1c19, metalness: 0.7, roughness: 0.45 }),
-    enamel: new THREE.MeshStandardMaterial({ color: 0x7e1f25, metalness: 0.1, roughness: 0.28, envMapIntensity: 1 }),
     ceramic: new THREE.MeshStandardMaterial({ color: 0xf3eee5, roughness: 0.22, envMapIntensity: 0.9 }),
-    ceramicDark: new THREE.MeshStandardMaterial({ color: 0x3a2c24, roughness: 0.3 }),
-    coffee: new THREE.MeshStandardMaterial({ color: 0x4a2a18, roughness: 0.15 }),
-    crema: new THREE.MeshStandardMaterial({ color: 0xb98a5c, roughness: 0.35 }),
-    matcha: new THREE.MeshStandardMaterial({ color: 0x8aa35e, roughness: 0.4 }),
-    beans: new THREE.MeshStandardMaterial({ color: 0x3b2417, roughness: 0.6 }),
+    ceramicDark: new THREE.MeshStandardMaterial({ color: 0x8a7560, roughness: 0.5 }),
     glass: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.04, metalness: 0, transparent: true, opacity: 0.16, depthWrite: false, envMapIntensity: 1.4 }),
-    water: new THREE.MeshStandardMaterial({ color: 0xd9e6e2, roughness: 0.05, transparent: true, opacity: 0.35, depthWrite: false }),
     leaf: new THREE.MeshStandardMaterial({ color: 0x7c8b68, roughness: 0.75, side: THREE.DoubleSide }),
     leafLight: new THREE.MeshStandardMaterial({ color: 0xa3ad8f, roughness: 0.75, side: THREE.DoubleSide }),
     trunk: new THREE.MeshStandardMaterial({ color: 0x6b5c4b, roughness: 0.9 }),
     soil: new THREE.MeshStandardMaterial({ color: 0x3a2b20, roughness: 1 }),
     linenShade: new THREE.MeshStandardMaterial({ color: 0xf1e6d2, roughness: 1, emissive: 0xffd9a0, emissiveIntensity: 0.55, side: THREE.DoubleSide }),
-    globe: new THREE.MeshStandardMaterial({ color: 0xfff4e2, emissive: 0xffdcae, emissiveIntensity: 1.6, roughness: 0.3 }),
-    shadowBlob: null, // set by room.js
   };
 }

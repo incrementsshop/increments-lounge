@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { prepareProductImage, loadImage, shopifyImage } from './cutout.js';
 import { box, cyl, place, canvasTexture, pickable } from './helpers.js';
+import { drawTravertine, seeded, TRAVERTINE } from './stone.js';
 import * as L from './layout.js';
 import { formatShort } from '../catalog.js';
 
@@ -35,7 +36,7 @@ export class Displays {
   /** Synchronous parts first (the room looks furnished immediately), then images stream in. */
   async build({ onProgress = () => {}, stationCams = {} } = {}) {
     this.stationCams = stationCams;
-    this.menuBoard();
+    this.plaque();
     this.archive();
     this.noticeBoard();
     this.stationSigns();
@@ -180,7 +181,7 @@ export class Displays {
         pickable(m, { kind: 'product', handle: bottom.handle, colour, station: 'window' });
         g.add(m);
         waist = sh - 0.13;
-        if (i === 2) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, sh * 0.35, 0.05)), bottom.title, `$${formatShort(bottom.price)}`, { type: 'product', handle: bottom.handle, colour });
+        if (i === 2) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, sh * 0.35, 0.05)), bottom.title, `$${formatShort(bottom.price)}`, { type: 'product', handle: bottom.handle, colour }, { flip: true });
       }
       if (hoodie) {
         const hw = 0.68;
@@ -190,13 +191,13 @@ export class Displays {
         m.castShadow = true;
         pickable(m, { kind: 'product', handle: top.handle, colour, station: 'window' });
         g.add(m);
-        if (i === 1) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, waist + hh * 0.55, 0.08)), top.title, `$${formatShort(top.price)}`, { type: 'product', handle: top.handle, colour });
+        if (i === 1) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, waist + hh * 0.55, 0.08)), top.title, `$${formatShort(top.price)}`, { type: 'product', handle: top.handle, colour }, { flip: true });
       } else {
         // No clean shot for this colourway: lean its campaign photo against the plinth instead.
         const src = top.imageFor(colour);
         if (src) {
           const img = await loadImage(shopifyImage(src, 600));
-          const frame = this.framedPrint(img, 0.42, { mat: this.M.walnut });
+          const frame = this.framedPrint(img, 0.42, { mat: this.M.wood });
           frame.position.set(0.1, 0, 0.35);
           frame.rotation.x = -0.12;
           pickable(frame, { kind: 'product', handle: top.handle, colour, station: 'window' });
@@ -212,7 +213,7 @@ export class Displays {
     }));
   }
 
-  // --- The Lounge: Worn pieces on walnut hangers --------------------------
+  // --- The Lounge: Worn pieces on hangers in the lit niche ------------------
 
   async loungeRail() {
     const products = this.catalog.zone('lounge');
@@ -226,7 +227,7 @@ export class Displays {
     }
     const { x, y, z0, z1 } = this.A.loungeRail;
     const step = items.length > 1 ? (z1 - z0) / (items.length - 1) : 0;
-    const hanger = this.M.walnut;
+    const hanger = this.M.wood;
 
     await Promise.all(items.map(async (it, i) => {
       const cut = await this.cutoutFor(it.p, it.c);
@@ -389,85 +390,88 @@ export class Displays {
     return g;
   }
 
-  // --- The menu board ------------------------------------------------------------
+  // --- The collection plaque ----------------------------------------------------
+  // Every piece and price, carved into a honed travertine slab on the black stone wall.
 
-  menuBoard() {
-    const board = this.A.menuBoard;
-    const W = 2048, H = Math.round(W * (L.MENU_BOARD.h / L.MENU_BOARD.w));
+  plaque() {
+    const face = this.A.plaque;
+    const P = L.PLAQUE;
+    const W = 2048, H = Math.round(W * (P.h / P.w));
     const rows = [];
     const sections = this.catalog.menu();
     const tex = canvasTexture(W, H, (ctx) => {
-      // Lacquered espresso board.
-      ctx.fillStyle = '#2b1f18'; ctx.fillRect(0, 0, W, H);
-      const v = ctx.createRadialGradient(W / 2, H / 2, W * 0.2, W / 2, H / 2, W * 0.7);
-      v.addColorStop(0, 'rgba(70,50,38,0.35)'); v.addColorStop(1, 'rgba(0,0,0,0.35)');
-      ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+      drawTravertine(ctx, null, 0, 0, W, H, seeded(33), { palette: TRAVERTINE.classic, s: 1.1, pits: 0.8 });
+      ctx.fillStyle = 'rgba(250,245,236,0.55)'; ctx.fillRect(0, 0, W, H);
 
-      const cream = '#efe6d8', muted = '#b9a68d', gold = '#c9a878';
-      const pad = 90;
-      ctx.fillStyle = gold;
+      // Carved text: a dark cut with a lit lower lip.
+      const carve = (text, x, y) => {
+        const fill = ctx.fillStyle;
+        ctx.fillStyle = 'rgba(255,251,244,0.75)';
+        ctx.fillText(text, x + 1.5, y + 2);
+        ctx.fillStyle = fill;
+        ctx.fillText(text, x, y);
+      };
+      const ink = '#2a1d15', muted = '#5f4c3d', accent = '#8c2027';
+      const pad = 96;
+      ctx.fillStyle = muted;
       ctx.font = '500 26px "Azeret Mono", monospace';
-      ctx.letterSpacing = '8px';
+      ctx.letterSpacing = '9px';
       ctx.textAlign = 'left';
-      ctx.fillText('THE MENU', pad, 84);
+      carve('THE COLLECTION', pad, 92);
       ctx.textAlign = 'right';
-      ctx.fillText('INCREMENTS LOUNGE · CAD', W - pad, 84);
+      carve('CHAPTER MMXXVI · CAD', W - pad, 92);
       ctx.letterSpacing = '0px';
       ctx.textAlign = 'left';
-      ctx.fillStyle = cream;
-      ctx.font = 'italic 400 92px "Bodoni Moda", serif';
-      ctx.fillText(`Now serving — ${this.catalog.featured.name || 'the new chapter'}`, pad, 184);
-      ctx.fillStyle = 'rgba(239,230,216,0.3)';
-      ctx.fillRect(pad, 218, W - pad * 2, 2);
+      ctx.fillStyle = ink;
+      ctx.font = 'italic 400 88px "Bodoni Moda", serif';
+      carve(`Now showing — ${this.catalog.featured.name || 'the new chapter'}`, pad, 190);
+      ctx.fillStyle = 'rgba(61,46,34,0.35)';
+      ctx.fillRect(pad, 222, W - pad * 2, 2);
 
       const colW = (W - pad * 3) / 2;
-      const cols = [
-        sections.filter(s => s.zone !== 'movement'),
-        sections.filter(s => s.zone === 'movement'),
-      ];
+      const cols = [sections.filter(sec => sec.zone !== 'movement'), sections.filter(sec => sec.zone === 'movement')];
       cols.forEach((secs, ci) => {
         const x0 = pad + ci * (colW + pad);
-        let y = 286;
-        for (const s of secs) {
-          ctx.fillStyle = gold;
+        let y = 290;
+        for (const sec of secs) {
+          ctx.fillStyle = sec.zone === 'window' ? accent : muted;
           ctx.font = '500 25px "Azeret Mono", monospace';
           ctx.letterSpacing = '7px';
-          ctx.fillText(s.name.toUpperCase(), x0, y);
+          carve(sec.name.toUpperCase(), x0, y);
           ctx.letterSpacing = '0px';
           y += 22;
-          const compact = s.products.length > 4;
-          for (const p of s.products) {
+          const compact = sec.products.length > 4;
+          for (const prod of sec.products) {
             const rowH = compact ? 62 : 82;
             const baseY = y + 48;
-            ctx.fillStyle = p.available ? cream : 'rgba(239,230,216,0.45)';
-            ctx.font = `400 ${compact ? 40 : 42}px "Bodoni Moda", serif`;
-            const name = s.zone === 'window' || s.zone === 'lounge' ? p.title.replace(/^(Still Becoming|Worn)\s*/, '') : p.title;
-            ctx.fillText(name, x0, baseY);
+            ctx.fillStyle = prod.available ? ink : 'rgba(61,46,34,0.45)';
+            ctx.font = `500 ${compact ? 40 : 42}px "Bodoni Moda", serif`;
+            const name = sec.zone === 'window' || sec.zone === 'lounge' ? prod.title.replace(/^(Still Becoming|Worn)\s*/, '') : prod.title;
+            carve(name, x0, baseY);
             const nameW = ctx.measureText(name).width;
             ctx.font = `${compact ? 32 : 36}px "Azeret Mono", monospace`;
             ctx.textAlign = 'right';
-            const price = p.available ? formatShort(p.price) : 'sold out';
-            ctx.fillText(price, x0 + colW, baseY);
+            const price = prod.available ? formatShort(prod.price) : 'sold out';
+            carve(price, x0 + colW, baseY);
             const priceW = ctx.measureText(price).width;
             ctx.textAlign = 'left';
-            // Dotted leader.
-            ctx.fillStyle = 'rgba(239,230,216,0.35)';
+            ctx.fillStyle = 'rgba(61,46,34,0.35)';
             let dotX = x0 + nameW + 20;
-            let dotsEnd = x0 + colW - priceW - 20;
-            if (compact && p.colours.length) dotX += p.colours.length * 24 + 10;
+            const dotsEnd = x0 + colW - priceW - 20;
+            if (compact && prod.colours.length) dotX += prod.colours.length * 24 + 10;
             for (; dotX < dotsEnd; dotX += 14) ctx.fillRect(dotX, baseY - 6, 3, 3);
             if (compact) {
-              p.colours.slice(0, 4).forEach((c, k) => {
+              prod.colours.slice(0, 4).forEach((c, k) => {
                 ctx.fillStyle = c.hex || '#999';
                 ctx.beginPath(); ctx.arc(x0 + nameW + 26 + k * 24, baseY - 13, 8, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = 'rgba(239,230,216,0.4)'; ctx.lineWidth = 1.5; ctx.stroke();
+                ctx.strokeStyle = 'rgba(61,46,34,0.35)'; ctx.lineWidth = 1.5; ctx.stroke();
               });
-            } else if (p.colours.length) {
+            } else if (prod.colours.length) {
               ctx.fillStyle = muted;
               ctx.font = '23px "Hanken Grotesk", sans-serif';
-              ctx.fillText(p.colours.map(c => c.name).join(' · '), x0, baseY + 29);
+              carve(prod.colours.map(c => c.name).join(' · '), x0, baseY + 29);
             }
-            rows.push({ handle: p.handle, x: x0 - 10, y: y, w: colW + 20, h: rowH });
+            rows.push({ handle: prod.handle, x: x0 - 10, y, w: colW + 20, h: rowH });
             y += rowH;
           }
           y += 26;
@@ -477,17 +481,17 @@ export class Displays {
       ctx.fillStyle = muted;
       ctx.font = 'italic 32px "Bodoni Moda", serif';
       ctx.textAlign = 'left';
-      ctx.fillText('Past chapters are on the shelf — ask about the archive.', pad, H - 42);
+      carve('Past chapters are on the shelf — see the archive.', pad, H - 44);
       ctx.textAlign = 'right';
       ctx.font = '24px "Azeret Mono", monospace';
       ctx.letterSpacing = '4px';
-      ctx.fillText('TAP ANYTHING TO ORDER', W - pad, H - 46);
+      carve('TAP A LINE TO SEE IT', W - pad, H - 48);
       ctx.letterSpacing = '0px';
     });
-    board.material = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.62, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.3 });
-    board.userData.pick = { kind: 'menuBoard', station: 'counter' };
+    face.material = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.16 });
+    face.userData.pick = { kind: 'menuBoard', station: 'counter' };
     this.menuRows = rows.map(r => ({ ...r, W, H }));
-    this.hotspot('counter', new THREE.Vector3(L.MENU_BOARD.x - L.MENU_BOARD.w / 2 + 0.12, L.MENU_BOARD.y - L.MENU_BOARD.h / 2 + 0.1, L.MENU_BOARD.z + 0.05), 'The menu', 'Everything we’re serving', { type: 'menu' });
+    this.hotspot('counter', new THREE.Vector3(P.x - P.w / 2 + 0.12, P.y - P.h / 2 + 0.1, face.position.z + 0.04), 'The collection', 'Every piece, every price', { type: 'menu' });
   }
 
   /** Which product row on the board a UV coordinate falls on. */
@@ -814,7 +818,7 @@ export class Displays {
 
   // --- Supporting prints ----------------------------------------------------------------
 
-  framedPrint(image, width, { mat = this.M.walnut, mount = true } = {}) {
+  framedPrint(image, width, { mat = this.M.wood, mount = true } = {}) {
     const { material, aspect } = this.photoMaterial(image, { width: 640 });
     const w = width, h = width / aspect;
     const g = new THREE.Group();
@@ -835,17 +839,17 @@ export class Displays {
   }
 
   async campaignPrint() {
-    const a = this.A.campaignPrint;
-    const hero = this.catalog.lifestyle[0];
-    if (!hero) return;
-    const img = await loadImage(shopifyImage(hero.src, 900)).catch(() => null);
+    // The Still Becoming campaign (the red leather seats) — framed, leaning on the window wall.
+    const src = this.catalog.featured.campaignImage || this.catalog.lifestyle[0]?.src;
+    if (!src) return;
+    const img = await loadImage(shopifyImage(src, 900)).catch(() => null);
     if (!img) return;
-    const print = this.framedPrint(img, 0.78);
+    const print = this.framedPrint(img, 0.8);
     print.rotation.x = -0.1;
     const g = new THREE.Group();
     g.add(print);
-    g.position.copy(a.position);
-    g.rotation.y = a.ry;
+    g.position.set(L.ROOM.x0 + 0.12, 0, L.CAMPAIGN_PRINT.z);
+    g.rotation.y = Math.PI / 2;
     pickable(g, { kind: 'station', id: 'window' });
     this.root.add(g);
     this.appear(g);
@@ -853,38 +857,24 @@ export class Displays {
 
   async shelfFrames() {
     const extra = this.catalog.lifestyle[4];
-    if (extra && this.archiveShelf) {
-      const img = await loadImage(shopifyImage(extra.src, 400)).catch(() => null);
-      if (img) {
-        const f = this.framedPrint(img, 0.2, { mat: this.M.walnut });
-        f.position.set((this.archiveShelf.x0 + this.archiveShelf.x1) / 2 + 0.25, this.archiveShelf.y, this.archiveShelf.z - 0.04);
-        f.rotation.x = -0.08;
-        this.root.add(f);
-        this.appear(f);
-      }
-    }
-    const shelves = this.A.backbarShelves;
-    const imgs = this.catalog.lifestyle.slice(2, 4);
-    await Promise.all(imgs.map(async (li, i) => {
-      const img = await loadImage(shopifyImage(li.src, 400)).catch(() => null);
-      if (!img) return;
-      const s = shelves[i === 0 ? 1 : 3];
-      const f = this.framedPrint(img, 0.16, { mat: this.M.blackSteel });
-      f.position.set(s.x + (i === 0 ? -0.05 : 0.35), s.y, s.z - 0.02);
-      f.rotation.x = -0.08;
-      this.root.add(f);
-      this.appear(f);
-    }));
+    if (!extra || !this.archiveShelf) return;
+    const img = await loadImage(shopifyImage(extra.src, 400)).catch(() => null);
+    if (!img) return;
+    const f = this.framedPrint(img, 0.2, { mat: this.M.wood });
+    f.position.set((this.archiveShelf.x0 + this.archiveShelf.x1) / 2 + 0.25, this.archiveShelf.y, this.archiveShelf.z - 0.04);
+    f.rotation.x = -0.08;
+    this.root.add(f);
+    this.appear(f);
   }
 
   // Wayfinding hotspots from the entrance.
   stationSigns() {
     const signs = [
-      ['window', [L.WINDOW_DISPLAY.x + 0.3, 1.9, L.WINDOW_DISPLAY.z], 'The Window', 'Still Becoming'],
-      ['counter', [L.COUNTER.x - 0.8, 1.35, L.COUNTER.z + 0.4], 'The Counter', 'The menu & the till'],
-      ['lounge', [L.BANQUETTE.x - 0.4, 1.9, L.BANQUETTE.z + 1.2], 'The Lounge', 'Worn'],
-      ['movement', [L.MOVEMENT_RACK.x, 2.1, L.MOVEMENT_RACK.z], 'Movement Bar', 'For the next step'],
-      ['archive', [L.ARCHIVE_SHELF.x - 0.4, 2.0, L.ARCHIVE_SHELF.z + 0.2], 'The Archive', 'Past chapters'],
+      ['window', [L.STEPS.x + 0.9, 2.5, L.STEPS.z], 'The Steps', 'Still Becoming'],
+      ['counter', [L.COUNTER.x - 0.9, 1.45, L.COUNTER.z + 0.45], 'The Collection', 'Every piece & the till'],
+      ['lounge', [L.BANQUETTE.x - 0.3, 2.3, L.BANQUETTE.z + 1.2], 'The Lounge', 'Worn'],
+      ['movement', [L.MOVEMENT_RACK.x, 2.15, L.MOVEMENT_RACK.z], 'Movement', 'By the fitting rooms'],
+      ['archive', [L.ARCHIVE_SHELF.x - 0.4, 2.1, L.ROOM.z0 + 0.5], 'The Archive', 'Past chapters'],
     ];
     for (const [id, pos, label, sub] of signs) {
       this.hotspot('entrance', new THREE.Vector3(...pos), label, sub, { type: 'station', id }, { flip: pos[0] > 1 });

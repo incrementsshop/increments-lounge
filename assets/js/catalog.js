@@ -8,7 +8,7 @@ export const formatMoney = n => money.format(n);
 export const formatShort = n => (Number.isInteger(n) ? String(n) : n.toFixed(2));
 
 export const ZONES = {
-  window:   { name: 'Still Becoming', blurb: 'Now serving. Three colours, one chapter.' },
+  window:   { name: 'Still Becoming', blurb: 'Now showing. Three colours, one chapter.' },
   lounge:   { name: 'Worn',           blurb: 'Worn in, not worn out. Garment-washed and faded.' },
   movement: { name: 'Movement',       blurb: 'For the next step.' },
   till:     { name: 'At the till',    blurb: 'Small things, easy adds.' },

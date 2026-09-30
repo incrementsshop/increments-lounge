@@ -77,24 +77,24 @@ async function boot() {
   progress(0.08, 'Warming the room…');
   const [catalog] = await Promise.all([Catalog.load(), loadFonts()]);
   app.catalog = catalog;
-  bindChrome(); // the menu and tray work even while the room is still building
+  bindChrome(); // the collection and bag work even while the room is still building
 
   if (state !== 'open') return showClosed(state);
   if (!webglAvailable()) return showMenuOnly();
 
-  progress(0.3, 'Setting out the cups…');
+  progress(0.3, 'Dimming the lights…');
   await frame();
   const quality = detectQuality();
   const world = app.world = new World($('#scene'), quality);
   const M = createMaterials(world.renderer, quality);
-  buildRoom(world.scene, M, quality);
+  const room = buildRoom(world.scene, M, quality);
   progress(0.45, 'Laying the travertine…');
   await frame();
   const { anchors } = buildFurniture(world.scene, M, quality);
-  const fx = createFX(world.scene, anchors, quality);
+  const fx = createFX(world.scene, { ...anchors, ...room.anchors }, quality);
   const rig = app.rig = new CameraRig(world);
 
-  progress(0.6, 'Writing up the menu…');
+  progress(0.6, 'Carving the collection…');
   await frame();
   const displays = app.displays = new Displays(world.scene, M, anchors, catalog);
   const stationCams = Object.fromEntries(STATIONS.map(s => [s.id, s.pos]));
@@ -173,10 +173,10 @@ function showClosed(state) {
 
 function showMenuOnly() {
   track('webgl_unavailable');
-  progress(1, 'This browser can’t open the 3D lounge — the menu has everything.');
+  progress(1, 'This browser can’t open the 3D lounge — the collection has everything.');
   intro.classList.add('is-ready');
   enterBtn.disabled = false;
-  enterBtn.textContent = 'Open the menu';
+  enterBtn.textContent = 'See the collection';
   enterBtn.onclick = () => openMenu(app);
   $('.intro__alt').hidden = true;
 }
@@ -218,9 +218,9 @@ function productPills(zone) {
 
 function captionActions(s) {
   switch (s.id) {
-    case 'entrance': return [{ label: 'Open the menu', primary: true, onClick: () => openMenu(app) }, { label: 'Stamp card', onClick: () => openStamps(app) }];
+    case 'entrance': return [{ label: 'Shop the collection', primary: true, onClick: () => openMenu(app) }, { label: 'Stamp card', onClick: () => openStamps(app) }];
     case 'window': return productPills('window');
-    case 'counter': return [{ label: 'Open the menu', primary: true, onClick: () => openMenu(app) }, { label: 'At the till', onClick: () => openMenu(app, { zone: 'till' }) }];
+    case 'counter': return [{ label: 'Shop the collection', primary: true, onClick: () => openMenu(app) }, { label: 'At the till', onClick: () => openMenu(app, { zone: 'till' }) }];
     case 'lounge': return productPills('lounge');
     case 'movement': return [{ label: 'See all Movement', primary: true, onClick: () => openMenu(app, { zone: 'movement' }) }];
     case 'archive': return [{ label: 'Browse the archive', primary: true, onClick: () => openArchive(app) }];
@@ -397,9 +397,9 @@ function bindInput() {
 boot().catch(err => {
   console.error(err);
   track('boot_error', { message: String(err?.message || err) });
-  progress(1, 'Something went wrong opening the Lounge — the menu still works.');
+  progress(1, 'Something went wrong opening the Lounge — the collection still works.');
   enterBtn.disabled = false;
-  enterBtn.textContent = 'Open the menu';
+  enterBtn.textContent = 'See the collection';
   enterBtn.onclick = () => (app.catalog ? openMenu(app) : (location.href = `https://${CONFIG.store.domain}`));
   bindChrome();
 });

@@ -393,6 +393,101 @@ export function paper({ width = 512, height = 512, seed = 29, base = '#f6f1e6' }
   return map;
 }
 
+/**
+ * Black stacked-stone relief: irregular split-face blocks in courses, chisel-marked.
+ * Tiles horizontally; one repeat covers the wall's full height.
+ */
+export function blackRelief({ width = 1024, height = 1024, seed = 51 } = {}) {
+  const r = seeded(seed);
+  const map = makeCanvas(width, height), bump = makeCanvas(width, height);
+  const ctx = map.getContext('2d'), hctx = bump.getContext('2d');
+  const s = width / 1024;
+  ctx.fillStyle = '#121110'; ctx.fillRect(0, 0, width, height);
+  hctx.fillStyle = '#202020'; hctx.fillRect(0, 0, width, height);
+
+  const block = (x, y, w, h) => {
+    const tone = 24 + r() * 18;
+    const hv = 120 + r() * 110;
+    const draw = dx => {
+      ctx.fillStyle = `rgb(${tone + 3},${tone + 1},${tone - 1})`;
+      ctx.fillRect(x + dx + 1.5 * s, y + 1.5 * s, w - 3 * s, h - 3 * s);
+      // Split face: a lighter ridge along one edge, a darker hollow along another.
+      const g = hctx.createLinearGradient(0, y, 0, y + h);
+      g.addColorStop(0, `rgb(${hv + 25},${hv + 25},${hv + 25})`);
+      g.addColorStop(0.5 + (r() - 0.5) * 0.5, `rgb(${hv},${hv},${hv})`);
+      g.addColorStop(1, `rgb(${hv - 45},${hv - 45},${hv - 45})`);
+      hctx.fillStyle = g;
+      hctx.fillRect(x + dx + 2 * s, y + 2 * s, w - 4 * s, h - 4 * s);
+    };
+    draw(0);
+    if (x < 0) draw(width);
+    if (x + w > width) draw(-width);
+    // Chisel marks.
+    const marks = (w * h) / (260 * s * s);
+    for (let k = 0; k < marks; k++) {
+      let mx = x + r() * w, my = y + r() * h;
+      if (mx < 0) mx += width; if (mx > width) mx -= width;
+      const len = (3 + r() * 9) * s, a = -0.6 + (r() - 0.5) * 0.5;
+      const light = r() < 0.5;
+      ctx.strokeStyle = light ? 'rgba(90,86,80,0.35)' : 'rgba(0,0,0,0.45)';
+      ctx.lineWidth = (0.6 + r() * 1.2) * s;
+      ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(mx + Math.cos(a) * len, my + Math.sin(a) * len); ctx.stroke();
+      hctx.strokeStyle = light ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.45)';
+      hctx.lineWidth = ctx.lineWidth;
+      hctx.beginPath(); hctx.moveTo(mx, my); hctx.lineTo(mx + Math.cos(a) * len, my + Math.sin(a) * len); hctx.stroke();
+    }
+  };
+
+  let y = 0;
+  while (y < height) {
+    const rowH = Math.min(height - y, (16 + r() * 46) * s);
+    let x = -r() * 140 * s;
+    while (x < width) {
+      const w = (70 + r() * 230) * s;
+      block(x, y, w, rowH);
+      x += w;
+    }
+    y += rowH;
+  }
+  mottle(ctx, 0, 0, width, height, r, { cols: 6, rows: 6, color: '#3a342d', alpha: 0.18 });
+  return { map, bump };
+}
+
+/** Natural linen: fine slub weave in oat. */
+export function linen({ width = 512, height = 512, seed = 61, base = '#ebdcc4' } = {}) {
+  const r = seeded(seed);
+  const map = makeCanvas(width, height), bump = makeCanvas(width, height);
+  const ctx = map.getContext('2d'), hctx = bump.getContext('2d');
+  ctx.fillStyle = base; ctx.fillRect(0, 0, width, height);
+  hctx.fillStyle = '#808080'; hctx.fillRect(0, 0, width, height);
+  mottle(ctx, 0, 0, width, height, r, { cols: 8, rows: 8, color: '#cdbfa8', alpha: 0.3 });
+  for (let y = 0; y < height; y += 2) {
+    ctx.fillStyle = `rgba(${r() < 0.5 ? '255,252,245' : '150,132,106'},${0.05 + r() * 0.1})`;
+    ctx.fillRect(0, y, width, 1);
+    hctx.fillStyle = y % 4 ? '#8c8c8c' : '#747474'; hctx.fillRect(0, y, width, 1);
+  }
+  for (let x = 0; x < width; x += 2) {
+    ctx.fillStyle = `rgba(${r() < 0.5 ? '255,252,245' : '150,132,106'},${0.04 + r() * 0.08})`;
+    ctx.fillRect(x, 0, 1, height);
+  }
+  // Slubs.
+  for (let i = 0; i < width * height / 900; i++) {
+    ctx.fillStyle = `rgba(120,104,82,${0.1 + r() * 0.15})`;
+    ctx.fillRect(r() * width, r() * height, 3 + r() * 10, 1);
+  }
+  return { map, bump };
+}
+
+/** Soft vertical glow (bright at the top) — the light spilling from a hidden cove. */
+export function glowGradient({ height = 256, stops = [[0, 1], [0.25, 0.55], [1, 0]] } = {}) {
+  const c = makeCanvas(4, height);
+  const ctx = c.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, 0, height);
+  for (const [at, a] of stops) g.addColorStop(at, `rgba(255,255,255,${a})`);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 4, height);
+  return c;
+}
+
 /** A small travertine swatch as a data URL — used as the intro backdrop while the room builds. */
 export function stoneDataUrl(size = 640) {
   const { map } = travertineTiles({ width: size, height: size, cols: 1, rows: 2, bond: 0, grout: 0, seed: 42, pits: 1.2 });

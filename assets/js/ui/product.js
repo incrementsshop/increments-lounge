@@ -5,7 +5,7 @@ import { formatMoney, ZONES } from '../catalog.js';
 import { CONFIG } from '../config.js';
 import { track } from '../analytics.js';
 
-// The product sheet: gallery, colour, size, add to tray. Variant availability comes
+// The product sheet: gallery, colour, size, add to bag. Variant availability comes
 // straight from the catalog, so sold-out sizes are shown but can't be picked.
 
 export function openProduct(app, handle, { colour, from } = {}) {
@@ -134,16 +134,16 @@ export function openProduct(app, handle, { colour, from } = {}) {
         if (needsSize) { addBtn.disabled = true; addBtn.textContent = 'Choose a size'; return; }
         if (!variant || !variant.available) { addBtn.disabled = true; addBtn.textContent = 'Sold out in this option'; return; }
         addBtn.disabled = false;
-        addBtn.textContent = `Add to tray — ${formatMoney(variant.price)}`;
+        addBtn.textContent = `Add to bag — ${formatMoney(variant.price)}`;
       };
       const add = () => {
         const variant = p.findVariant(state);
         if (!variant?.available) return;
         app.tray.add(p, variant);
         track('add_to_tray', { handle, variant: variant.id, price: variant.price, colour: variant.colour, size: variant.size });
-        app.hud.toast(`${p.title}${variant.size ? ` (${variant.size})` : ''} is on your tray`);
+        app.hud.toast(`${p.title}${variant.size ? ` (${variant.size})` : ''} is in your bag`);
         app.stamps.earn('tray');
-        addBtn.replaceChildren('Added — view your tray');
+        addBtn.replaceChildren('Added — view your bag');
         addBtn.onclick = () => { api.close(); app.openTray(); };
         setTimeout(() => { if (api.dlg.open) refresh(); }, 2600);
       };
