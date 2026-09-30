@@ -15,6 +15,7 @@ export const TIMES = {
     fill: 0.26,
     exposure: 1.02,
     env: 0.45,
+    glow: 0.4,
     background: 0xe9dfd0,
     sky: { pane: 0xfffaf1, color: 0xfff3e4, intensity: 34 },
     cove: { color: 0xffeccf, wash: 0.44 },
@@ -32,6 +33,7 @@ export const TIMES = {
     fill: 0.2,
     exposure: 1.0,
     env: 0.38,
+    glow: 0.7,
     background: 0xe6d2bd,
     sky: { pane: 0xffe2b4, color: 0xffd6a0, intensity: 22 },
     cove: { color: 0xffe4bf, wash: 0.5 },
@@ -48,6 +50,7 @@ export const TIMES = {
     fill: 0.08,
     exposure: 1.12,
     env: 0.14,
+    glow: 1.15,
     background: 0x1c1b1f,
     sky: { pane: 0x55648a, color: 0x8ea2cf, intensity: 7 },
     cove: { color: 0xffe2b8, wash: 0.66 },
@@ -87,7 +90,9 @@ export function resolveTime(pref = savedTimePreference()) {
  * anchors (interior lights) and fx (shafts & dust).
  */
 export class Lighting {
-  constructor({ world, room, anchors, fx, lightmaps }) {
+  constructor({ world, room, anchors, fx, lightmaps, glows = [] }) {
+    // Signs, sconces, LED lines and lit windows: faint by day, full at night.
+    this.glows = glows;
     this.world = world;
     this.room = room;
     this.fx = fx;
@@ -109,6 +114,7 @@ export class Lighting {
       fill: p.fill,
       exposure: p.exposure,
       env: p.env ?? 0.45,
+      glow: p.glow ?? 1,
       background: new THREE.Color(p.background),
       pane: new THREE.Color(p.sky.pane), skyColor: new THREE.Color(p.sky.color), skyI: p.sky.intensity,
       cove: new THREE.Color(p.cove.color), wash: p.cove.wash,
@@ -148,6 +154,7 @@ export class Lighting {
       fill: r.fill.intensity,
       exposure: this.world.renderer.toneMappingExposure,
       env: this.world.scene.environmentIntensity ?? 0.45,
+      glow: this.glowLevel ?? 1,
       background: this.world.scene.background.clone(),
       pane: r.skyPane.material.color.clone(), skyColor: r.skyLight.color.clone(), skyI: r.skyLight.intensity,
       cove: r.cove.material.color.clone(), wash: r.washMat.opacity,
@@ -168,6 +175,13 @@ export class Lighting {
     r.fill.intensity = lerp(a.fill, b.fill);
     this.world.renderer.toneMappingExposure = lerp(a.exposure, b.exposure);
     this.world.scene.environmentIntensity = lerp(a.env, b.env);
+    this.glowLevel = lerp(a.glow, b.glow);
+    for (const m of this.glows) {
+      const k = this.glowLevel;
+      if (m.userData.glowBase != null) m.opacity = Math.min(1, m.userData.glowBase * k);
+      else if (m.userData.glowEmissive != null) m.emissiveIntensity = m.userData.glowEmissive * k;
+      else if (m.userData.glowColor) m.color.setRGB(1, 0.906, 0.769).multiplyScalar(0.72 + 0.28 * Math.min(1, k));
+    }
     col(this.world.scene.background, a.background, b.background);
     this.world.scene.fog?.color.copy(this.world.scene.background);
     col(r.skyPane.material.color, a.pane, b.pane);

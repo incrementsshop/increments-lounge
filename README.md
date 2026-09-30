@@ -1,8 +1,16 @@
 # The Increments Lounge
 
-A one-off, walk-in digital boutique for [Increments](https://increments.ca): a sculpted travertine lounge you move through station by station, where the new chapter is on display and everything you see can be ordered. It supplements the Shopify store — your bag hands off to the real Increments checkout.
+A one-off, walk-in digital boutique for [Increments](https://increments.ca): you arrive on the street outside an arched storefront, step through the doors into a sculpted travertine lounge-café, and move through it station by station. The new chapter is on display, everything you see can be ordered, and there's a board where visitors leave the next small step they're taking. It supplements the Shopify store — your bag hands off to the real Increments checkout.
 
-![The Lounge — establishing shot](docs/shots/desktop-01-entrance.jpg)
+**Live:** <https://incrementsshop.github.io/increments-lounge/>
+
+![The storefront — where every visit starts](docs/shots/desktop-00-street.jpg)
+
+| Golden hour | Evening |
+|---|---|
+| ![](docs/shots/street-golden.jpg) | ![](docs/shots/street-evening.jpg) |
+
+![Inside — establishing shot](docs/shots/desktop-01-entrance.jpg)
 
 | The Steps — *Still Becoming* | The Collection | The Lounge — *Worn* |
 |---|---|---|
@@ -18,25 +26,26 @@ The room follows the visitor's clock — morning, golden hour, evening — with 
 
 On a phone, every station has its own portrait framing (the board is shown with `?boardDemo` sample notes):
 
-| | | | | | |
-|---|---|---|---|---|---|
-| ![](docs/shots/mobile-01-entrance.jpg) | ![](docs/shots/mobile-02-window.jpg) | ![](docs/shots/mobile-03-counter.jpg) | ![](docs/shots/mobile-04-lounge.jpg) | ![](docs/shots/mobile-06-archive.jpg) | ![](docs/shots/mobile-07-board.jpg) |
+| | | | | | | |
+|---|---|---|---|---|---|---|
+| ![](docs/shots/mobile-00-street.jpg) | ![](docs/shots/mobile-01-entrance.jpg) | ![](docs/shots/mobile-02-window.jpg) | ![](docs/shots/mobile-03-counter.jpg) | ![](docs/shots/mobile-04-lounge.jpg) | ![](docs/shots/mobile-06-archive.jpg) | ![](docs/shots/mobile-07-board.jpg) |
 
 ---
 
 ## The idea
 
-The brand speaks in steps and chapters: "Small steps, big accomplishments", "The First Chapter", "Still Becoming". The client's own board is tone-on-tone limestone and plaster, curved and carved rooms, hidden light, raw stone, stairs, a tree under a skylight, words on the walls. So the Lounge is one warm, quiet material with a single colour accent:
+The brand speaks in steps and chapters: "Small steps, big accomplishments", "The First Chapter", "Still Becoming". The client's boards are tone-on-tone limestone and plaster, curved and carved rooms, hidden light, raw stone, stairs, a tree under a skylight, words on the walls — and, from her café board, arched shopfronts, fabric ceilings, olives you sit around, fluted counters, greenery and neon. So the Lounge is one warm, quiet material, with scarlet for the drop and evergreen for everything living:
 
 | Station | What's there | What it does for the shop |
 |---|---|---|
-| **01 Step inside** | The whole room: floating ceiling, glowing cove, curved corners | Orientation; the stamp card starts |
-| **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight | The new drop |
-| **03 The Collection** | A rough-hewn travertine counter before a black split-stone wall, lit by grazing light; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till" | The whole range, and easy add-ons |
-| **04 The Lounge** | Sand leather banquette, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
-| **05 Movement** | Steel rack of pegged prints in front of two arched fitting rooms with linen curtains | Activewear |
+| **The street** | A limewashed facade: evergreen arched doors, a shop window onto the Steps, the campaign lit in an arched vitrine, INCREMENTS in halo-lit letters, olives, a café table, an A-frame | First impression; the doors swing open as you step in |
+| **01 Step inside** | The whole room: fabric waves under the floating ceiling, glowing cove, curved corners, a cream-and-evergreen checker at the door | Orientation; the stamp card starts |
+| **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight; a crescent travertine table wraps the olive, with chairs pulled up and coffee on it | The new drop |
+| **03 The Collection** | A rough-hewn travertine bar before a black split-stone wall, greenery trailing from a hung planter; an evergreen espresso machine; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till"; a fluted island with evergreen bistro chairs | The whole range, and easy add-ons |
+| **04 The Lounge** | Sand leather banquette with dried wheat along its ledge and pampas at either end, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
+| **05 Movement** | Steel rack of pegged prints in front of two arched fitting rooms outlined in light, a pill lightbox: *Take your time* | Activewear |
 | **06 The Archive** | Travertine shelves lit from within, one book spine per past piece; *Life unfolds in increments. You define your story.* raised on the stone above | Brand story; the last few pieces still in stock |
-| **07 Notice Board** | Linen board: team quotes, Polaroids, "Your next increment", and *Notes from the Lounge* — other visitors' next steps, approved by the team | Community + shareable UGC |
+| **07 Notice Board** | Under *small steps, big accomplishments.* in warm neon: team quotes, Polaroids, "Your next increment", and *Notes from the Lounge* — other visitors' next steps, approved by the team | Community + shareable UGC |
 
 Three mechanics tie it to the name:
 
@@ -48,6 +57,7 @@ Three mechanics tie it to the name:
 
 A guided visit, not a video game: seven framed stations you glide between, with room to linger.
 
+- **Arrive.** Every visit (except deep links) starts on the street. "Step inside" swings the doors open and walks you in, one continuous move; any key or tap mid-walk hands control back.
 - **Stations.** Arrows in the dock, swipe, the station list, ←/→ or 1–7. Every move is a slow, composed camera glide.
 - **Look around.** Drag anywhere to turn your head — about 38° each way, and a little up and down. Let go and the view drifts back to the composed shot. Keep pulling past the edge and you walk on to the next station.
 - **Lean in.** Tap a piece in the room (or its label) and you step up to it; its details open beside it — to the side on a computer, below it on a phone, where the sheet is shorter so the piece stays in view. Close the details and you step back.
@@ -63,7 +73,8 @@ A guided visit, not a video game: seven framed stations you glide between, with 
 - **Checkout via Shopify cart permalinks** — `https://increments.ca/cart/<variant>:<qty>,…` with UTM tags, `ref`, and a `Found in: The Increments Lounge` cart attribute on every order. No API token, no backend. Verified against the live store.
 - **Light you don't see the source of**: a floating ceiling whose cove washes every wall, lit niches and shelves, a grazing light down the black stone, a round skylight pouring onto the olive, and the sun through real arched openings (so its patches on the floor are arch-shaped). Fake volumetric shafts with dust, neutral tone mapping so garment colours stay true.
 - **Pre-calculated lighting.** The room's shell (floor, walls, corners, ceiling) wears lightmaps baked in the browser by `tools/bake.html`: hundreds of passes with a soft sun, sky light through the windows and skylight, the cove LEDs, the lamps and one bounce off the floor, with every piece of furniture casting soft shadows. One set per time of day, ~85 KB each. The shell then needs no live lights at all — richer light for less work on a phone — while garments and furniture stay lit live so they can sway. Stone keeps its real reflections, shaded by the bake so corners and the floor under the island stay grounded.
-- **Time of day.** `scene/lighting.js` fades every light, the street outside, the skylight, the dust and the lightmap set between morning, golden hour and evening.
+- **Time of day.** `scene/lighting.js` fades every light, the street outside, the skylight, the dust and the lightmap set between morning, golden hour and evening — and every sign, sconce, LED line and lit window (`glows`), which barely show at noon and bloom at night.
+- **Words in light** (`scene/signs.js`): neon script drawn with its own falloff plus a padded additive bloom, a pill lightbox, halo-lit letters, LED lines that trace arches. No post-processing needed.
 
 ```
 index.html                 page shell (HUD, dock, intro, dialog layer)
@@ -81,7 +92,10 @@ assets/js/
     displays.js            puts the catalog into the room; hotspots
     fx.js                  window shafts, skylight column, dust (GPU-animated)
     stations.js            the seven stations + camera rig (framing, glides, look-around, lean-in)
-    lighting.js            time of day: presets, the street outside, fades
+    storefront.js          the facade, doors, shop window, vitrine, sign, olives, café table, A-frame, pavement
+    signs.js               words in light: neon, pill lightbox, halo letters, LED lines
+    pieces.js              shared pieces: olive, bistro chair, cups, espresso machine, pampas, wheat
+    lighting.js            time of day: presets, the street outside, glows, fades
     lightmaps.js           baked light for the shell (shared with the baker so UVs always match)
     cutout.js              product photo → cut-out or print
   board.js                 the shared notice board (Supabase, pre-moderated)
@@ -135,7 +149,7 @@ The Steps look for a hoodie + sweat pair in the `window` zone (three colourways,
 - Everything in the room is reachable without the canvas: hotspots are real `<button>`s pinned to 3D positions; "Skip the lounge — shop the collection" is the first focusable element; the Collection (the Shop button) is a complete, accessible list of the range.
 - Native `<dialog>` for every panel (focus trap, Esc, inert background). Radio-group semantics and arrow keys for colour/size. Station changes are announced via a live region.
 - Keyboard: ←/→ between stations, 1–7 to jump, M for the collection list. Look-around is a pointer extra; nothing depends on it.
-- `prefers-reduced-motion`: camera cuts instead of glides (including lean-in and the walk), no drift/parallax, no push-in, no ripples, and time-of-day changes are instant.
+- `prefers-reduced-motion`: camera cuts instead of glides (including the walk-in from the street, lean-in and the walk), no drift/parallax, no push-in, no ripples, and time-of-day changes are instant.
 - The walk announces itself to screen readers and stops on any key.
 - Phones: portrait-specific camera framing per station, the view's centre is lifted above the caption/dock, drag to look / pull or swipe to move, bottom sheets with drag-to-close, 44 px targets, safe-area insets.
 - No WebGL (or it fails): the intro offers the Collection, which is the whole shop.

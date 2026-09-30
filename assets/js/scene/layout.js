@@ -12,8 +12,9 @@
 //   D  │  ((steps))  │                          │                      │
 //   O  │ ( olive )   │   ◯ skylight above       │                      │
 //   W  │  ⌒ window   │                          │                      │
-//   S  ╰──────────────────── door ──── notice board ───────────────────╯
+//   S  ╰──────── ∩ shop window ── door ──── notice board ─────────────╯
 //  (x = -7)                   front wall (z = 5.5)
+//              ┄┄┄┄┄┄┄┄┄┄┄┄ facade · pavement · the street ┄┄┄┄┄┄┄┄┄┄┄┄
 
 export const ROOM = { x0: -7, x1: 7, z0: -5.5, z1: 5.5, h: 4.0, corner: 1.2, t: 0.22 };
 
@@ -23,6 +24,19 @@ export const WINDOWS = [
 ];
 
 export const DOOR = { x: 0, w: 1.3, h: 2.55 };
+
+// The storefront, seen from the street before you step in (street at +z).
+// A real arched shop window left of the door looks into the Steps; the arched vitrine to the
+// right is a shallow display box in the facade (the notice board is behind it, inside).
+export const FRONT_WINDOW = { x: -2.4, w: 1.8, sill: 0.45, spring: 2.35 };
+export const VITRINE = { x: 2.4, w: 1.8, sill: 0.45, spring: 2.35, depth: 0.14 };
+export const FACADE = { x0: -10.5, x1: 10.5, h: 7.4, t: 0.2, plinth: 0.42 };
+export const PAVEMENT = { z1: 14.5 };
+// Where the visit starts: across the pavement, looking at the door.
+export const STREET = {
+  pos: [0.35, 1.6, 12.4], target: [0.1, 2.2, 5.8], fit: 8.2,
+  portrait: { pos: [0.2, 1.6, 11.2], target: [0.05, 2.35, 5.8], fit: 3.5 },
+};
 
 // Sun comes in low through the arched windows, from the street side.
 export const SUN = { position: [-15, 8.2, 6.5], target: [0, 0, -0.5], color: 0xffe0b8 };
@@ -54,5 +68,10 @@ export const BANQUETTE = { x: 6.62, z: 0.1, len: 5.6 };
 export const LOUNGE_TABLES = [[5.72, -1.25], [5.72, 1.45]];
 
 export const ISLAND = { x: 1.55, z: -0.35, len: 2.6, w: 0.95 };
+
+// Soft fabric waves hung under the floating ceiling, over the middle of the room.
+export const SAILS = { x0: -1.7, x1: 5.5, z0: -2.35, z1: 3.25, count: 9, top: 3.66 };
+// Cream-and-evergreen checker inlaid just inside the door.
+export const INLAY = { x: 0, z: 4.62, w: 2.3, d: 1.66, tile: 0.2 };
 export const NOTICE_BOARD = { x: 3.5, y: 1.64, z: 5.46, w: 3.3, h: 1.76 };
 export const CAMPAIGN_PRINT = { z: -3.45 };

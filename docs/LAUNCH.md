@@ -35,7 +35,9 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 - [ ] Instagram and TikTok in-app browsers (where most campaign traffic lands)
 
 **Flows**
-- [ ] Intro → Step inside → all seven stations via arrows, swipe, dock list, keyboard (desktop).
+- [ ] Intro → the storefront appears behind the title → Step inside: the doors open and you walk in to the entrance. Press → mid-walk: control comes straight back.
+- [ ] Deep link (`/#lounge`) skips the street and opens at that station.
+- [ ] All seven stations via arrows, swipe, dock list, keyboard (desktop).
 - [ ] Drag to look around at a few stations; let go and it settles back; keep pulling past the edge → next station. First visit shows the "Drag to look around" hint once.
 - [ ] *Take the walk* from the entrance: glides through every station, lingers, eases in; the bar's Stop, any tap, key or scroll hands control back.
 - [ ] Tap a garment in the room → you step up to it and the sheet opens with that colourway selected; on a phone the piece stays visible above the shorter sheet. Close → you step back.
@@ -47,7 +49,7 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 - [ ] Notice board: write an increment → Pin → appears on the board; Share (phone) / Save (desktop) produces the 1080×1920 card.
 - [ ] Shared board (if on): pin with sharing ticked → the note appears in Supabase as `pending` → approve it → it shows on the board and in *Read the board*. A note with a link is refused with a friendly message.
 - [ ] Stamp card fills; with a reward code set, the code is applied at checkout.
-- [ ] Atmosphere (sun/moon chip): each time of day fades in; *Follow my clock* matches the device time; sound on/off; both remembered.
+- [ ] Atmosphere (sun/moon chip): each time of day fades in; *Follow my clock* matches the device time; sound on/off; both remembered. In the evening the storefront sign, sconces, neon, pill sign and arch lines glow; at noon they're faint.
 - [ ] Deep links: `/#counter`, `/counter` (via 404 redirect).
 - [ ] Reduced motion (OS setting): cuts instead of glides.
 - [ ] VoiceOver / TalkBack: skip link, hotspots announced with name + price, dialogs labelled.

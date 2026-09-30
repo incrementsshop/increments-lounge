@@ -3,6 +3,9 @@ import { mesh, box, cyl, lathe, place, group, contactShadow, canvasTexture } fro
 import { applyBoxUV } from './materials.js';
 import { seeded } from './stone.js';
 import * as L from './layout.js';
+import { olive, bistroChair, coffeeCup, espressoMachine, pampasVase, wheatRow } from './pieces.js';
+import { storefront } from './storefront.js';
+import { neonText, pillSign } from './signs.js';
 
 // Everything that stands in the room. Products go on/in these pieces later
 // (displays.js) via the `anchors` each builder records.
@@ -14,7 +17,7 @@ export function buildFurniture(scene, M, quality) {
   const root = new THREE.Group();
   root.name = 'furniture';
   scene.add(root);
-  const A = { steam: [], lights: [] };
+  const A = { steam: [], lights: [], glows: [], floorDecals: [] };
 
   root.add(featureWall(M, A));
   root.add(counter(M, A));
@@ -27,6 +30,11 @@ export function buildFurniture(scene, M, quality) {
   root.add(island(M, A));
   root.add(roomLights(A));
   root.add(plants(M));
+  root.add(storefront(M, A, quality));
+  root.add(sails(M));
+  root.add(drapes(M));
+  root.add(wordsInLight(M, A));
+  root.add(entryInlay(M, A));
   return { root, anchors: A };
 }
 export default buildFurniture;
@@ -248,12 +256,67 @@ function counter(M, A) {
   const v = vase(M, M.ceramic, 0.95, 5);
   v.position.set(x - 1.05, topY, z - 0.12);
   g.add(v);
+
+  // The café half of the idea: an evergreen espresso machine and cups on the bar.
+  const em = espressoMachine(M);
+  em.position.set(x - 0.14, topY, z - 0.14);
+  em.rotation.y = 0.12;
+  g.add(em);
+  [[0.13, 0.22, 0.4], [0.27, 0.16, 2.1]].forEach(([dx, dz, ry]) => {
+    const c = coffeeCup(M);
+    c.position.set(x + dx - 0.05, topY, z + dz);
+    c.rotation.y = ry;
+    g.add(c);
+  });
+
+  // Greenery hung over the bar: an oak trough on fine rods, trailing to just above head height.
+  g.add(hangingGreens(M, x, z + 0.42, w - 0.5));
   for (let i = 0; i < 2; i++) {
     const bag = shoppingBag(M);
     bag.position.set(x - 1.42 + i * 0.05, topY, z + 0.05 - i * 0.12);
     bag.rotation.y = 0.25 - i * 0.3;
     g.add(bag);
   }
+  return g;
+}
+
+/** An oak planter trough hung from the ceiling, spilling trailing leaves. */
+function hangingGreens(M, x, z, len) {
+  const g = new THREE.Group();
+  const y = 3.3;
+  g.add(place(box(len, 0.14, 0.26, M.oak, { r: 0.02, seg: 2 }), x, y, z));
+  g.add(place(box(len - 0.04, 0.02, 0.22, M.soil), x, y + 0.07, z));
+  for (const sx of [-1, 1]) g.add(place(cyl(0.004, 0.004, L.CEILING.drop - y - 0.07, M.steel, { segments: 5 }), x + sx * (len / 2 - 0.2), (L.CEILING.drop + y + 0.07) / 2, z));
+  const r = seeded(404);
+  const leafShape = new THREE.Shape();
+  leafShape.moveTo(0, 0);
+  leafShape.bezierCurveTo(0.03, 0.01, 0.035, 0.05, 0, 0.07);
+  leafShape.bezierCurveTo(-0.035, 0.05, -0.03, 0.01, 0, 0);
+  const strands = 34, perStrand = 16;
+  const leaves = new THREE.InstancedMesh(new THREE.ShapeGeometry(leafShape, 4), M.leaf, strands * perStrand);
+  const vine = new THREE.MeshStandardMaterial({ color: 0x5f6e4c, roughness: 0.9 });
+  const d = new THREE.Object3D();
+  const dark = new THREE.Color(0x5d7150), light = new THREE.Color(0x8fa278);
+  let k = 0;
+  for (let i = 0; i < strands; i++) {
+    const sx = x + (r() - 0.5) * (len - 0.1), sz = z + (r() - 0.5) * 0.3;
+    const drop = 0.08 + r() * r() * 0.34;
+    const pts = [new THREE.Vector3(sx, y + 0.08, sz), new THREE.Vector3(sx + (r() - 0.5) * 0.08, y - drop * 0.4, sz + (r() < 0.5 ? -0.14 : 0.14)), new THREE.Vector3(sx + (r() - 0.5) * 0.12, y - drop, sz + (r() - 0.5) * 0.3)];
+    const curve = new THREE.CatmullRomCurve3(pts);
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 8, 0.0025, 3), vine));
+    for (let j = 0; j < perStrand; j++) {
+      const p = curve.getPoint(j / perStrand);
+      d.position.set(p.x + (r() - 0.5) * 0.03, p.y, p.z + (r() - 0.5) * 0.03);
+      d.rotation.set(-0.9 - r() * 1.2, r() * Math.PI * 2, r() * 0.6);
+      d.scale.setScalar(0.9 + r() * 0.8);
+      d.updateMatrix();
+      leaves.setMatrixAt(k, d.matrix);
+      leaves.setColorAt(k, r() < 0.5 ? dark : light);
+      k++;
+    }
+  }
+  leaves.castShadow = true;
+  g.add(leaves);
   return g;
 }
 
@@ -299,56 +362,37 @@ function theSteps(M, A, quality) {
     g.add(pebble);
   }
   g.add(olive(M, S.x, P.h - 0.02, S.z, quality));
-  return g;
-}
 
-/** A gnarled, multi-stemmed olive grown for the skylight. */
-function olive(M, x, y0, z, quality) {
-  const g = new THREE.Group();
-  const r = seeded(77);
-  const tips = [];
-  const stems = [
-    [[0, 0, 0], [0.12, 0.7, 0.05], [0.02, 1.45, 0.12], [0.2, 2.15, 0.02]],
-    [[0.05, 0, -0.04], [-0.14, 0.65, -0.1], [-0.05, 1.4, -0.28], [-0.3, 2.2, -0.22]],
-    [[-0.04, 0, 0.05], [-0.12, 0.6, 0.18], [0.02, 1.3, 0.3], [-0.06, 2.0, 0.42]],
-  ];
-  stems.forEach((pts, si) => {
-    const curve = new THREE.CatmullRomCurve3(pts.map(([a, b, c]) => new THREE.Vector3(x + a, y0 + b, z + c)));
-    const t = new THREE.Mesh(new THREE.TubeGeometry(curve, 24, 0.055 - si * 0.01, 8), M.trunk);
-    t.castShadow = true;
-    g.add(t);
-    const top = curve.getPoint(1);
-    for (let b = 0; b < 4; b++) {
-      const a = r() * Math.PI * 2;
-      const start = curve.getPoint(0.65 + r() * 0.3);
-      const tip = top.clone().add(new THREE.Vector3(Math.cos(a) * (0.45 + r() * 0.45), 0.3 + r() * 0.6, Math.sin(a) * (0.45 + r() * 0.45)));
-      const mid = start.clone().lerp(tip, 0.5).add(new THREE.Vector3(0, 0.12, 0));
-      const br = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([start, mid, tip]), 10, 0.018, 5), M.trunk);
-      br.castShadow = true;
-      g.add(br);
-      tips.push(tip, mid);
+  // Gather round the olive: a crescent of travertine table wraps the planter on the open
+  // side, with four cream chairs pulled up to it.
+  const ringFrom = -52 * DEG, ringTo = 122 * DEG, topY = 0.74;
+  const ringTop = new THREE.Mesh(sectorGeometry(P.r + 0.02, 1.34, ringFrom, ringTo, 0.05, { bevel: 0.012, seg: 48 }), M.slabWarm);
+  applyBoxUV(ringTop.geometry, M.slabWarm.userData.uv);
+  ringTop.position.set(S.x, topY - 0.05, S.z);
+  ringTop.castShadow = ringTop.receiveShadow = true;
+  g.add(ringTop);
+  const ringBase = new THREE.Mesh(sectorGeometry(P.r + 0.02, 1.06, ringFrom + 4 * DEG, ringTo - 4 * DEG, topY - 0.05, { seg: 48 }), M.slab);
+  applyBoxUV(ringBase.geometry, M.slab.userData.uv);
+  ringBase.position.set(S.x, 0, S.z);
+  ringBase.castShadow = ringBase.receiveShadow = true;
+  g.add(ringBase);
+  [-24, 18, 60, 102].forEach((deg, i) => {
+    const a = deg * DEG, rr = 1.78;
+    const ch = bistroChair(M, { frame: M.oak, seat: M.boucle });
+    ch.position.set(S.x + Math.cos(a) * rr, 0, S.z + Math.sin(a) * rr);
+    ch.rotation.y = -a - Math.PI / 2;
+    g.add(ch);
+    if (i === 1 || i === 2) {
+      const cup = coffeeCup(M);
+      cup.position.set(S.x + Math.cos(a) * 1.16, topY + 0.012, S.z + Math.sin(a) * 1.16);
+      cup.rotation.y = i * 1.7;
+      g.add(cup);
     }
   });
-  const blade = new THREE.Shape();
-  blade.moveTo(0, 0);
-  blade.quadraticCurveTo(0.014, 0.03, 0.002, 0.085);
-  blade.quadraticCurveTo(-0.012, 0.03, 0, 0);
-  const count = Math.round(quality.leaves * 2.6);
-  const leaves = new THREE.InstancedMesh(new THREE.ShapeGeometry(blade, 4), M.leaf, count);
-  const dummy = new THREE.Object3D();
-  const silver = new THREE.Color(0xb6bea6), green = new THREE.Color(0x76866a);
-  for (let i = 0; i < count; i++) {
-    const c = tips[i % tips.length];
-    const rr = Math.cbrt(r()) * 0.36, th = r() * Math.PI * 2, ph = Math.acos(2 * r() - 1);
-    dummy.position.set(c.x + rr * Math.sin(ph) * Math.cos(th), c.y + rr * 0.8 * Math.cos(ph), c.z + rr * Math.sin(ph) * Math.sin(th));
-    dummy.rotation.set(r() * Math.PI, r() * Math.PI * 2, r() * Math.PI);
-    dummy.scale.setScalar(1.35 + r() * 0.6);
-    dummy.updateMatrix();
-    leaves.setMatrixAt(i, dummy.matrix);
-    leaves.setColorAt(i, r() < 0.35 ? silver : green);
-  }
-  leaves.castShadow = true;
-  g.add(leaves);
+  const book2 = book(M, 0.15, 0.022, 0.21, 0xe9e0d1);
+  book2.position.set(S.x + Math.cos(40 * DEG) * 1.12, topY + 0.023, S.z + Math.sin(40 * DEG) * 1.12);
+  book2.rotation.y = 0.8;
+  g.add(book2);
   return g;
 }
 
@@ -444,6 +488,15 @@ function lounge(M, A) {
     g.add(ch);
   }
   g.add(place(box(0.16, 0.04, len, M.slabWarm), x1 - 0.08, 1.04, z));
+  // Dried wheat along the ledge behind the banquette, and pampas standing at either end.
+  const wheat = wheatRow(len - 0.3, { count: 280 });
+  wheat.position.set(x1 - 0.08, 1.06, z);
+  g.add(wheat);
+  [[z - len / 2 - 0.34, 3], [z + len / 2 + 0.34, 9]].forEach(([pz, seed]) => {
+    const pv = pampasVase(M, { seed, plumes: 6 });
+    pv.position.set(x1 - 0.42, 0, pz);
+    g.add(pv);
+  });
   g.add(place(contactShadow(0.7, len, { opacity: 0.45 }), x, 0, z));
 
   const rug = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 4.6), M.rug);
@@ -597,11 +650,17 @@ function island(M, A) {
   const { x, z, len, w } = L.ISLAND;
   const topY = 0.76;
   g.add(place(box(len, 0.07, w, M.slabWarm, { r: 0.03, seg: 3 }), x, topY - 0.035, z));
-  for (const sx of [-1, 1]) {
-    const b = roughBlock(0.46, topY - 0.07, w - 0.32, M.slab, { seed: sx > 0 ? 8 : 9, amp: 0.028 });
-    b.position.set(x + sx * (len / 2 - 0.5), (topY - 0.07) / 2, z);
-    g.add(b);
-  }
+  // A fluted plinth runs the length of the island, reeded like the café counters.
+  const plinth = mesh(flutedGeometry(len - 0.5, w - 0.36, topY - 0.07, { reed: 0.055 }), M.slab);
+  plinth.position.set(x, 0, z);
+  g.add(plinth);
+  // Evergreen bistro chairs: a table to sit at, not just a plinth to look at.
+  [[-0.62, 1], [0.58, 1], [-0.58, -1], [0.62, -1]].forEach(([dx, side]) => {
+    const ch = bistroChair(M);
+    ch.position.set(x + dx, 0, z + side * (w / 2 + 0.3));
+    ch.rotation.y = side > 0 ? Math.PI + (dx > 0 ? -0.12 : 0.1) : (dx > 0 ? 0.1 : -0.12);
+    g.add(ch);
+  });
   g.add(place(contactShadow(len, w, { opacity: 0.4 }), x, 0, z));
   const stack = [[0.3, 0.03, 0.38, 0xe9e0d1], [0.28, 0.025, 0.36, 0x8a7560], [0.26, 0.02, 0.34, 0xd2c4ad]];
   let yy = topY;
@@ -668,4 +727,160 @@ function plants(M) {
   figLeaves.castShadow = true;
   g.add(figLeaves);
   return g;
+}
+
+
+/**
+ * A block whose two long faces are reeded (half-round flutes), extruded upward.
+ * `len` along x, `depth` along z, `height` up; origin at the bottom centre.
+ */
+function flutedGeometry(len, depth, height, { reed = 0.05 } = {}) {
+  const n = Math.max(2, Math.round(len / reed)), step = len / n, rr = step / 2;
+  const s = new THREE.Shape();
+  const hz = depth / 2;
+  s.moveTo(-len / 2, -hz);
+  for (let i = 0; i < n; i++) s.absarc(-len / 2 + rr + i * step, -hz, rr, Math.PI, 0, true);
+  s.lineTo(len / 2, hz);
+  for (let i = n - 1; i >= 0; i--) s.absarc(-len / 2 + rr + i * step, hz, rr, 0, Math.PI, false);
+  s.lineTo(-len / 2, -hz);
+  const geo = new THREE.ExtrudeGeometry(s, { depth: height, bevelEnabled: false, curveSegments: 6 });
+  geo.rotateX(-Math.PI / 2);     // shape's y → -z, extrusion → +y
+  geo.computeVertexNormals();
+  return geo;
+}
+
+// ---------------------------------------------------------------------------
+// Fabric waves under the ceiling
+// ---------------------------------------------------------------------------
+
+function sails(M) {
+  const S = L.SAILS;
+  const g = new THREE.Group();
+  g.name = 'sails';
+  const r = seeded(314);
+  const len = S.x1 - S.x0, segU = 96, segV = 6;
+  for (let i = 0; i < S.count; i++) {
+    const zc = S.z0 + (i + 0.5) * ((S.z1 - S.z0) / S.count);
+    const width = 0.42 + r() * 0.12, period = 1.9 + r() * 0.9, phase = r() * Math.PI * 2;
+    const sag = 0.22 + r() * 0.16, twist = 0.35 + r() * 0.3;
+    const geo = new THREE.PlaneGeometry(len, width, segU, segV);
+    const pos = geo.attributes.position;
+    const colors = new Float32Array(pos.count * 3);
+    for (let k = 0; k < pos.count; k++) {
+      const u = pos.getX(k) / len + 0.5, t = pos.getY(k) / width;        // t in −0.5..0.5 across
+      const wave = 0.5 - 0.5 * Math.cos((u * len / period) * Math.PI * 2 + phase);
+      const ends = Math.sin(Math.min(1, u * 5) * Math.PI / 2) * Math.sin(Math.min(1, (1 - u) * 5) * Math.PI / 2);
+      const drop = sag * wave * ends;
+      const tilt = Math.sin(u * len / period * Math.PI + phase * 0.7) * twist;
+      const y = S.top - drop - t * width * Math.sin(tilt) * 0.8 - (1 - ends) * 0.02;
+      const zz = zc + t * width * Math.cos(tilt);
+      pos.setXYZ(k, S.x0 + u * len, y, zz);
+      // Brighter where the fabric rises toward the cove, a touch warmer in the troughs.
+      const lit = 1 - drop / (sag + 0.001) * 0.22;
+      colors[k * 3] = lit; colors[k * 3 + 1] = lit * 0.985; colors[k * 3 + 2] = lit * 0.955;
+    }
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geo.computeVertexNormals();
+    const m = new THREE.Mesh(geo, M.sail);
+    g.add(m);
+  }
+  return g;
+}
+
+// ---------------------------------------------------------------------------
+// Sheer drapes, gathered to the sides of every arched window
+// ---------------------------------------------------------------------------
+
+function drapePanel(M, height, width) {
+  const geo = new THREE.PlaneGeometry(width, height, 36, 10);
+  const pos = geo.attributes.position;
+  for (let k = 0; k < pos.count; k++) {
+    const u = pos.getX(k) / width + 0.5, v = pos.getY(k) / height + 0.5;
+    pos.setZ(k, 0.035 * Math.sin(u * Math.PI * 9) + 0.012 * Math.sin(u * Math.PI * 23) * (1 - v));
+    pos.setX(k, pos.getX(k) * (1 + 0.18 * (1 - v)));
+  }
+  geo.computeVertexNormals();
+  const m = new THREE.Mesh(geo, M.sheer);
+  m.renderOrder = 3;
+  m.castShadow = true;
+  return m;
+}
+
+function drapes(M) {
+  const g = new THREE.Group();
+  const rodY = 3.6, h = rodY - 0.03;
+  const hang = (cx, cz, alongX, w) => {
+    // Rod across the opening, one gathered panel each side, hanging over the wall.
+    const rod = cyl(0.008, 0.008, w + 1.1, M.brass, { segments: 8 });
+    rod.rotation.z = Math.PI / 2;
+    if (!alongX) rod.rotation.y = Math.PI / 2;
+    rod.position.set(cx, rodY, cz);
+    g.add(rod);
+    for (const s of [-1, 1]) {
+      const p = drapePanel(M, h, 0.4);
+      const off = s * (w / 2 + 0.24);
+      if (alongX) p.position.set(cx + off, rodY - h / 2, cz);
+      else { p.position.set(cx, rodY - h / 2, cz + off); p.rotation.y = Math.PI / 2; }
+      g.add(p);
+    }
+  };
+  for (const win of L.WINDOWS) hang(L.ROOM.x0 + 0.1, win.z, false, win.w);
+  hang(L.FRONT_WINDOW.x, L.ROOM.z1 - 0.1, true, L.FRONT_WINDOW.w);
+  return g;
+}
+
+// ---------------------------------------------------------------------------
+// Words in light
+// ---------------------------------------------------------------------------
+
+function wordsInLight(M, A) {
+  const g = new THREE.Group();
+  // Over the notice board, the brand's own line in warm neon script.
+  const B = L.NOTICE_BOARD;
+  const neon = neonText('small steps, big accomplishments.', { w: 2.3, h: 0.28, glows: A.glows });
+  neon.position.set(B.x, B.y + B.h / 2 + 0.44, B.z - 0.012);
+  neon.rotation.y = Math.PI;
+  g.add(neon);
+  // By the fitting rooms, a pill lightbox.
+  const pill = pillSign(['TAKE', 'YOUR', 'TIME'], { w: 0.3, h: 0.84, M, glows: A.glows });
+  pill.position.set(-3.06, 1.58, L.ROOM.z0 + 0.006);
+  g.add(pill);
+  return g;
+}
+
+// ---------------------------------------------------------------------------
+// A cream-and-evergreen checker inlaid inside the door
+// ---------------------------------------------------------------------------
+
+function entryInlay(M, A) {
+  const I = L.INLAY;
+  const cols = Math.round(I.w / I.tile), rows = Math.round(I.d / I.tile);
+  const px = 64;
+  const map = canvasTexture(cols * px + 32, rows * px + 32, (ctx, w, h) => {
+    const r = seeded(12);
+    ctx.fillStyle = '#e3d4bd'; ctx.fillRect(0, 0, w, h);                  // travertine border
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const green = (i + j) % 2 === 0;
+      const base = green ? [44, 66, 52] : [236, 227, 212];
+      const jit = (r() - 0.5) * 10;
+      ctx.fillStyle = `rgb(${base[0] + jit},${base[1] + jit},${base[2] + jit})`;
+      ctx.fillRect(16 + i * px + 1, 16 + j * px + 1, px - 2, px - 2);
+      for (let k = 0; k < 14; k++) {
+        ctx.fillStyle = green ? 'rgba(255,255,255,0.03)' : 'rgba(120,100,70,0.05)';
+        ctx.fillRect(16 + i * px + r() * px, 16 + j * px + r() * px, 2 + r() * 8, 1);
+      }
+    }
+    ctx.strokeStyle = 'rgba(90,72,52,0.35)'; ctx.lineWidth = 1;
+    for (let j = 0; j <= rows; j++) { ctx.beginPath(); ctx.moveTo(16, 16 + j * px); ctx.lineTo(16 + cols * px, 16 + j * px); ctx.stroke(); }
+    for (let i = 0; i <= cols; i++) { ctx.beginPath(); ctx.moveTo(16 + i * px, 16); ctx.lineTo(16 + i * px, 16 + rows * px); ctx.stroke(); }
+  });
+  const mat = new THREE.MeshStandardMaterial({ map, roughness: 0.55, envMapIntensity: 0.6 });
+  const geo = new THREE.PlaneGeometry(I.w + 0.1, I.d + 0.1);
+  geo.rotateX(-Math.PI / 2);
+  geo.translate(I.x, 0.0025, I.z);
+  const m = new THREE.Mesh(geo, mat);
+  m.receiveShadow = true;
+  m.name = 'inlay';
+  A.floorDecals.push(m);
+  return m;
 }

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { ROOM } from './layout.js';
+import { ROOM, STREET } from './layout.js';
 
 // The seven stations, and the camera rig that glides between them.
 // `pos`/`target` are authored for a 16:9 screen; `fit` is the width (m) that must stay
@@ -52,8 +52,8 @@ export const STATIONS = [
     id: 'board', stamp: null, name: 'Notice Board',
     eyebrow: 'Community', title: 'Your next <em>increment</em>',
     body: 'Pin the next small step you’re taking and keep it as a card. Share it, and once the team has read it, it goes up here for everyone.',
-    pos: [3.25, 1.6, 1.75], target: [3.5, 1.6, 5.5], fit: 3.7,
-    portrait: { pos: [3.1, 1.6, 2.7], target: [3.05, 1.66, 5.5], fit: 2.35 }, // the invitation + visitors' notes; drag for the rest
+    pos: [3.25, 1.62, 1.75], target: [3.5, 1.98, 5.5], fit: 3.7,
+    portrait: { pos: [3.3, 1.62, 2.6], target: [3.32, 1.92, 5.5], fit: 2.5 }, // neon, invitation and visitors' notes; drag for the rest
   },
 ];
 
@@ -120,7 +120,7 @@ export class CameraRig {
   #onResize() {
     this.#applyProjection();
     if (!this.tween && !this.focused) {
-      const f = this.frameFor(this.station);
+      const f = this.frameFor(this.outside ? { ...STREET, outside: true } : this.station);
       this.basePos.copy(f.pos);
       this.baseLook.copy(f.look);
     }
@@ -139,12 +139,13 @@ export class CameraRig {
     const dFit = (shot.fit / 2) / Math.tan(hfov / 2);
     const d = Math.min(Math.max(d0, dFit), d0 * (aspect < 1 ? 1.85 : 1.15));
     const pos = T.clone().addScaledVector(dir, d);
-    clampToRoom(pos);
+    if (!station.outside) clampToRoom(pos);
     return { pos, look: T };
   }
 
   jump(index) {
     this.index = index;
+    this.outside = false;
     const f = this.frameFor(this.station);
     this.basePos.copy(f.pos);
     this.baseLook.copy(f.look);
@@ -152,6 +153,40 @@ export class CameraRig {
     this.focused = null;
     this.push = 0;
     this.resetLook();
+  }
+
+  /** Stand on the pavement outside, looking at the door. */
+  street() {
+    this.jump(0);
+    this.outside = true;
+    const f = this.frameFor({ ...STREET, outside: true });
+    this.basePos.copy(f.pos);
+    this.baseLook.copy(f.look);
+  }
+
+  /**
+   * From the street, through the door, to the entrance shot — one continuous, unhurried
+   * move. `via` gives the points just outside and just inside the door; `onProgress(t)`
+   * lets the door swing open as you reach it.
+   */
+  walkIn({ via, duration = 4.8, onProgress } = {}) {
+    const to = this.frameFor(STATIONS[0]);
+    this.index = 0;
+    if (reduceMotion() || !via) { this.jump(0); onProgress?.(1); return Promise.resolve(); }
+    const doorPlane = via.doorOut.clone().setZ(ROOM.z1 + ROOM.t / 2);
+    const curve = new THREE.CatmullRomCurve3([this.basePos.clone(), via.doorOut, doorPlane, via.doorIn, to.pos], false, 'centripetal');
+    const looks = new THREE.CatmullRomCurve3([
+      this.baseLook.clone(),
+      new THREE.Vector3(doorPlane.x, 1.8, ROOM.z1 - 1.5),
+      new THREE.Vector3(-0.4, 1.62, 0.6),
+      new THREE.Vector3(-1.4, 1.5, -0.8),
+      to.look,
+    ], false, 'centripetal');
+    this.#settlePush();
+    return new Promise(resolve => {
+      this.tween?.resolve();
+      this.tween = { path: curve, looks, t: 0, duration, resolve, onProgress, from: { pos: this.basePos.clone(), look: this.baseLook.clone() }, to: { pos: to.pos, look: to.look } };
+    }).then(() => { this.outside = false; });
   }
 
   /** Glide to a station. `slow` stretches the move for the guided walk. */
@@ -282,7 +317,15 @@ export class CameraRig {
   }
 
   update(dt, t) {
-    if (this.tween) {
+    if (this.tween?.path) {
+      const tw = this.tween;
+      tw.t = Math.min(1, tw.t + dt / tw.duration);
+      const e = easeSine(tw.t);
+      tw.path.getPoint(e, this.basePos);
+      tw.looks.getPoint(Math.min(1, e * 1.04), this.baseLook);
+      tw.onProgress?.(tw.t);
+      if (tw.t >= 1) { this.tween = null; tw.resolve(); }
+    } else if (this.tween) {
       const tw = this.tween;
       tw.t = Math.min(1, tw.t + dt / tw.duration);
       const e = ease(tw.t);

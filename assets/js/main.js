@@ -103,8 +103,10 @@ async function boot() {
 
   // Time of day, with the room's pre-calculated light where a bake exists.
   progress(0.52, 'Opening the blinds…');
-  const lightmaps = new Lightmaps(room.receivers, world.scene);
-  const lighting = app.lighting = new Lighting({ world, room, anchors, fx, lightmaps });
+  const lightmaps = new Lightmaps(room.receivers, world.scene, { decals: anchors.floorDecals });
+  const lighting = app.lighting = new Lighting({ world, room, anchors, fx, lightmaps, glows: [...room.glows, ...anchors.glows] });
+  app.door = anchors.door;
+  app.street = anchors.street;
   await lightmaps.init();
   await lighting.apply(resolveTime(), { instant: true });
 
@@ -121,8 +123,10 @@ async function boot() {
   app.board.list().then(notes => displays.setCommunity(notes, { shared: app.board.shared }));
 
   const hotspots = app.hotspots = new Hotspots($('#hotspots'), world.camera, onHotspot);
+  // Deep links go straight to their station; everyone else arrives on the street outside.
   const start = STATIONS.findIndex(s => `#${s.id}` === location.hash);
-  rig.jump(start > 0 ? start : 0);
+  if (start > 0) rig.jump(start);
+  else { rig.street(); intro.classList.add('is-street'); }
 
   // The sun and the room never move, so the shadow map is only re-rendered while pieces
   // are still arriving. Roughly halves the draw calls per frame on phones.
@@ -135,7 +139,7 @@ async function boot() {
     fx.update(t);
     lighting.update(dt);
     hotspots.update();
-    if (displays.fadeIns.length || t < 3) world.renderer.shadowMap.needsUpdate = true;
+    if (displays.fadeIns.length || t < 3 || rig.tween?.path) world.renderer.shadowMap.needsUpdate = true;
   });
   // Following the visitor's clock: if the hour tips over while they're here, so does the room.
   setInterval(() => {
@@ -167,17 +171,31 @@ async function boot() {
 // Yield a frame so the progress UI can paint — with a timeout, because background tabs don't run rAF.
 const frame = () => new Promise(r => { const t = setTimeout(r, 60); requestAnimationFrame(() => { clearTimeout(t); r(); }); });
 
-function enter() {
+async function enter() {
   app.entered = true;
   document.body.classList.remove('is-loading');
   document.body.classList.add('is-entered');
-  track('enter', { quality: app.world.quality.tier, station: app.rig.station.id });
+  track('enter', { quality: app.world.quality.tier, station: app.rig.station.id, from: app.rig.outside ? 'street' : 'link' });
   app.stamps.earn('enter');
   if (app.audio.wanted) setSound(true);
-  arrive();
-  lookHint();
   // Move focus into the experience for keyboard users.
   requestAnimationFrame(() => $('.dock__current').focus({ preventScroll: true }));
+  if (app.rig.outside) {
+    await app.rig.walkIn({ via: app.street, onProgress: swingDoor });
+    swingDoor(1);
+    if (app.rig.index !== 0 || app.rig.moving) { lookHint(); return; } // they moved on mid-walk
+  }
+  arrive();
+  lookHint();
+}
+
+/** The door opens as you reach it and closes once you're in. */
+function swingDoor(t) {
+  const d = app.door;
+  if (!d) return;
+  const s = x => x * x * (3 - 2 * x);
+  const open = t < 0.14 ? 0 : t < 0.42 ? s((t - 0.14) / 0.28) : t < 0.7 ? 1 : t < 0.96 ? 1 - s((t - 0.7) / 0.26) : 0;
+  d.set(open);
 }
 
 function showClosed(state) {

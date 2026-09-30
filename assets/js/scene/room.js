@@ -1,8 +1,9 @@
 import * as THREE from 'three';
-import { ROOM, WINDOWS, DOOR, SUN, CEILING, SKYLIGHT, FITTING_ROOMS, FITTING, LOUNGE_NICHE } from './layout.js';
+import { ROOM, WINDOWS, DOOR, SUN, CEILING, SKYLIGHT, FITTING_ROOMS, FITTING, LOUNGE_NICHE, FRONT_WINDOW } from './layout.js';
 import { mesh, box, place, aoStrip } from './helpers.js';
 import { applyBoxUV } from './materials.js';
 import { streetCanvas } from './lighting.js';
+import { ledLine, archPoints } from './signs.js';
 
 // The shell: floor; plaster walls with real openings (arched windows, arched fitting
 // rooms, a rounded niche) and curved corners; a floating ceiling whose hidden cove washes
@@ -15,6 +16,7 @@ export function buildRoom(scene, M, quality) {
   root.name = 'room';
   scene.add(root);
 
+  const glows = [];
   const plasterBack = M.plaster.clone(); plasterBack.side = THREE.BackSide;
   const plasterDouble = M.plaster.clone(); plasterDouble.side = THREE.DoubleSide;
   const mats = { ...M, plasterBack, plasterDouble };
@@ -66,6 +68,12 @@ export function buildRoom(scene, M, quality) {
   const fitPaths = FITTING_ROOMS.map(f => archPath(-f.x, f.w, 0, FITTING.spring));
   receivers.walls.back = solidWall(B, -(x1 - R), -(x0 + R), fitPaths, mats);
   fitPaths.forEach(p => recess(B, p, FITTING.depth, mats));
+  // Arches drawn in light: a warm LED line just inside each opening's edge.
+  FITTING_ROOMS.forEach(f => {
+    const led = ledLine(archPoints(-f.x, f.w, 0.02, FITTING.spring, { inset: 0.018 }), { glows });
+    led.position.z = -0.01;
+    B.add(led);
+  });
 
   // Lounge wall (u = -z): the rounded niche Worn hangs in.
   const n = LOUNGE_NICHE;
@@ -78,7 +86,9 @@ export function buildRoom(scene, M, quality) {
   doorPath.moveTo(DOOR.x - DOOR.w / 2, 0); doorPath.lineTo(DOOR.x + DOOR.w / 2, 0);
   doorPath.lineTo(DOOR.x + DOOR.w / 2, DOOR.h); doorPath.lineTo(DOOR.x - DOOR.w / 2, DOOR.h);
   doorPath.lineTo(DOOR.x - DOOR.w / 2, 0);
-  receivers.walls.front = solidWall(F, x0 + R, x1 - R, [doorPath], mats);
+  const FW = FRONT_WINDOW;
+  receivers.walls.front = solidWall(F, x0 + R, x1 - R, [doorPath, archPath(FW.x, FW.w, FW.sill, FW.spring)], mats);
+  F.add(shopWindow(M, glows));
 
   // Curved corners.
   const corners = [
@@ -95,8 +105,12 @@ export function buildRoom(scene, M, quality) {
     receivers.corners.push(c);
   }
 
-  for (const win of WINDOWS) root.add(windowAssembly(win, M));
-  root.add(door(M));
+  for (const win of WINDOWS) {
+    root.add(windowAssembly(win, M));
+    const led = ledLine(archPoints(win.z, win.w, win.sill + 0.01, win.sill + 1.9, { inset: 0.018 }), { glows });
+    led.position.z = -0.01;
+    L.add(led);
+  }
 
   // Travertine skirting on the straight runs.
   const sk = 0.1;
@@ -155,8 +169,9 @@ export function buildRoom(scene, M, quality) {
   west.position.set(x0 - 5, 4, 0);
   west.rotation.y = Math.PI / 2;
   root.add(west);
-  const south = new THREE.Mesh(new THREE.PlaneGeometry(24, 14), outside);
-  south.position.set(0, 4, z1 + 5);
+  // Across the street — far enough back that the pavement and the facade sit in front of it.
+  const south = new THREE.Mesh(new THREE.PlaneGeometry(44, 20), outside);
+  south.position.set(0, 5.5, z1 + 12);
   south.rotation.y = Math.PI;
   root.add(south);
 
@@ -211,7 +226,7 @@ export function buildRoom(scene, M, quality) {
 
   return {
     root, sun, hemi, fill, cove, washMat, receivers,
-    skyPane: pane, skyLight, street: outside,
+    skyPane: pane, skyLight, street: outside, glows,
     anchors: { skylight: { ...SKYLIGHT, y: CEILING.drop } },
   };
 }
@@ -332,20 +347,48 @@ function windowAssembly(win, M) {
   return g;
 }
 
-function door(M) {
+/**
+ * The shop window in the front wall, from inside: glass mid-wall with evergreen glazing bars
+ * and a travertine sill. The street side (surround, sill) belongs to storefront.js.
+ */
+function shopWindow(M, glows) {
+  const { x, w, sill, spring } = FRONT_WINDOW;
   const g = new THREE.Group();
-  const { x, w, h } = DOOR;
-  const z = z1 + T / 2;
-  const t = 0.05;
-  for (const [fw, fh, fx, fy] of [[w, t, x, h - t / 2], [w, t, x, t / 2], [w, t, x, 1.05]]) g.add(place(box(fw, fh, t, M.blackSteel), fx, fy, z));
-  for (const fx of [x - w / 2 + t / 2, x + w / 2 - t / 2, x]) g.add(place(box(t, h, t, M.blackSteel), fx, h / 2, z));
-  const glass = new THREE.Mesh(new THREE.PlaneGeometry(w, h), M.glass);
-  glass.position.set(x, h / 2, z + 0.01);
-  glass.rotation.y = Math.PI;
+  const r = w / 2, bar = 0.032, zMid = T / 2;
+  const glassShape = new THREE.Shape();
+  glassShape.moveTo(x - r, sill); glassShape.lineTo(x + r, sill); glassShape.lineTo(x + r, spring);
+  glassShape.absarc(x, spring, r, 0, Math.PI, false); glassShape.lineTo(x - r, sill);
+  const glass = new THREE.Mesh(new THREE.ShapeGeometry(glassShape, 32), M.glass);
+  glass.position.z = zMid;
+  glass.renderOrder = 2;
   g.add(glass);
-  g.add(place(box(0.03, 0.5, 0.03, M.brass), x + 0.12, 1.1, z - 0.06));
-  // Travertine threshold across the wall's depth, and a mat.
-  g.add(place(box(w, 0.012, T + 0.02, M.slabWarm, { cast: false }), x, 0.006, z1 + T / 2));
-  g.add(place(box(1.2, 0.012, 0.7, new THREE.MeshStandardMaterial({ color: 0x9a8a74, roughness: 1 }), { cast: false }), x, 0.006, z1 - 0.45));
+  const frame = new THREE.Shape();
+  frame.moveTo(x - r, sill); frame.lineTo(x + r, sill); frame.lineTo(x + r, spring);
+  frame.absarc(x, spring, r, 0, Math.PI, false); frame.lineTo(x - r, sill);
+  frame.holes.push(archPathInner(x, w - 0.1, sill + 0.05, spring));
+  const fr = mesh(new THREE.ExtrudeGeometry(frame, { depth: 0.05, bevelEnabled: false, curveSegments: 32 }), M.evergreen, { uv: false });
+  fr.position.z = zMid - 0.025;
+  g.add(fr);
+  g.add(place(box(bar, spring - sill + r - 0.06, bar, M.evergreen), x, sill + (spring - sill + r) / 2, zMid));
+  g.add(place(box(w - 0.08, bar, bar, M.evergreen), x, spring, zMid));
+  g.add(place(box(w - 0.08, bar * 0.8, bar * 0.8, M.evergreen), x, sill + (spring - sill) * 0.5, zMid));
+  for (const a of [Math.PI / 4, (3 * Math.PI) / 4]) {
+    const len = r - 0.06;
+    const rb = box(bar * 0.8, len, bar * 0.8, M.evergreen);
+    rb.position.set(x + Math.cos(a) * len / 2, spring + Math.sin(a) * len / 2, zMid);
+    rb.rotation.z = a - Math.PI / 2;
+    g.add(rb);
+  }
+  g.add(place(box(w + 0.16, 0.05, 0.3, M.slabWarm), x, sill - 0.025, -0.06));
+  const led = ledLine(archPoints(x, w, sill + 0.01, spring, { inset: 0.018 }), { glows });
+  led.position.z = -0.01;
+  g.add(led);
   return g;
+}
+
+function archPathInner(u, w, v0, spring) {
+  const r = w / 2, p = new THREE.Path();
+  p.moveTo(u - r, v0); p.lineTo(u + r, v0); p.lineTo(u + r, spring);
+  p.absarc(u, spring, r, 0, Math.PI, false); p.lineTo(u - r, v0);
+  return p;
 }

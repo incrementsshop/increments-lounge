@@ -115,8 +115,10 @@ function bakedMaterial(live, lightMap, intensity) {
  * Silently keeps live lighting if the maps aren't there (e.g. before the first bake).
  */
 export class Lightmaps {
-  constructor(receivers, scene) {
+  /** `decals` are flat pieces lying on the floor (the entry inlay): they borrow the floor's map. */
+  constructor(receivers, scene, { decals = [] } = {}) {
     this.surfaces = bakeSurfaces(receivers);
+    this.decals = decals.map(mesh => ({ mesh, live: mesh.material }));
     this.scene = scene;
     this.loader = new THREE.TextureLoader();
     this.cache = new Map();
@@ -139,10 +141,16 @@ export class Lightmaps {
     try {
       const maps = await Promise.all(this.surfaces.map(s => this.#texture(`assets/lightmaps/${time}/${s.name}.webp?v=${this.manifest.version}`)));
       if (this.want !== time) return false;
+      const intensity = SCALE * Math.PI * (this.manifest.gain ?? 1);
       this.surfaces.forEach((s, i) => {
         bakeUVs(s);
-        s.mesh.material = bakedMaterial(this.live.get(s), maps[i], SCALE * Math.PI * (this.manifest.gain ?? 1));
+        s.mesh.material = bakedMaterial(this.live.get(s), maps[i], intensity);
       });
+      const floorMap = maps[this.surfaces.findIndex(s => s.name === 'floor')];
+      for (const d of this.decals) {
+        bakeUVs({ mesh: d.mesh, kind: 'floor', name: 'decal' });
+        d.mesh.material = bakedMaterial(d.live, floorMap, intensity);
+      }
       this.#fakes(false);
       this.active = time;
       return true;
@@ -167,6 +175,7 @@ export class Lightmaps {
 
   #live() {
     for (const s of this.surfaces) s.mesh.material = this.live.get(s);
+    for (const d of this.decals) d.mesh.material = d.live;
     this.#fakes(true);
     this.active = null;
   }

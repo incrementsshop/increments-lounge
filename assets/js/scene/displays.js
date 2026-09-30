@@ -45,6 +45,7 @@ export class Displays {
       () => this.movementRack(),
       () => this.till(),
       () => this.campaignPrint(),
+      () => this.vitrine(),
       () => this.polaroids(),
       () => this.shelfFrames(),
     ];
@@ -900,6 +901,21 @@ export class Displays {
     g.add(photo);
     g.traverse(o => { if (o.isMesh) o.castShadow = true; });
     return g;
+  }
+
+  /** The street vitrine: the campaign, lit, for passers-by. */
+  async vitrine() {
+    const V = this.A.vitrine;
+    const src = this.catalog.featured.campaignImage || this.catalog.lifestyle[0]?.src;
+    if (!V || !src) return;
+    const img = await loadImage(shopifyImage(src, 1000)).catch(() => null);
+    if (!img) return;
+    const aspect = img.naturalWidth / img.naturalHeight;
+    const width = Math.min(V.w, (V.h - 0.1) * aspect);
+    const print = this.framedPrint(img, width, { mat: this.M.oak });
+    print.rotation.x = -0.06;
+    print.position.set(V.x, V.y, V.z + 0.06);
+    this.root.add(print);
   }
 
   async campaignPrint() {
