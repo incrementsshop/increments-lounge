@@ -51,10 +51,6 @@ export function createMaterials(renderer, quality) {
   const floorC = S.travertineTiles({ width: hi, height: hi, cols: 2, rows: 4, grout: Math.max(2, hi / 700), seed: 7 });
   const floor = std({ map: tex(floorC.map), bumpMap: tex(floorC.bump, { srgb: false }), bumpScale: 1.4, roughness: 0.58, envMapIntensity: 0.7 }, [2.4, 2.4]);
 
-  // Feature wall: big 1200×600 slabs, warmer lot.
-  const cladC = S.travertineTiles({ width: hi, height: hi, cols: 2, rows: 4, bond: 0, grout: Math.max(2, hi / 900), seed: 31, palette: S.TRAVERTINE.warm });
-  const cladding = std({ map: tex(cladC.map), bumpMap: tex(cladC.bump, { srgb: false }), bumpScale: 1.2, roughness: 0.6 }, [2.4, 2.4]);
-
   // Solid slab (counter, plinths, tables): one continuous piece, no joints.
   const slabC = S.travertineTiles({ width: hi, height: half, cols: 1, rows: 1, grout: 0, seed: 9, palette: S.TRAVERTINE.classic, pits: 1.3 });
   const slab = std({ map: tex(slabC.map), bumpMap: tex(slabC.bump, { srgb: false }), bumpScale: 1.6, roughness: 0.5 }, [3, 1.5]);
@@ -87,11 +83,9 @@ export function createMaterials(renderer, quality) {
   const oakC = S.woodGrain({ width: half / 2, height: half / 2, seed: 8, base: '#b89a74', dark: '120,96,66', light: '222,202,170' });
   const oak = std({ map: tex(oakC.map, { rotate: Math.PI / 2 }), roughness: 0.6 }, [0.8, 0.8]);
 
-  // Sand leather for the banquette; the single scarlet from the Still Becoming campaign.
+  // Sand leather for the banquette.
   const leatherC = S.leather({ width: half, height: half, base: '#b69876' });
   const leather = std({ map: tex(leatherC.map), bumpMap: tex(leatherC.bump, { srgb: false }), bumpScale: 0.7, roughness: 0.48, envMapIntensity: 0.8 }, [0.9, 0.9]);
-  const scarletC = S.leather({ width: half / 2, height: half / 2, seed: 14, base: '#7c1c23' });
-  const leatherScarlet = std({ map: tex(scarletC.map), bumpMap: tex(scarletC.bump, { srgb: false }), bumpScale: 0.7, roughness: 0.4, envMapIntensity: 0.9 }, [0.6, 0.6]);
 
   const boucleC = S.boucle({ width: half / 2, height: half / 2 });
   const boucle = std({ map: tex(boucleC.map), bumpMap: tex(boucleC.bump, { srgb: false }), bumpScale: 2, roughness: 1 }, [0.35, 0.35]);
@@ -128,9 +122,9 @@ export function createMaterials(renderer, quality) {
 
   return {
     tex,
-    floor, cladding, claddingRough, blackStone, slab, slabWarm, noce,
+    floor, claddingRough, blackStone, slab, slabWarm, noce,
     plaster: plasterMat, ceiling,
-    wood, oak, leather, leatherScarlet, boucle, rug, linen, curtain, steel,
+    wood, oak, leather, boucle, rug, linen, curtain, steel,
     evergreen, evergreenPaint, facade, pavement, sheer, sail,
     paperMap, glowMap,
     // Hidden-light pieces: the LED line itself, and the soft spill it throws on walls.
@@ -146,7 +140,6 @@ export function createMaterials(renderer, quality) {
     ceramicDark: new THREE.MeshStandardMaterial({ color: 0x8a7560, roughness: 0.5 }),
     glass: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.04, metalness: 0, transparent: true, opacity: 0.16, depthWrite: false, envMapIntensity: 1.4 }),
     leaf: new THREE.MeshStandardMaterial({ color: 0x7c8b68, roughness: 0.75, side: THREE.DoubleSide }),
-    leafLight: new THREE.MeshStandardMaterial({ color: 0xa3ad8f, roughness: 0.75, side: THREE.DoubleSide }),
     trunk: new THREE.MeshStandardMaterial({ color: 0x6b5c4b, roughness: 0.9 }),
     soil: new THREE.MeshStandardMaterial({ color: 0x3a2b20, roughness: 1 }),
     linenShade: new THREE.MeshStandardMaterial({ color: 0xf1e6d2, roughness: 1, emissive: 0xffd9a0, emissiveIntensity: 0.55, side: THREE.DoubleSide }),

@@ -22,7 +22,7 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 - [ ] Create the GitHub repo, push, enable Pages (Source: GitHub Actions) — see README.
 - [ ] Custom domain `lounge.increments.ca` (DNS CNAME → `<user>.github.io`), enforce HTTPS.
 - [ ] Run *Refresh catalog* once from the Actions tab to confirm the schedule works.
-- [ ] Swap `og:image` in `index.html` for a Lounge render hosted on the final domain (e.g. copy `docs/shots/desktop-01-entrance.jpg` to `assets/og.jpg`, reference it with the absolute URL).
+- [ ] Link previews use `assets/og.jpg` (the storefront render). If you move to `lounge.increments.ca`, update the two absolute `og:image` / `twitter:image` URLs in `index.html`.
 
 ## 2. QA checklist
 
