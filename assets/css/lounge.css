@@ -123,7 +123,10 @@ svg { display: block; }
   transition: opacity 1.4s var(--ease-out);
 }
 body.is-ready #scene { opacity: 1; }
+body.is-entered #scene { cursor: grab; }
 body.is-pointer #scene { cursor: pointer; }
+body.is-dragging #scene { cursor: grabbing; }
+body.is-leaning .caption { opacity: 0 !important; pointer-events: none !important; }
 
 /* Film grain + a warm vignette over the canvas: cheap, and it does a lot of the "photographed" feel. */
 .grain {
@@ -327,9 +330,23 @@ body.is-entered .topbar { opacity: 1; transform: none; }
 .chip__count.bump { animation: bump 0.5s var(--ease-out); }
 @keyframes bump { 40% { transform: scale(1.45); } }
 [data-stamp-count] { background: var(--scarlet); }
-[data-sound] .i-sound-on { display: none; }
-[data-sound][aria-pressed="true"] .i-sound-on { display: block; }
-[data-sound][aria-pressed="true"] .i-sound-off { display: none; }
+/* Atmosphere chip: shows the time of day the room is in; a dot when sound is on. */
+.i-time { display: none; }
+html:not([data-time]) .i-time--morning,
+html[data-time="morning"] .i-time--morning,
+html[data-time="golden"] .i-time--golden,
+html[data-time="evening"] .i-time--evening { display: block; }
+.chip__dot {
+  position: absolute;
+  top: 7px; right: 7px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--scarlet);
+  box-shadow: 0 0 0 2px var(--paper);
+  transform: scale(0);
+  transition: transform 0.35s var(--ease-out);
+}
+body.has-sound .chip__dot { transform: scale(1); }
 
 @media (max-width: 380px) {
   .topbar__actions { gap: 4px; }
@@ -1159,4 +1176,253 @@ dialog::backdrop {
 @media (forced-colors: active) {
   .hotspot__dot::before { forced-color-adjust: none; background: Canvas; border: 2px solid CanvasText; }
   .chip, .dock, .caption { border: 1px solid CanvasText; }
+}
+
+
+/* --------------------------------------------------------------------------
+   Look-around hint (first visit only)
+   -------------------------------------------------------------------------- */
+
+.lookhint {
+  position: fixed;
+  z-index: 3;
+  left: 50%;
+  top: 44%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  font-size: 13.5px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  pointer-events: none;
+}
+.lookhint.is-shown { opacity: 1; transform: translate(-50%, 0); }
+.lookhint::before {
+  content: "";
+  width: 30px; height: 18px;
+  flex: none;
+  background:
+    radial-gradient(circle at 50% 50%, var(--espresso) 0 3.5px, transparent 4px) 0 0 / 100% 100% no-repeat,
+    linear-gradient(90deg, transparent 0 2px, var(--hairline-strong) 2px calc(100% - 2px), transparent calc(100% - 2px)) 0 50% / 100% 1px no-repeat;
+  animation: look-nudge 2.4s var(--ease-in-out) infinite;
+}
+@keyframes look-nudge {
+  0%, 100% { background-position: 0 0, 0 50%; }
+  30% { background-position: -9px 0, 0 50%; }
+  70% { background-position: 9px 0, 0 50%; }
+}
+
+/* --------------------------------------------------------------------------
+   The walk
+   -------------------------------------------------------------------------- */
+
+.walkbar {
+  position: fixed;
+  z-index: 6;
+  left: 50%;
+  top: calc(var(--safe-top) + 70px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 6px 6px 16px;
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  transform: translate(-50%, -8px);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.walkbar[hidden] { display: none; }
+.walkbar.is-shown { opacity: 1; transform: translate(-50%, 0); }
+.walkbar__label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+}
+.walkbar__step {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+.walkbar__progress {
+  position: relative;
+  width: 64px;
+  height: 2px;
+  background: var(--hairline);
+  overflow: hidden;
+}
+.walkbar__progress i {
+  position: absolute;
+  inset: 0;
+  background: var(--scarlet);
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}
+.walkbar__stop {
+  border: 0;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--espresso);
+  color: var(--paper);
+  font: 500 13px/1 var(--font-ui);
+  letter-spacing: 0.02em;
+}
+.walkbar__stop:hover { background: var(--espresso-2); }
+body.is-walking .hotspots { opacity: 0.85; }
+@media (max-width: 420px) {
+  .walkbar { gap: 9px; padding-left: 13px; }
+  .walkbar__progress { width: 40px; }
+}
+
+/* --------------------------------------------------------------------------
+   Atmosphere panel
+   -------------------------------------------------------------------------- */
+
+.atmos__heading {
+  margin: 4px 0 10px;
+  font: 500 10.5px/1.2 var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--scarlet);
+}
+.atmos__heading ~ .atmos__heading { margin-top: 22px; }
+.atmos__times { display: grid; gap: 6px; }
+.atmos__time, .atmos__switch {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.35);
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  transition: border-color 0.2s, background 0.2s;
+}
+.atmos__time:hover, .atmos__switch:hover { border-color: var(--hairline-strong); }
+.atmos__time[aria-checked="true"] { border-color: var(--espresso); background: rgba(255, 255, 255, 0.7); box-shadow: inset 0 0 0 1px var(--espresso); }
+.atmos__swatch {
+  flex: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(42, 29, 22, 0.15);
+}
+.atmos__time--auto .atmos__swatch { background: conic-gradient(from 200deg, #f7ecdc, #f4c894, #2f3a55, #f7ecdc); }
+.atmos__time--morning .atmos__swatch { background: radial-gradient(circle at 34% 30%, #fffaf0 0 18%, #f6e7cf 45%, #e7d3b5); }
+.atmos__time--golden .atmos__swatch { background: radial-gradient(circle at 30% 64%, #ffe1a8 0 16%, #f1b777 46%, #c98a58); }
+.atmos__time--evening .atmos__swatch { background: radial-gradient(circle at 66% 30%, #ffd79a 0 7%, #3d4868 26%, #1d2436); }
+.atmos__text { display: grid; gap: 1px; min-width: 0; flex: 1; }
+.atmos__label { font-family: var(--font-display); font-size: 19px; line-height: 1.15; }
+.atmos__time[aria-checked="true"] .atmos__label { font-style: italic; }
+.atmos__sub { font-size: 13px; color: var(--ink-soft); }
+.atmos__toggle {
+  position: relative;
+  flex: none;
+  width: 46px; height: 28px;
+  border-radius: 14px;
+  background: var(--hairline);
+  transition: background 0.25s;
+}
+.atmos__toggle::after {
+  content: "";
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(42, 29, 22, 0.3);
+  transition: transform 0.3s var(--ease-out);
+}
+.atmos__switch[aria-checked="true"] .atmos__toggle { background: var(--scarlet); }
+.atmos__switch[aria-checked="true"] .atmos__toggle::after { transform: translateX(18px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lookhint::before { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Shared notice board: composer sharing + "Read the board"
+   -------------------------------------------------------------------------- */
+
+.composer__share {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.4);
+}
+.composer__check { display: flex; align-items: flex-start; gap: 10px; font-size: 14.5px; cursor: pointer; }
+.composer__check input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--scarlet); flex: none; }
+.composer__who { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.composer__who[hidden] { display: none; }
+.composer__who label { display: grid; gap: 3px; }
+.composer__who span { font: 500 10.5px/1.2 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+.composer__who input {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 2px;
+  background: #fffdf8;
+  font: 16px var(--font-ui); /* 16px keeps iOS from zooming in */
+  color: var(--ink);
+}
+.composer__fine { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-soft); }
+.composer__status { margin: 8px 0 0; font-size: 13.5px; color: var(--scarlet); min-height: 0; }
+.composer__status:empty { display: none; }
+
+.boardpanel__intro { margin: 0 0 14px; color: var(--ink-soft); font-size: 14.5px; }
+.boardpanel__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.boardpanel__loading, .boardpanel__empty { grid-column: 1 / -1; margin: 12px 0; color: var(--ink-soft); font-style: italic; font-family: var(--font-display); font-size: 18px; }
+.note-card {
+  position: relative;
+  margin: 0;
+  padding: 18px 14px 12px;
+  background: #fbf6ea;
+  box-shadow: 0 10px 22px -16px rgba(42, 29, 22, 0.55), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  transform: rotate(var(--r, -0.6deg));
+}
+.note-card:nth-child(3n + 2) { --r: 0.8deg; background: #f6eedd; }
+.note-card:nth-child(3n) { --r: -1.1deg; background: #fdf8ef; }
+.note-card::before {
+  content: "";
+  position: absolute;
+  top: 6px; left: 50%;
+  width: 10px; height: 10px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: var(--evergreen);
+  box-shadow: 0 2px 3px rgba(42, 29, 22, 0.3);
+}
+.note-card.is-own::before { background: var(--scarlet); }
+.note-card blockquote { margin: 0; font: 500 22px/1.12 var(--font-hand); color: var(--espresso); overflow-wrap: anywhere; }
+.note-card figcaption { margin-top: 8px; font: 500 17px/1.1 var(--font-hand); color: var(--ink-soft); }
+.note-card figcaption small { font: 10px var(--font-mono); letter-spacing: 0.08em; }
+
+/* Lean-in: the product sheet is shorter on phones, and the room stays clear behind it,
+   so the piece you stepped up to stays in view above the details. */
+.is-lean::backdrop { background: rgba(42, 29, 22, 0.06); -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (max-width: 899px) {
+  .dialog--sheet.is-lean, .dialog--sheet.is-lean .panel { max-height: 61dvh; }
 }

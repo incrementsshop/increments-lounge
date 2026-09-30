@@ -1,0 +1,24 @@
+{
+ "version": 1790747136813,
+ "scale": 4,
+ "gain": 1,
+ "sets": [
+  "morning",
+  "golden",
+  "evening"
+ ],
+ "surfaces": [
+  "floor",
+  "ceiling",
+  "wall-left",
+  "wall-back",
+  "wall-right",
+  "wall-front",
+  "corner-0",
+  "corner-1",
+  "corner-2",
+  "corner-3"
+ ],
+ "samples": 320,
+ "bakedAt": "2026-09-30T05:45:36.813Z"
+}

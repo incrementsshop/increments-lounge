@@ -10,11 +10,17 @@ A one-off, walk-in digital boutique for [Increments](https://increments.ca): a s
 | **Movement** | **The Archive** | **Notice Board** |
 | ![](docs/shots/desktop-05-movement.jpg) | ![](docs/shots/desktop-06-archive.jpg) | ![](docs/shots/desktop-07-board.jpg) |
 
-On a phone, every station has its own portrait framing:
+The room follows the visitor's clock — morning, golden hour, evening — with light that's pre-calculated for each:
 
-| | | | | |
-|---|---|---|---|---|
-| ![](docs/shots/mobile-01-entrance.jpg) | ![](docs/shots/mobile-02-window.jpg) | ![](docs/shots/mobile-03-counter.jpg) | ![](docs/shots/mobile-04-lounge.jpg) | ![](docs/shots/mobile-06-archive.jpg) |
+| Morning | Golden hour | Evening |
+|---|---|---|
+| ![](docs/shots/time-morning.jpg) | ![](docs/shots/time-golden.jpg) | ![](docs/shots/time-evening.jpg) |
+
+On a phone, every station has its own portrait framing (the board is shown with `?boardDemo` sample notes):
+
+| | | | | | |
+|---|---|---|---|---|---|
+| ![](docs/shots/mobile-01-entrance.jpg) | ![](docs/shots/mobile-02-window.jpg) | ![](docs/shots/mobile-03-counter.jpg) | ![](docs/shots/mobile-04-lounge.jpg) | ![](docs/shots/mobile-06-archive.jpg) | ![](docs/shots/mobile-07-board.jpg) |
 
 ---
 
@@ -25,18 +31,28 @@ The brand speaks in steps and chapters: "Small steps, big accomplishments", "The
 | Station | What's there | What it does for the shop |
 |---|---|---|
 | **01 Step inside** | The whole room: floating ceiling, glowing cove, curved corners | Orientation; the stamp card starts |
-| **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight. Scarlet leather cushions on the lowest steps (after the campaign's red seats) | The new drop |
+| **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight | The new drop |
 | **03 The Collection** | A rough-hewn travertine counter before a black split-stone wall, lit by grazing light; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till" | The whole range, and easy add-ons |
 | **04 The Lounge** | Sand leather banquette, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
 | **05 Movement** | Steel rack of pegged prints in front of two arched fitting rooms with linen curtains | Activewear |
 | **06 The Archive** | Travertine shelves lit from within, one book spine per past piece; *Life unfolds in increments. You define your story.* raised on the stone above | Brand story; the last few pieces still in stock |
-| **07 Notice Board** | Linen board: team quotes, Polaroids, and "Your next increment" | Community + shareable UGC |
+| **07 Notice Board** | Linen board: team quotes, Polaroids, "Your next increment", and *Notes from the Lounge* — other visitors' next steps, approved by the team | Community + shareable UGC |
 
 Three mechanics tie it to the name:
 
 - **The stamp card** — eight increments (visit stations, order something, pin your increment). Optional reward code applied at checkout when full.
-- **Your next increment** — visitors write the next small step they're taking; it's pinned to the board in the room and rendered as a 1080×1920 story card to share or save. Made on-device, nothing uploaded.
+- **Your next increment** — visitors write the next small step they're taking; it's pinned to the board in the room and rendered as a 1080×1920 story card to share or save, made on-device. Optionally it goes up on the **shared board** for everyone, once the team has read it ([docs/BOARD.md](docs/BOARD.md)).
 - **The bag** — a boutique receipt. "Pay at the counter" drops the shopper into the Increments checkout with everything already in the cart.
+
+## Moving through the room
+
+A guided visit, not a video game: seven framed stations you glide between, with room to linger.
+
+- **Stations.** Arrows in the dock, swipe, the station list, ←/→ or 1–7. Every move is a slow, composed camera glide.
+- **Look around.** Drag anywhere to turn your head — about 38° each way, and a little up and down. Let go and the view drifts back to the composed shot. Keep pulling past the edge and you walk on to the next station.
+- **Lean in.** Tap a piece in the room (or its label) and you step up to it; its details open beside it — to the side on a computer, below it on a phone, where the sheet is shorter so the piece stays in view. Close the details and you step back.
+- **Take the walk.** From the entrance, a slow guided loop through all seven stations, lingering and easing in at each. Any touch, key or scroll hands control back.
+- **Atmosphere** (the sun/moon in the top bar). Time of day — follows the visitor's clock unless they pick one — and the room's sound.
 
 ## How it's built
 
@@ -45,7 +61,9 @@ Three mechanics tie it to the name:
 - **Real products, real stock.** `data/catalog.json` is a snapshot of the Shopify store (`/products.json`), refreshed hourly by a GitHub Action. Every variant's availability drives the size/colour pickers.
 - **Photos become objects.** Flat product shots on plain backgrounds are cut out in the browser (`scene/cutout.js`: edge flood-fill, colour-decontaminated edges) and stood up in the room. On-model photos are framed or pegged instead. If a colourway has no clean shot, it's found among the product's other images by matching the garment's average colour to the swatch.
 - **Checkout via Shopify cart permalinks** — `https://increments.ca/cart/<variant>:<qty>,…` with UTM tags, `ref`, and a `Found in: The Increments Lounge` cart attribute on every order. No API token, no backend. Verified against the live store.
-- **Light you don't see the source of**: a floating ceiling whose cove washes every wall, lit niches and shelves, a grazing light down the black stone, a round skylight pouring onto the olive, and the sun through real arched openings (so its patches on the floor are arch-shaped). Fake volumetric shafts with dust, contact shadows, neutral tone mapping so garment colours stay true.
+- **Light you don't see the source of**: a floating ceiling whose cove washes every wall, lit niches and shelves, a grazing light down the black stone, a round skylight pouring onto the olive, and the sun through real arched openings (so its patches on the floor are arch-shaped). Fake volumetric shafts with dust, neutral tone mapping so garment colours stay true.
+- **Pre-calculated lighting.** The room's shell (floor, walls, corners, ceiling) wears lightmaps baked in the browser by `tools/bake.html`: hundreds of passes with a soft sun, sky light through the windows and skylight, the cove LEDs, the lamps and one bounce off the floor, with every piece of furniture casting soft shadows. One set per time of day, ~85 KB each. The shell then needs no live lights at all — richer light for less work on a phone — while garments and furniture stay lit live so they can sway. Stone keeps its real reflections, shaded by the bake so corners and the floor under the island stay grounded.
+- **Time of day.** `scene/lighting.js` fades every light, the street outside, the skylight, the dust and the lightmap set between morning, golden hour and evening.
 
 ```
 index.html                 page shell (HUD, dock, intro, dialog layer)
@@ -62,12 +80,17 @@ assets/js/
     furniture.js           the Steps + olive, black wall + plaque, rough counter, fitting rooms, rack, banquette, archive + brand line, island, board…
     displays.js            puts the catalog into the room; hotspots
     fx.js                  window shafts, skylight column, dust (GPU-animated)
-    stations.js            the seven stations + camera rig (landscape & portrait framing)
+    stations.js            the seven stations + camera rig (framing, glides, look-around, lean-in)
+    lighting.js            time of day: presets, the street outside, fades
+    lightmaps.js           baked light for the shell (shared with the baker so UVs always match)
     cutout.js              product photo → cut-out or print
-  ui/                      hud, hotspots, dialogs, product sheet, bag, collection list, stamp card, archive, composer
+  board.js                 the shared notice board (Supabase, pre-moderated)
+  ui/                      hud, hotspots, dialogs, product sheet, bag, collection list, stamp card, archive, composer, atmosphere, board panel
+assets/lightmaps/          baked light: <time>/<surface>.webp + manifest.json (generated)
 data/catalog.json          store snapshot (generated)
 data/merch.json            ← merchandising rules: which products go where, swatch colours
-tools/                     refresh_catalog.py, serve.py, contact-sheet.html (cut-out QA), stone-lab.html, scene-test.html
+tools/                     refresh_catalog.py, serve.py, bake.html + baker.js (lightmaps), contact-sheet.html (cut-out QA), stone-lab.html, scene-test.html
+docs/                      LAUNCH.md, BOARD.md + board-setup.sql, shots/
 ```
 
 ## Run it locally
@@ -78,7 +101,7 @@ python3 tools/serve.py
 
 Then open <http://localhost:8420>. (`serve.py` is `http.server` with caching turned off so module edits show on reload.)
 
-Useful URL flags: `?quality=low|mid|high` forces a tier, `?debug` logs analytics events to the console, `#counter` (or any station id) deep-links to a station.
+Useful URL flags: `?quality=low|mid|high` forces a tier, `?time=morning|golden|evening` forces the time of day, `?boardDemo` fills the notice board with labelled sample notes, `?debug` logs analytics events to the console, `#counter` (or any station id) deep-links to a station.
 
 ## Change what's in the room
 
@@ -91,6 +114,8 @@ Useful URL flags: `?quality=low|mid|high` forces a tier, `?debug` logs analytics
 | Rename the campaign in UTMs | `attribution` in `config.js` |
 | Station copy and camera framing | `assets/js/scene/stations.js` |
 | Check how every product photo will cut out | open `/tools/contact-sheet.html` locally |
+| Re-bake the lighting (after moving walls or furniture, or tuning a time of day in `scene/lighting.js → TIMES.*.bake`) | run `serve.py`, open `/tools/bake.html`, press **Bake** (~20 s), commit `assets/lightmaps/` |
+| Switch on the shared notice board | [docs/BOARD.md](docs/BOARD.md) — a free Supabase project and two values in `config.js` |
 
 The Steps look for a hoodie + sweat pair in the `window` zone (three colourways, one per step); the lounge niche for the same in `lounge`. The campaign photo is `featured.campaignImage` in `merch.json`. Movement prints and the till case take whatever is in their zones. The archive groups by `chapters` in `merch.json`.
 
@@ -109,22 +134,24 @@ The Steps look for a hoodie + sweat pair in the `window` zone (three colourways,
 
 - Everything in the room is reachable without the canvas: hotspots are real `<button>`s pinned to 3D positions; "Skip the lounge — shop the collection" is the first focusable element; the Collection (the Shop button) is a complete, accessible list of the range.
 - Native `<dialog>` for every panel (focus trap, Esc, inert background). Radio-group semantics and arrow keys for colour/size. Station changes are announced via a live region.
-- Keyboard: ←/→ between stations, 1–7 to jump, M for the collection list.
-- `prefers-reduced-motion`: camera cuts instead of glides, no drift/parallax, no ripples.
-- Phones: portrait-specific camera framing per station, the view's centre is lifted above the caption/dock, swipe to move, bottom sheets with drag-to-close, 44 px targets, safe-area insets.
+- Keyboard: ←/→ between stations, 1–7 to jump, M for the collection list. Look-around is a pointer extra; nothing depends on it.
+- `prefers-reduced-motion`: camera cuts instead of glides (including lean-in and the walk), no drift/parallax, no push-in, no ripples, and time-of-day changes are instant.
+- The walk announces itself to screen readers and stops on any key.
+- Phones: portrait-specific camera framing per station, the view's centre is lifted above the caption/dock, drag to look / pull or swipe to move, bottom sheets with drag-to-close, 44 px targets, safe-area insets.
 - No WebGL (or it fails): the intro offers the Collection, which is the whole shop.
 
 ## Performance
 
 - Quality tiers (`low`/`mid`/`high`) from device signals + Save-Data; textures 1K on phones, 2K on desktop.
 - Adaptive resolution: if frames run long for ~2 s the render resolution steps down (and back up when there's headroom).
-- The shadow map is only re-rendered while pieces are arriving (the sun doesn't move).
+- The shadow map is only re-rendered while pieces are arriving or the time of day changes.
+- The shell's light is baked (≈250 KB for all three times), so floor, walls and ceiling cost one texture lookup instead of every light in the room.
 - Rendering pauses behind the full-screen collection list and in background tabs; audio suspends too.
 - Product images are requested at the size they're shown via Shopify's CDN `width=` parameter.
 
 ## Analytics
 
-Every interaction is pushed to `window.dataLayer` as `lounge_<event>` (ready for GTM/GA4/Meta). Set `analytics.ga4` in `config.js` to load GA4 directly. Events: `open`, `enter`, `station_view`, `product_open`, `colour_select`, `size_select`, `add_to_tray`, `tray_open`, `checkout_click`, `menu_open`, `stamp_earned`, `card_complete`, `archive_open`, `increment_created`, `increment_shared`, `sound_toggle`, `newsletter_click`, `quality_change`, `webgl_unavailable`, `closed_view`, `boot_error`. (Event names predate the boutique wording: `tray` is the bag, `menu` is the collection list.)
+Every interaction is pushed to `window.dataLayer` as `lounge_<event>` (ready for GTM/GA4/Meta). Set `analytics.ga4` in `config.js` to load GA4 directly. Events: `open`, `enter`, `station_view`, `product_open`, `colour_select`, `size_select`, `add_to_tray`, `tray_open`, `checkout_click`, `menu_open`, `stamp_earned`, `card_complete`, `archive_open`, `increment_created`, `increment_shared`, `increment_submitted`, `increment_submit_failed`, `board_open`, `look_around`, `lean_in`, `walk_start`, `walk_end`, `time_select`, `sound_toggle`, `newsletter_click`, `quality_change`, `webgl_unavailable`, `closed_view`, `boot_error`. (Event names predate the boutique wording: `tray` is the bag, `menu` is the collection list.)
 
 In Shopify, Lounge orders carry the cart attribute **Found in: The Increments Lounge** and arrive with `utm_source=increments-lounge`.
 

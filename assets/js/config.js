@@ -40,5 +40,15 @@ export const CONFIG = {
     debug: new URLSearchParams(location.search).has('debug'),
   },
 
+  // The shared notice board (optional). Fill these in from Supabase → Project Settings →
+  // API to let visitors' notes go up for everyone once the team approves them; leave them
+  // empty and each visitor only sees their own notes. The anon key is meant to be public:
+  // the database only lets it add notes for review and read approved ones. See docs/BOARD.md.
+  board: {
+    supabaseUrl: '',
+    anonKey: '',
+    table: 'increments',
+  },
+
   newsletterUrl: 'https://increments.ca/#shopify-section-footer',
 };

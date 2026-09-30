@@ -54,5 +54,5 @@ export const BANQUETTE = { x: 6.62, z: 0.1, len: 5.6 };
 export const LOUNGE_TABLES = [[5.72, -1.25], [5.72, 1.45]];
 
 export const ISLAND = { x: 1.55, z: -0.35, len: 2.6, w: 0.95 };
-export const NOTICE_BOARD = { x: 3.55, y: 1.62, z: 5.46, w: 2.4, h: 1.4 };
+export const NOTICE_BOARD = { x: 3.5, y: 1.64, z: 5.46, w: 3.3, h: 1.76 };
 export const CAMPAIGN_PRINT = { z: -3.45 };

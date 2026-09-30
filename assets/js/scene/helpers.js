@@ -91,6 +91,7 @@ export function contactShadow(w, d, { round = false, opacity = 0.5, y = 0.002 } 
   m.scale.set(w * (round ? 1.5 : 1.75), 1, d * (round ? 1.5 : 1.75));
   m.position.y = y;
   m.renderOrder = -1;
+  m.userData.fake = 'contact';
   return m;
 }
 
@@ -101,6 +102,7 @@ export function aoStrip(length, width, opacity = 0.32) {
   g.translate(0, -width / 2, 0); // top edge at the origin, fading downward (local -y)
   const m = new THREE.Mesh(g, shadowMaterial(stripTex, opacity));
   m.renderOrder = -1;
+  m.userData.fake = 'ao';
   return m;
 }
 

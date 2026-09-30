@@ -4,10 +4,13 @@ import { travertineTiles } from '../scene/stone.js';
 import { wrap } from '../scene/displays.js';
 import { CONFIG } from '../config.js';
 import { track } from '../analytics.js';
+import { validateNote, NOTE_LIMITS } from '../board.js';
 
 // "Pin your next increment": the visitor writes the next small step they're taking.
 // It's pinned to the notice board in the room and rendered as a 1080×1920 story card
-// they can share or save. Everything happens on-device; nothing is uploaded.
+// they can share or save — all on-device. If the shared board is switched on (board.js),
+// they can also send the note (and, optionally, a first name and city) for the team to
+// approve; nothing else ever leaves the device.
 
 const KEY = 'increments-lounge:increments';
 const MAX = 80;
@@ -20,7 +23,9 @@ export function savedIncrements() {
 export function openComposer(app) {
   let text = '';
   let lastBlob = null;
-  openDialog({
+  const shared = !!app.board?.shared;
+  let shareBox = null, nameIn = null, cityIn = null;
+  return openDialog({
     variant: 'center',
     title: 'Your next <em>increment</em>',
     kicker: 'Notice board',
@@ -41,7 +46,22 @@ export function openComposer(app) {
         body.dispatchEvent(new Event('text'));
       };
       area.addEventListener('input', update);
-      body.append(h('label', { for: id, class: 'sr-only' }, 'Your next increment'), area, count, chips, preview);
+      let share = null;
+      if (shared) {
+        shareBox = h('input', { type: 'checkbox', checked: true });
+        nameIn = h('input', { type: 'text', maxlength: NOTE_LIMITS.name, autocomplete: 'given-name', placeholder: 'Optional', spellcheck: 'false' });
+        cityIn = h('input', { type: 'text', maxlength: NOTE_LIMITS.city, autocomplete: 'address-level2', placeholder: 'Optional', spellcheck: 'false' });
+        const who = h('div', { class: 'composer__who' },
+          h('label', {}, h('span', {}, 'First name'), nameIn),
+          h('label', {}, h('span', {}, 'City'), cityIn));
+        shareBox.addEventListener('change', () => { who.hidden = !shareBox.checked; body.dispatchEvent(new Event('text')); });
+        share = h('fieldset', { class: 'composer__share' },
+          h('legend', { class: 'sr-only' }, 'Share on the Lounge board'),
+          h('label', { class: 'composer__check' }, shareBox, h('span', {}, 'Also put it up on the Lounge board for everyone')),
+          who,
+          h('p', { class: 'composer__fine' }, 'The Increments team reads every note before it goes up. No links or contact details, please.'));
+      }
+      body.append(h('label', { for: id, class: 'sr-only' }, 'Your next increment'), area, count, chips, share, preview);
       requestAnimationFrame(update);
     },
     foot(foot, api) {
@@ -49,18 +69,43 @@ export function openComposer(app) {
       const shareBtn = h('button', { class: 'button button--block', type: 'button', disabled: true, style: { marginTop: '8px' } }, iconEl('share'), 'Share your card');
       const canShareFiles = !!(navigator.canShare && navigator.share);
       if (!canShareFiles) shareBtn.replaceChildren(iconEl('download'), 'Save your card');
-      api.body.addEventListener('text', () => { pinBtn.disabled = !text; shareBtn.disabled = !text; });
+      const status = h('p', { class: 'composer__status', role: 'status' });
+      let pinned = false;
+      api.body.addEventListener('text', () => {
+        if (!pinned) pinBtn.disabled = !text;
+        shareBtn.disabled = !text;
+        status.textContent = '';
+      });
 
-      pinBtn.onclick = () => {
+      pinBtn.onclick = async () => {
+        const sharing = !!shareBox?.checked;
+        const problem = sharing ? validateNote({ text, name: nameIn.value, city: cityIn.value }) : null;
+        if (problem) { status.textContent = problem; return; }
+        pinned = true;
+        pinBtn.disabled = true;
         const list = savedIncrements();
         list.push({ text, at: Date.now() });
         try { localStorage.setItem(KEY, JSON.stringify(list.slice(-4))); } catch { /* ignore */ }
-        app.displays?.pinIncrement(text, list.length - 1);
+        app.displays?.pinIncrement(text);
         app.stamps.earn('increment');
-        track('increment_created', { length: text.length });
-        app.hud.toast('Pinned to the board. Small steps.');
-        pinBtn.disabled = true;
-        pinBtn.replaceChildren(iconEl('check'), 'Pinned');
+        track('increment_created', { length: text.length, shared: sharing });
+        if (!sharing) {
+          app.hud.toast('Pinned to the board. Small steps.');
+          pinBtn.replaceChildren(iconEl('check'), 'Pinned');
+          return;
+        }
+        pinBtn.replaceChildren('Sending to the board…');
+        const res = await app.board.submit({ text, name: nameIn.value, city: cityIn.value });
+        if (res.ok) {
+          track('increment_submitted');
+          pinBtn.replaceChildren(iconEl('check'), 'Pinned — waiting for the team');
+          status.textContent = 'It’s on your board now, and it goes up for everyone once the team has read it.';
+          app.hud.toast('Pinned. It joins the shared board once it’s been read.', 3200);
+        } else {
+          track('increment_submit_failed');
+          pinBtn.replaceChildren(iconEl('check'), 'Pinned on your board');
+          status.textContent = res.error;
+        }
       };
 
       shareBtn.onclick = async () => {
@@ -81,7 +126,9 @@ export function openComposer(app) {
         track('increment_shared', { method: 'download' });
         app.stamps.earn('increment');
       };
-      foot.append(pinBtn, shareBtn, h('p', { class: 'product__note' }, 'Your card is made on this device — nothing is uploaded.'));
+      foot.append(pinBtn, shareBtn, status, h('p', { class: 'product__note' }, shared
+        ? 'Your card is made on this device. Sharing to the board sends only your note, and a first name and city if you add them.'
+        : 'Your card is made on this device — nothing is uploaded.'));
     },
   });
 }

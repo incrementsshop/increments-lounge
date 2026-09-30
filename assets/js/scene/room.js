@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { ROOM, WINDOWS, DOOR, SUN, CEILING, SKYLIGHT, FITTING_ROOMS, FITTING, LOUNGE_NICHE } from './layout.js';
 import { mesh, box, place, aoStrip } from './helpers.js';
 import { applyBoxUV } from './materials.js';
+import { streetCanvas } from './lighting.js';
 
 // The shell: floor; plaster walls with real openings (arched windows, arched fitting
 // rooms, a rounded niche) and curved corners; a floating ceiling whose hidden cove washes
@@ -23,6 +24,7 @@ export function buildRoom(scene, M, quality) {
   floorGeo.rotateX(-Math.PI / 2);
   const floor = mesh(floorGeo, M.floor, { cast: false });
   floor.name = 'floor';
+  const receivers = { floor, walls: {}, corners: [], slab: null };
   root.add(floor);
 
   const ceil = box(x1 - x0 + 0.6, 0.2, z1 - z0 + 0.6, M.ceiling);
@@ -40,6 +42,7 @@ export function buildRoom(scene, M, quality) {
   const slab = mesh(slabGeo, M.ceiling, { cast: false });
   slab.position.y = CEILING.drop + 0.06;
   root.add(slab);
+  receivers.slab = slab;
 
   // The cove: the band of ceiling between the floating slab and the walls, lit from above.
   const coveShape = roundedRect(x0 + 0.01, z0 + 0.01, x1 - 0.01, z1 - 0.01, R);
@@ -57,17 +60,17 @@ export function buildRoom(scene, M, quality) {
   root.add(L, B, Rt, F);
 
   // Window wall (u = +z).
-  solidWall(L, z0 + R, z1 - R, WINDOWS.map(w => archPath(w.z, w.w, w.sill, w.sill + 1.9)), mats);
+  receivers.walls.left = solidWall(L, z0 + R, z1 - R, WINDOWS.map(w => archPath(w.z, w.w, w.sill, w.sill + 1.9)), mats);
 
   // Back wall (u = -x): two arched fitting rooms, recessed.
   const fitPaths = FITTING_ROOMS.map(f => archPath(-f.x, f.w, 0, FITTING.spring));
-  solidWall(B, -(x1 - R), -(x0 + R), fitPaths, mats);
+  receivers.walls.back = solidWall(B, -(x1 - R), -(x0 + R), fitPaths, mats);
   fitPaths.forEach(p => recess(B, p, FITTING.depth, mats));
 
   // Lounge wall (u = -z): the rounded niche Worn hangs in.
   const n = LOUNGE_NICHE;
   const nichePath = roundedRectPath(-n.z1, n.y0, -n.z0, n.y1, n.radius);
-  solidWall(Rt, -(z1 - R), -(z0 + R), [nichePath], mats);
+  receivers.walls.right = solidWall(Rt, -(z1 - R), -(z0 + R), [nichePath], mats);
   recess(Rt, nichePath, n.depth, mats);
 
   // Street wall (u = +x), with the door.
@@ -75,7 +78,7 @@ export function buildRoom(scene, M, quality) {
   doorPath.moveTo(DOOR.x - DOOR.w / 2, 0); doorPath.lineTo(DOOR.x + DOOR.w / 2, 0);
   doorPath.lineTo(DOOR.x + DOOR.w / 2, DOOR.h); doorPath.lineTo(DOOR.x - DOOR.w / 2, DOOR.h);
   doorPath.lineTo(DOOR.x - DOOR.w / 2, 0);
-  solidWall(F, x0 + R, x1 - R, [doorPath], mats);
+  receivers.walls.front = solidWall(F, x0 + R, x1 - R, [doorPath], mats);
 
   // Curved corners.
   const corners = [
@@ -89,6 +92,7 @@ export function buildRoom(scene, M, quality) {
     c.position.set(cx, H / 2, cz);
     c.castShadow = c.receiveShadow = true;
     root.add(c);
+    receivers.corners.push(c);
   }
 
   for (const win of WINDOWS) root.add(windowAssembly(win, M));
@@ -111,6 +115,7 @@ export function buildRoom(scene, M, quality) {
     g.translate((u0 + u1) / 2, H - washH / 2, -0.012);
     const m = new THREE.Mesh(g, washMat);
     m.renderOrder = 4;
+    m.userData.fake = 'wash';
     fr.add(m);
   };
   straightWash(L, z0 + R, z1 - R);
@@ -122,6 +127,7 @@ export function buildRoom(scene, M, quality) {
     const m = new THREE.Mesh(g, washMat);
     m.position.set(cx, H - washH / 2, cz);
     m.renderOrder = 4;
+    m.userData.fake = 'wash';
     root.add(m);
   }
 
@@ -142,7 +148,9 @@ export function buildRoom(scene, M, quality) {
   root.add(sky);
 
   // --- The street outside --------------------------------------------------
-  const outside = streetBackdrop();
+  const outside = new THREE.MeshBasicMaterial({ toneMapped: false, fog: false });
+  outside.map = new THREE.CanvasTexture(streetCanvas('morning'));
+  outside.map.colorSpace = THREE.SRGBColorSpace;
   const west = new THREE.Mesh(new THREE.PlaneGeometry(40, 16), outside);
   west.position.set(x0 - 5, 4, 0);
   west.rotation.y = Math.PI / 2;
@@ -195,12 +203,17 @@ export function buildRoom(scene, M, quality) {
   sun.shadow.radius = 3;
   root.add(sun, sun.target);
 
-  root.add(new THREE.HemisphereLight(0xfff0db, 0xdcc4a0, 0.7));
+  const hemi = new THREE.HemisphereLight(0xfff0db, 0xdcc4a0, 0.7);
+  root.add(hemi);
   const fill = new THREE.DirectionalLight(0xffe8d0, 0.26);
   fill.position.set(6, 5, 7);
   root.add(fill);
 
-  return { root, sun, anchors: { skylight: { ...SKYLIGHT, y: CEILING.drop } } };
+  return {
+    root, sun, hemi, fill, cove, washMat, receivers,
+    skyPane: pane, skyLight, street: outside,
+    anchors: { skylight: { ...SKYLIGHT, y: CEILING.drop } },
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -335,29 +348,4 @@ function door(M) {
   g.add(place(box(w, 0.012, T + 0.02, M.slabWarm, { cast: false }), x, 0.006, z1 + T / 2));
   g.add(place(box(1.2, 0.012, 0.7, new THREE.MeshStandardMaterial({ color: 0x9a8a74, roughness: 1 }), { cast: false }), x, 0.006, z1 - 0.45));
   return g;
-}
-
-/** Soft morning street: haze, a limestone façade across the road, trees. Unlit and a touch overexposed. */
-function streetBackdrop() {
-  const c = document.createElement('canvas');
-  c.width = 1024; c.height = 512;
-  const ctx = c.getContext('2d');
-  const sky = ctx.createLinearGradient(0, 0, 0, 512);
-  sky.addColorStop(0, '#fbf6ee'); sky.addColorStop(0.55, '#f7ecdc'); sky.addColorStop(1, '#efe0c9');
-  ctx.fillStyle = sky; ctx.fillRect(0, 0, 1024, 512);
-  ctx.fillStyle = 'rgba(232,218,196,0.9)'; ctx.fillRect(0, 150, 1024, 362);
-  ctx.fillStyle = 'rgba(214,196,168,0.55)';
-  for (let px = 30; px < 1024; px += 150) { ctx.fillRect(px, 200, 60, 90); ctx.fillRect(px, 330, 60, 90); }
-  const blob = (bx, by, br, a) => {
-    const gr = ctx.createRadialGradient(bx, by, 0, bx, by, br);
-    gr.addColorStop(0, `rgba(150,160,128,${a})`); gr.addColorStop(1, 'rgba(150,160,128,0)');
-    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI * 2); ctx.fill();
-  };
-  for (let i = 0; i < 40; i++) blob(Math.random() * 1024, 120 + Math.random() * 160, 40 + Math.random() * 90, 0.18 + Math.random() * 0.2);
-  const haze = ctx.createLinearGradient(0, 0, 0, 512);
-  haze.addColorStop(0, 'rgba(255,250,242,0.2)'); haze.addColorStop(0.7, 'rgba(255,248,236,0.55)'); haze.addColorStop(1, 'rgba(255,248,236,0.3)');
-  ctx.fillStyle = haze; ctx.fillRect(0, 0, 1024, 512);
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return new THREE.MeshBasicMaterial({ map: t, toneMapped: false, fog: false });
 }

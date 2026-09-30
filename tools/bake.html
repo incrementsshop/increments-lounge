@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lightmap baker</title>
+<style>
+  body { margin: 0; background: #1d1714; color: #efe6d8; font: 13px/1.45 ui-monospace, Menlo, monospace; }
+  header { padding: 14px 18px; border-bottom: 1px solid #3a2e27; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  button { font: inherit; padding: 8px 14px; background: #efe6d8; color: #1d1714; border: 0; cursor: pointer; }
+  input { font: inherit; width: 70px; }
+  #status { opacity: 0.8; }
+  canvas#gl { display: none; }
+  main { padding: 16px 18px; display: grid; gap: 18px; }
+  .set h2 { margin: 0 0 8px; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
+  figure { margin: 0; }
+  figure canvas { display: block; max-height: 180px; width: auto; background: #000; }
+  figcaption { opacity: 0.7; margin-top: 3px; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<header>
+  <strong>Lightmap baker</strong>
+  <label>samples <input id="samples" type="number" value="320" min="16" max="2048"></label>
+  <label>times <input id="times" value="morning,golden,evening" style="width:220px"></label>
+  <label><input id="save" type="checkbox" checked> save to assets/lightmaps</label>
+  <button id="go" type="button">Bake</button>
+  <span id="status">Runs on this machine with tools/serve.py. Re-bake whenever the room's layout changes.</span>
+</header>
+<canvas id="gl" width="16" height="16"></canvas>
+<main id="out"></main>
+<script type="module">
+  import { bake } from './baker.js';
+  import { SCALE } from '../assets/js/scene/lightmaps.js';
+  const $ = id => document.getElementById(id);
+  const post = async (url, body) => { const r = await fetch(url, { method: 'POST', body }); if (!r.ok) throw new Error(`${url} → ${r.status}`); };
+
+  async function run() {
+    $('go').disabled = true;
+    const times = $('times').value.split(',').map(s => s.trim()).filter(Boolean);
+    const samples = Number($('samples').value) || 320;
+    const doSave = $('save').checked;
+    const sections = {};
+    for (const t of times) {
+      const sec = document.createElement('section'); sec.className = 'set';
+      sec.innerHTML = `<h2>${t}</h2><div class="row"></div>`;
+      $('out').append(sec); sections[t] = sec.querySelector('.row');
+    }
+    const started = performance.now();
+    const { surfaces } = await bake({
+      canvas: $('gl'), times, samples,
+      onProgress: (p, msg) => { $('status').textContent = `${Math.round(p * 100)}% · ${msg}`; },
+      save: async (time, name, canvas) => {
+        const fig = document.createElement('figure');
+        fig.append(canvas);
+        const cap = document.createElement('figcaption'); cap.textContent = `${name} ${canvas.width}×${canvas.height}`;
+        fig.append(cap);
+        sections[time].append(fig);
+        if (!doSave) return;
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/webp', 0.9));
+        await post(`/__capture?dir=lightmaps/${time}&name=${name}&ext=webp`, blob);
+      },
+    });
+    if (doSave) {
+      const manifest = { version: Date.now(), scale: SCALE, gain: 1, sets: times, surfaces, samples, bakedAt: new Date().toISOString() };
+      await post('/__capture?dir=lightmaps&name=manifest&ext=json', new Blob([JSON.stringify(manifest, null, 1)], { type: 'application/json' }));
+    }
+    $('status').textContent = `Done in ${((performance.now() - started) / 1000).toFixed(1)} s${doSave ? ' — saved to assets/lightmaps' : ''}.`;
+    $('go').disabled = false;
+    window.__bakeDone = true;
+  }
+  $('go').addEventListener('click', run);
+  window.__runBake = run;
+</script>
+</body>
+</html>

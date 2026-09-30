@@ -8,7 +8,7 @@ import { track } from '../analytics.js';
 // The product sheet: gallery, colour, size, add to bag. Variant availability comes
 // straight from the catalog, so sold-out sizes are shown but can't be picked.
 
-export function openProduct(app, handle, { colour, from } = {}) {
+export function openProduct(app, handle, { colour, from, lean = false } = {}) {
   const p = app.catalog.get(handle);
   if (!p) return;
   const zone = ZONES[p.zone];
@@ -25,11 +25,11 @@ export function openProduct(app, handle, { colour, from } = {}) {
 
   const kicker = p.zone === 'archive' ? `${p.chapter?.name || 'Archive'} · ${p.chapter?.year || ''}` : zone?.name;
 
-  openDialog({
+  return openDialog({
     variant: 'sheet',
     title: escapeHtml(p.title),
     kicker,
-    className: 'product',
+    className: `product${lean ? ' is-lean' : ''}`, // is-lean: a shorter sheet, the piece stays in view above it
     build(body) {
       const gallery = h('div', { class: 'product__gallery', role: 'group', 'aria-label': `${p.title} photos` });
       const renderGallery = () => {

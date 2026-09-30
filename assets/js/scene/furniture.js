@@ -279,15 +279,6 @@ function theSteps(M, A, quality) {
     g.add(step);
     const mid = (a0 + a1) / 2, rMid = (S.rIn + S.rOut) / 2 + 0.05;
     if (i === 2 || i === 5 || i === 8) A.outfits.push(new THREE.Vector3(S.x + Math.cos(mid) * rMid, hgt, S.z + Math.sin(mid) * rMid));
-    // The one scarlet: leather seat cushions on the two lowest steps, after the campaign's red seats.
-    if (i < 2) {
-      const cg = sectorGeometry(S.rIn + 0.14, S.rOut - 0.14, lo + 2.2 * DEG, hi - 2.2 * DEG, 0.03, { bevel: 0.022 });
-      applyBoxUV(cg, M.leatherScarlet.userData.uv);
-      const cushion = new THREE.Mesh(cg, M.leatherScarlet);
-      cushion.position.set(S.x, hgt + 0.022, S.z);
-      cushion.castShadow = cushion.receiveShadow = true;
-      g.add(cushion);
-    }
   }
   g.add(place(contactShadow(S.rOut * 2.1, S.rOut * 2.1, { round: true, opacity: 0.35 }), S.x, 0, S.z));
 
@@ -487,17 +478,17 @@ function lounge(M, A) {
   // Inside the niche: a slim rail hung from the niche head, an LED line, and the glow it throws.
   const inner = x1 + T;
   const railX = inner + 0.22, railY = n.y1 - 0.34;
-  const rail = cyl(0.012, 0.012, n.z1 - n.z0 - 0.7, M.steel);
+  const rail = cyl(0.012, 0.012, n.z1 - n.z0 - 0.5, M.steel);
   rail.rotation.x = Math.PI / 2;
   rail.position.set(railX, railY, (n.z0 + n.z1) / 2);
   g.add(rail);
-  for (const rz of [n.z0 + 0.45, n.z1 - 0.45]) g.add(place(cyl(0.005, 0.005, n.y1 - railY, M.steel, { segments: 6 }), railX, (n.y1 + railY) / 2, rz));
+  for (const rz of [n.z0 + 0.35, n.z1 - 0.35]) g.add(place(cyl(0.005, 0.005, n.y1 - railY, M.steel, { segments: 6 }), railX, (n.y1 + railY) / 2, rz));
   g.add(place(box(0.018, 0.01, n.z1 - n.z0 - 2 * n.radius, M.led, { cast: false, receive: false }), inner + 0.06, n.y1 - 0.012, (n.z0 + n.z1) / 2));
   const glow = new THREE.Mesh(new THREE.PlaneGeometry(n.z1 - n.z0 - 0.2, n.y1 - n.y0 - 0.1), M.wash(0xffd49e, 0.4));
   glow.rotation.y = -Math.PI / 2;
   glow.position.set(inner + n.depth - 0.012, (n.y0 + n.y1) / 2, (n.z0 + n.z1) / 2);
   g.add(glow);
-  A.loungeRail = { x: railX, y: railY, z0: n.z0 + 0.5, z1: n.z1 - 0.5 };
+  A.loungeRail = { x: railX, y: railY, z0: n.z0 + 0.62, z1: n.z1 - 0.62 };
   return g;
 }
 

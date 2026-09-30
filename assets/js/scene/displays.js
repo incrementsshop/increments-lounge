@@ -28,7 +28,6 @@ export class Displays {
     this.swayers = [];
     this.fadeIns = [];
     this.menuRows = [];
-    this.boardSlots = [];
     this.pinned = new THREE.Group();
     this.root.add(this.pinned);
   }
@@ -165,6 +164,7 @@ export class Displays {
     await Promise.all(this.A.outfits.slice(0, order.length).map(async (anchor, i) => {
       const colour = order[i];
       const g = new THREE.Group();
+      g.userData.outfit = true; // tapping either piece leans in on the whole outfit
       g.position.copy(anchor);
       g.rotation.y = this.facing(anchor, 'window');
       this.root.add(g);
@@ -181,7 +181,7 @@ export class Displays {
         pickable(m, { kind: 'product', handle: bottom.handle, colour, station: 'window' });
         g.add(m);
         waist = sh - 0.13;
-        if (i === 2) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, sh * 0.35, 0.05)), bottom.title, `$${formatShort(bottom.price)}`, { type: 'product', handle: bottom.handle, colour }, { flip: true });
+        if (i === 2) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, sh * 0.35, 0.05)), bottom.title, `$${formatShort(bottom.price)}`, { type: 'product', handle: bottom.handle, colour }, { flip: true, target: g });
       }
       if (hoodie) {
         const hw = 0.68;
@@ -191,7 +191,7 @@ export class Displays {
         m.castShadow = true;
         pickable(m, { kind: 'product', handle: top.handle, colour, station: 'window' });
         g.add(m);
-        if (i === 1) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, waist + hh * 0.55, 0.08)), top.title, `$${formatShort(top.price)}`, { type: 'product', handle: top.handle, colour }, { flip: true });
+        if (i === 1) this.hotspot('window', g.localToWorld(new THREE.Vector3(0, waist + hh * 0.55, 0.08)), top.title, `$${formatShort(top.price)}`, { type: 'product', handle: top.handle, colour }, { flip: true, target: g });
       } else {
         // No clean shot for this colourway: lean its campaign photo against the plinth instead.
         const src = top.imageFor(colour);
@@ -205,7 +205,7 @@ export class Displays {
           lean.add(frame);
           lean.position.set(0, -anchor.y, 0);
           g.add(lean);
-          if (i === 1) this.hotspot('window', g.localToWorld(new THREE.Vector3(0.1, 0.35 - anchor.y, 0.4)), top.title, `$${formatShort(top.price)}`, { type: 'product', handle: top.handle, colour });
+          if (i === 1) this.hotspot('window', g.localToWorld(new THREE.Vector3(0.1, 0.35 - anchor.y, 0.4)), top.title, `$${formatShort(top.price)}`, { type: 'product', handle: top.handle, colour }, { target: frame });
         }
       }
       this.appear(g);
@@ -245,20 +245,20 @@ export class Displays {
       g.add(hook);
       if (it.kind === 'top') {
         for (const s of [-1, 1]) {
-          const arm = box(0.23, 0.018, 0.012, hanger);
-          arm.position.set(s * 0.11, -0.05, 0.01);
+          const arm = box(0.3, 0.02, 0.014, hanger);
+          arm.position.set(s * 0.145, -0.055, 0.01);
           arm.rotation.z = s * -0.32;
           g.add(arm);
         }
       } else {
-        g.add(place(box(0.36, 0.018, 0.012, hanger), 0, -0.035, 0.01));
-        for (const s of [-1, 1]) g.add(place(box(0.03, 0.05, 0.02, this.M.steel), s * 0.14, -0.06, 0.012));
+        g.add(place(box(0.46, 0.02, 0.014, hanger), 0, -0.035, 0.01));
+        for (const s of [-1, 1]) g.add(place(box(0.03, 0.05, 0.02, this.M.steel), s * 0.19, -0.06, 0.012));
       }
       g.add(place(cyl(0.003, 0.003, 0.04, this.M.steel, { segments: 6 }), 0, -0.012, 0.01));
 
       let w, h;
-      if (it.kind === 'top') { w = 0.66; h = w / cut.aspect; }
-      else { h = 0.96; w = h * cut.aspect; }
+      if (it.kind === 'top') { w = 0.92; h = w / cut.aspect; }
+      else { h = 1.28; w = h * cut.aspect; }
       const m = new THREE.Mesh(this.bentPlane(w, h, 0.035), this.garmentMaterial(cut.canvas));
       m.position.set(0, -0.06 - h / 2 + (it.kind === 'top' ? 0.04 : 0), 0.03);
       m.castShadow = true;
@@ -267,7 +267,7 @@ export class Displays {
       this.appear(g);
       this.swayers.push({ obj: g, axis: 'y', base: g.rotation.y, amp: 0.035, speed: 0.5 + (i % 3) * 0.13, phase: i * 1.1 });
       if (i === 2 || i === 3) {
-        this.hotspot('lounge', g.localToWorld(new THREE.Vector3(0, -0.06 - h * 0.45, 0.08)), it.p.title, `$${formatShort(it.p.price)} · ${it.c}`, { type: 'product', handle: it.p.handle, colour: it.c }, { flip: i === 2 });
+        this.hotspot('lounge', g.localToWorld(new THREE.Vector3(0, -0.06 - h * 0.45, 0.08)), it.p.title, `$${formatShort(it.p.price)} · ${it.c}`, { type: 'product', handle: it.p.handle, colour: it.c }, { flip: i === 2, target: m });
       }
     }));
   }
@@ -322,7 +322,7 @@ export class Displays {
       g.add(place(cyl(0.0015, 0.0015, 0.04, this.M.steel, { segments: 4, cast: false }), 0, -0.01, 0));
       this.appear(g);
       this.swayers.push({ obj: g, axis: 'x', base: 0, amp: 0.025, speed: 0.6 + (i % 4) * 0.1, phase: i * 0.9 });
-      this.hotspot('movement', new THREE.Vector3(px, bar.y - 0.06 - h * 0.5, bar.z + 0.06), p.title, `$${formatShort(p.price)}`, { type: 'product', handle: p.handle }, { flip: px > (bar.x0 + bar.x1) / 2, compact: true });
+      this.hotspot('movement', new THREE.Vector3(px, bar.y - 0.06 - h * 0.5, bar.z + 0.06), p.title, `$${formatShort(p.price)}`, { type: 'product', handle: p.handle }, { flip: px > (bar.x0 + bar.x1) / 2, compact: true, target: g });
     }));
   }
 
@@ -362,8 +362,9 @@ export class Displays {
         const label = /cap/i.test(p.title) ? 'Cap' : p.title;
         const tent = this.priceTent(label, formatShort(p.price));
         tent.position.set(t.x + sx, t.shelves[0] + 0.002, t.z + 0.12);
+        pickable(tent, { kind: 'product', handle: p.handle, colour, station: 'counter' });
         this.root.add(tent);
-        this.hotspot('counter', new THREE.Vector3(t.x + sx, t.shelves[0] + 0.12, t.z + 0.1), p.title, `$${formatShort(p.price)} · at the till`, { type: 'product', handle: p.handle, colour }, { flip: sx > 0 });
+        this.hotspot('counter', new THREE.Vector3(t.x + sx, t.shelves[0] + 0.12, t.z + 0.1), p.title, `$${formatShort(p.price)} · at the till`, { type: 'product', handle: p.handle, colour }, { flip: sx > 0, target: holder });
       }
       this.appear(holder);
     }));
@@ -691,6 +692,7 @@ export class Displays {
   noticeBoard() {
     const b = this.A.board;
     this.boardAnchor = b;
+    // Positions are (u, v) in metres from the board's centre, as you face it: +u is to your right.
     const put = (mesh, u, v, rot = 0, z = 0) => {
       // Board faces -z (you look at it facing the street door): viewer's right is -x.
       mesh.position.set(b.x - u, b.y + v, b.z - 0.004 - z);
@@ -708,28 +710,9 @@ export class Displays {
       const tex = canvasTexture(Math.round(w * 1400), Math.round(h * 1400), draw);
       return new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.92, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.12 }));
     };
+    this.boardNote = { put, pin, note };
 
-    // Prompt card.
-    const prompt = note(0.56, 0.43, (ctx, w, h) => {
-      paperFill(ctx, w, h);
-      ctx.fillStyle = CARD.scarlet; ctx.fillRect(0, 0, w, 110);
-      ctx.fillStyle = CARD.paper; ctx.textAlign = 'center';
-      ctx.font = '500 32px "Azeret Mono", monospace'; ctx.letterSpacing = '8px';
-      ctx.fillText('YOUR NEXT INCREMENT', w / 2, 68);
-      ctx.letterSpacing = '0px';
-      ctx.fillStyle = CARD.ink;
-      ctx.font = 'italic 58px "Bodoni Moda", serif';
-      wrap(ctx, 'What’s the next small step you’re taking?', w / 2, 220, w - 110, 70);
-      ctx.font = '32px "Hanken Grotesk", sans-serif';
-      ctx.fillStyle = CARD.muted;
-      ctx.fillText('Pin it here — tap to write yours →', w / 2, h - 50);
-    });
-    put(prompt, 0.64, 0.24, -0.03);
-    pin(0.64, 0.44);
-    pickable(prompt, { kind: 'compose', station: 'board' });
-    this.hotspot('board', new THREE.Vector3(b.x - 0.64, b.y + 0.18, b.z - 0.05), 'Pin your next increment', 'Make a card to keep or share', { type: 'compose' }, { flip: true });
-
-    // Mission card (typed).
+    // --- Left: the brand's own corner — mission, team notes, photos -------------------
     const mission = note(0.54, 0.37, (ctx, w, h) => {
       paperFill(ctx, w, h, '#fbf8f1');
       ctx.fillStyle = CARD.ink; ctx.textAlign = 'left';
@@ -739,11 +722,10 @@ export class Displays {
       ctx.font = '27px "Azeret Mono", monospace';
       wrap(ctx, 'Small steps, big accomplishments. We believe success is built through small, intentional actions — one step at a time.', 56, 170, w - 112, 42, 'left');
     });
-    put(mission, -0.74, 0.28, 0.025);
-    pin(-0.74, 0.44, 0xb48f55);
+    put(mission, -1.1, 0.46, 0.025);
+    pin(-1.1, 0.62, 0xb48f55);
 
-    // Team quotes (handwritten).
-    const quotes = [[-0.08, 0.31, -0.04], [-0.8, -0.3, 0.05], [0.2, -0.3, 0.035]];
+    const quotes = [[-0.46, 0.5, -0.04], [-0.86, -0.22, 0.05], [-0.62, -0.62, 0.035]];
     quotes.forEach(([u, v, rot], i) => {
       const q = note(0.46, 0.31, (ctx, w, h) => {
         paperFill(ctx, w, h, i === 1 ? '#f1e6cf' : '#fbf6ea');
@@ -758,10 +740,116 @@ export class Displays {
       put(q, u, v, rot);
       pin(u, v + 0.14, [0x8c2027, 0x22402f, 0xb48f55][i]);
     });
+    this.polaroidSlots = [[-1.32, -0.34, -0.06], [-0.32, -0.12, 0.07]];
 
-    // Slots for the visitor's own increments (bottom-right of the board).
-    this.boardSlots = [[0.95, -0.14, 0.04], [0.02, 0.0, -0.05], [-0.5, 0.02, 0.03], [0.96, -0.46, -0.02]];
-    this.polaroidSlots = [[-0.3, -0.25, -0.06], [0.64, -0.3, 0.07]];
+    // --- Middle: the invitation -----------------------------------------------------------
+    const prompt = note(0.56, 0.43, (ctx, w, h) => {
+      paperFill(ctx, w, h);
+      ctx.fillStyle = CARD.scarlet; ctx.fillRect(0, 0, w, 110);
+      ctx.fillStyle = CARD.paper; ctx.textAlign = 'center';
+      ctx.font = '500 32px "Azeret Mono", monospace'; ctx.letterSpacing = '8px';
+      ctx.fillText('YOUR NEXT INCREMENT', w / 2, 68);
+      ctx.letterSpacing = '0px';
+      ctx.fillStyle = CARD.ink;
+      ctx.font = 'italic 58px "Bodoni Moda", serif';
+      wrap(ctx, 'What’s the next small step you’re taking?', w / 2, 220, w - 110, 70);
+      ctx.font = '32px "Hanken Grotesk", sans-serif';
+      ctx.fillStyle = CARD.muted;
+      ctx.fillText('Pin it here — tap to write yours →', w / 2, h - 50);
+    });
+    put(prompt, 0.14, 0.38, -0.03);
+    pin(0.14, 0.58);
+    pickable(prompt, { kind: 'compose', station: 'board' });
+    this.hotspot('board', new THREE.Vector3(b.x - 0.14, b.y + 0.32, b.z - 0.05), 'Pin your next increment', 'Make a card to keep or share', { type: 'compose' }, { flip: true, target: prompt });
+
+    // --- Right: notes from visitors -------------------------------------------------------
+    const header = note(0.9, 0.085, (ctx, w, h) => {
+      ctx.fillStyle = '#f4ecde'; ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = CARD.ink; ctx.textAlign = 'center';
+      ctx.font = '500 44px "Azeret Mono", monospace'; ctx.letterSpacing = '14px';
+      ctx.fillText('NOTES FROM THE LOUNGE', w / 2 + 7, h / 2 + 15);
+    });
+    put(header, 1.0, 0.71, 0.004);
+    pin(0.6, 0.71, 0x22402f); pin(1.4, 0.71, 0x22402f);
+    pickable(header, { kind: 'board', station: 'board' });
+    this.boardHotspot = { type: 'board' };
+    this.hotspot('board', new THREE.Vector3(b.x - 1.0, b.y + 0.66, b.z - 0.05), 'Read the board', 'Notes from visitors', this.boardHotspot, { target: header });
+    this.boardHotspotItem = this.hotspots[this.hotspots.length - 1];
+
+    this.noteSlots = [
+      [0.76, 0.42, -0.04], [1.24, 0.4, 0.03], [0.74, 0.06, 0.05], [1.22, 0.04, -0.03], [0.18, -0.08, 0.04],
+      [0.76, -0.3, -0.02], [1.25, -0.32, 0.045], [0.2, -0.44, -0.05], [0.74, -0.64, 0.03], [1.24, -0.66, -0.035],
+    ];
+    this.ownNotes = [];
+    this.communityNotes = [];
+    this.renderNotes();
+  }
+
+  /** The visitor pinned a note (or we're restoring the ones they pinned before). */
+  pinIncrement(text) {
+    this.ownNotes.push(text);
+    this.ownNotes = this.ownNotes.slice(-3);
+    this.renderNotes({ fresh: true });
+  }
+
+  /** Approved notes from the shared board. */
+  setCommunity(notes, { shared = true } = {}) {
+    this.communityNotes = notes;
+    const n = notes.length;
+    this.boardHotspotItem.sub = !shared ? 'Your notes, kept on this device'
+      : n ? `${n} note${n === 1 ? '' : 's'} from visitors` : 'Be the first to pin one';
+    this.renderNotes();
+  }
+
+  renderNotes({ fresh = false } = {}) {
+    if (!this.noteSlots) return;
+    for (const m of [...this.pinned.children]) {
+      this.pinned.remove(m);
+      m.traverse(o => { o.geometry?.dispose(); if (o.material) { o.material.map?.dispose(); o.material.dispose(); } });
+    }
+    const own = [...this.ownNotes].reverse().map(text => ({ text, own: true }));
+    const cards = [...own, ...this.communityNotes].slice(0, this.noteSlots.length);
+    // Blank cards invite the next note — more of them while the board is quiet.
+    const blanks = Math.min(Math.max(2, 5 - cards.length), this.noteSlots.length - cards.length);
+    cards.forEach((c, i) => this.#noteCard(c, i, fresh && i === 0));
+    for (let i = 0; i < blanks; i++) this.#noteCard(null, cards.length + i, false);
+  }
+
+  #noteCard(card, index, fresh) {
+    const b = this.boardAnchor;
+    const [u, v, rot] = this.noteSlots[index];
+    const papers = ['#fff9ec', '#fbf3e3', '#f3ead8', '#fdf7ef'];
+    const tex = canvasTexture(440, 300, (ctx, w, h) => {
+      paperFill(ctx, w, h, card ? papers[index % papers.length] : '#fbf8f2');
+      ctx.textAlign = 'left';
+      if (!card) {
+        ctx.strokeStyle = 'rgba(122,102,86,0.22)'; ctx.lineWidth = 2;
+        for (let y = 120; y < h - 40; y += 52) { ctx.beginPath(); ctx.moveTo(32, y); ctx.lineTo(w - 32, y); ctx.stroke(); }
+        ctx.fillStyle = 'rgba(122,102,86,0.55)'; ctx.font = '500 40px "Caveat", cursive';
+        ctx.fillText('your next step?', 36, 104);
+        return;
+      }
+      ctx.fillStyle = card.own ? CARD.scarlet : CARD.muted;
+      ctx.font = '500 17px "Azeret Mono", monospace'; ctx.letterSpacing = '4px';
+      ctx.fillText(card.own ? 'MY NEXT INCREMENT' : 'NEXT INCREMENT', 30, 42);
+      ctx.letterSpacing = '0px';
+      ctx.fillStyle = '#2a1d16';
+      const size = card.text.length > 56 ? 34 : card.text.length > 34 ? 38 : 44;
+      ctx.font = `500 ${size}px "Caveat", cursive`;
+      wrap(ctx, card.text, 30, 92, w - 60, size * 1.02, 'left');
+      const sig = card.own ? '— you' : `— ${[card.name, card.city].filter(Boolean).join(', ') || 'a visitor'}`;
+      ctx.fillStyle = CARD.muted; ctx.font = '500 30px "Caveat", cursive';
+      ctx.fillText(sig, 30, h - 26);
+    });
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(0.36, 0.245), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.14 }));
+    m.position.set(b.x - u, b.y + v, b.z - 0.008 - index * 0.0006);
+    m.rotation.set(0, Math.PI, rot);
+    pickable(m, card ? { kind: 'board', station: 'board' } : { kind: 'compose', station: 'board' });
+    const pinM = new THREE.Mesh(new THREE.SphereGeometry(0.011, 10, 8), new THREE.MeshStandardMaterial({ color: card?.own ? 0x8c2027 : [0x22402f, 0xb48f55, 0xefe6d8][index % 3], roughness: 0.3 }));
+    pinM.position.set(0, 0.1, 0.012); // local +z faces the room (the card is turned to face you)
+    m.add(pinM);
+    this.pinned.add(m);
+    if (fresh) this.appear(m);
   }
 
   async polaroids() {
@@ -790,30 +878,6 @@ export class Displays {
       this.root.add(pin);
       this.appear(m);
     }));
-  }
-
-  /** Pin a visitor's increment to the board (called by the composer, and on load for saved ones). */
-  pinIncrement(text, index = this.pinned.children.length) {
-    const b = this.boardAnchor;
-    const slot = this.boardSlots[index % this.boardSlots.length];
-    const [u, v, rot] = slot;
-    const tex = canvasTexture(420, 300, (ctx, w, h) => {
-      paperFill(ctx, w, h, '#fff9ec');
-      ctx.fillStyle = CARD.scarlet; ctx.font = '500 18px "Azeret Mono", monospace'; ctx.letterSpacing = '4px';
-      ctx.fillText('MY NEXT INCREMENT', 30, 44);
-      ctx.letterSpacing = '0px';
-      ctx.fillStyle = '#2a1d16'; ctx.font = '500 42px "Caveat", cursive';
-      wrap(ctx, text, 30, 100, w - 60, 44, 'left');
-    });
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.243), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.14 }));
-    m.position.set(b.x - u, b.y + v, b.z - 0.008 - index * 0.001);
-    m.rotation.set(0, Math.PI, rot);
-    pickable(m, { kind: 'compose', station: 'board' });
-    const pinM = new THREE.Mesh(new THREE.SphereGeometry(0.012, 10, 8), new THREE.MeshStandardMaterial({ color: 0x8c2027, roughness: 0.3 }));
-    pinM.position.set(0, 0.1, -0.012);
-    m.add(pinM);
-    this.pinned.add(m);
-    this.appear(m);
   }
 
   // --- Supporting prints ----------------------------------------------------------------
