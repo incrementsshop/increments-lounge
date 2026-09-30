@@ -24,6 +24,7 @@ import { openComposer, savedIncrements } from './ui/composer.js';
 import { openAtmosphere } from './ui/atmosphere.js';
 import { openBoardPanel } from './ui/boardpanel.js';
 import { Board } from './board.js';
+import { batchStatic, objectsIn } from './scene/batch.js';
 
 const $ = sel => document.querySelector(sel);
 const intro = $('#intro');
@@ -97,7 +98,7 @@ async function boot() {
   const room = buildRoom(world.scene, M, quality);
   progress(0.45, 'Laying the travertine…');
   await frame();
-  const { anchors } = buildFurniture(world.scene, M, quality);
+  const { root: furnitureRoot, anchors } = buildFurniture(world.scene, M, quality);
   const fx = createFX(world.scene, { ...anchors, ...room.anchors }, quality);
   const rig = app.rig = new CameraRig(world);
 
@@ -107,6 +108,13 @@ async function boot() {
   const lighting = app.lighting = new Lighting({ world, room, anchors, fx, lightmaps, glows: [...room.glows, ...anchors.glows] });
   app.door = anchors.door;
   app.street = anchors.street;
+
+  // Fold every static piece that shares a material into one mesh: far fewer draw calls.
+  const receivers = [room.receivers.floor, room.receivers.slab, ...Object.values(room.receivers.walls), ...room.receivers.corners];
+  const batched = batchStatic([room.root, furnitureRoot], { exclude: [...receivers, ...objectsIn(anchors)] });
+  world.scene.add(batched.group);
+  app.occluders = [...batched.group.children, ...receivers];
+  if (CONFIG.analytics.debug) console.info('[lounge] static batching', batched.stats);
   await lightmaps.init();
   await lighting.apply(resolveTime(), { instant: true });
 
@@ -153,6 +161,7 @@ async function boot() {
   syncPixelRatio();
 
   world.renderer.compile(world.scene, world.camera);
+  world.frameSkip = 2; // half rate behind the intro; full rate from "Step inside"
   world.start();
   document.body.classList.add('is-ready');
 
@@ -173,6 +182,7 @@ const frame = () => new Promise(r => { const t = setTimeout(r, 60); requestAnima
 
 async function enter() {
   app.entered = true;
+  app.world.frameSkip = 1;
   document.body.classList.remove('is-loading');
   document.body.classList.add('is-entered');
   track('enter', { quality: app.world.quality.tier, station: app.rig.station.id, from: app.rig.outside ? 'street' : 'link' });
@@ -436,24 +446,35 @@ function isShown(o) {
   return true;
 }
 
-function pickAt(clientX, clientY) {
+function pickAt(clientX, clientY, { occlusion = true } = {}) {
   ndc.set((clientX / innerWidth) * 2 - 1, -(clientY / innerHeight) * 2 + 1);
   raycaster.setFromCamera(ndc, app.world.camera);
-  const hits = raycaster.intersectObjects(app.world.scene.children, true);
-  for (const hit of hits) {
+  raycaster.far = Infinity;
+  // Everything tappable lives in the displays; test those first (cheap)…
+  let found = null;
+  for (const hit of raycaster.intersectObject(app.displays.root, true)) {
     const o = hit.object;
-    if (o.isPoints || o.parent?.name === 'fx' || !isShown(o)) continue;
+    if (o.isPoints || !isShown(o)) continue;
     const m = Array.isArray(o.material) ? o.material[hit.face?.materialIndex ?? 0] : o.material;
-    if (m && m.visible === false) continue; // e.g. the open face of the lounge niche
+    if (m && m.visible === false) continue;
     if (!o.userData.pick && m && m.transparent && m.opacity < 0.5) continue; // glass
-    if (!o.userData.pick) return null; // something solid is in the way
+    if (!o.userData.pick) return null; // a solid display piece is in the way
     let piece = o;
     while (piece.parent && piece.parent.userData.pick === o.userData.pick) piece = piece.parent;
     if (piece.parent?.userData.outfit) piece = piece.parent; // lean in on the whole outfit
     const normal = hit.face ? hit.face.normal.clone().transformDirection(o.matrixWorld) : null;
-    return { pick: o.userData.pick, hit, from: { object: piece, normal } };
+    found = { pick: o.userData.pick, hit, from: { object: piece, normal } };
+    break;
   }
-  return null;
+  if (!found || !occlusion) return found;
+  // …then make sure no wall or piece of furniture stands between you and it.
+  raycaster.far = Math.max(0, found.hit.distance - 0.03);
+  const blocked = raycaster.intersectObjects(app.occluders || [], false).some(h => {
+    const m = h.object.material;
+    return isShown(h.object) && !(m.transparent && m.opacity < 0.5);
+  });
+  raycaster.far = Infinity;
+  return blocked ? null : found;
 }
 
 let chromeBound = false;
@@ -579,7 +600,7 @@ function bindInput() {
     const now = performance.now();
     if (now - lastHover < 70) return;
     lastHover = now;
-    document.body.classList.toggle('is-pointer', !!pickAt(e.clientX, e.clientY));
+    document.body.classList.toggle('is-pointer', !!pickAt(e.clientX, e.clientY, { occlusion: false }));
   });
 
   // Anything that opens a panel ends the walk.

@@ -89,11 +89,14 @@ export class World extends EventTarget {
   start() {
     this.renderer.setAnimationLoop(() => {
       if (document.hidden || this.paused) return;
+      // `frameSkip` 2 draws every other frame (used behind the intro, where nothing moves much).
+      this.frameCount = (this.frameCount || 0) + 1;
+      if (this.frameSkip > 1 && this.frameCount % this.frameSkip) return;
       const dt = Math.min(this.clock.getDelta(), 0.1);
       const t = this.clock.elapsedTime;
       for (const fn of this.onFrame) fn(dt, t);
       this.renderer.render(this.scene, this.camera);
-      this.#govern(dt);
+      if (!(this.frameSkip > 1)) this.#govern(dt); // skipped frames aren't slow frames
     });
   }
 

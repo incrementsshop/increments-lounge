@@ -119,6 +119,7 @@ export function createMaterials(renderer, quality) {
   // Sheer linen at the windows, and the fabric waves under the ceiling.
   const sheer = new THREE.MeshStandardMaterial({ map: tex(linenC.map), color: 0xfbf7f0, transparent: true, opacity: 0.62, roughness: 1, side: THREE.DoubleSide, emissive: 0xfff3e2, emissiveIntensity: 0.2, depthWrite: false });
   sheer.map.repeat.set(3, 6);
+  sheer.forceSinglePass = true; // see-through both ways, drawn once
   const sail = new THREE.MeshStandardMaterial({ color: 0xf8f1e6, roughness: 1, side: THREE.DoubleSide, vertexColors: true, emissive: 0xffe4c2, emissiveIntensity: 0.16 });
 
   const paperMap = tex(S.paper({ width: 256, height: 256 }));
@@ -136,7 +137,7 @@ export function createMaterials(renderer, quality) {
     led: new THREE.MeshBasicMaterial({ color: 0xfff1d8 }),
     wash: (color = 0xffd7a6, opacity = 0.3) => new THREE.MeshBasicMaterial({
       map: glowMap, color, transparent: true, opacity, blending: THREE.AdditiveBlending,
-      depthWrite: false, side: THREE.DoubleSide, fog: false,
+      depthWrite: false, side: THREE.DoubleSide, fog: false, forceSinglePass: true,
     }),
     paper: std({ map: paperMap, roughness: 0.92 }, [0.4, 0.4]),
     brass: new THREE.MeshStandardMaterial({ color: 0xb48f55, metalness: 1, roughness: 0.28, envMapIntensity: 1.2 }),

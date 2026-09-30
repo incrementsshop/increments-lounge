@@ -67,6 +67,7 @@ export function storefront(M, A, quality) {
   const leaves = [];
   for (const side of [-1, 1]) {
     const hinge = new THREE.Group();
+    hinge.userData.dynamic = true; // swings open: keep out of static batching
     hinge.position.set(D.x + side * (D.w / 2 - 0.008), 0, z1 + T / 2);
     const leaf = new THREE.Group();
     // Built from the hinge toward the middle: local x runs 0 → leafW toward the centre.
