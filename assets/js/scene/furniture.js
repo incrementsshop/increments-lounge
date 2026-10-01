@@ -3,7 +3,7 @@ import { mesh, box, cyl, lathe, place, group, contactShadow, canvasTexture } fro
 import { applyBoxUV } from './materials.js';
 import { seeded } from './stone.js';
 import * as L from './layout.js';
-import { olive, bistroChair, coffeeCup, espressoMachine, pampasVase } from './pieces.js';
+import { olive, coffeeCup, espressoMachine, coffeeGrinder, pampasVase, fiddleLeafFig, birdOfParadise, trailingPlant } from './pieces.js';
 import { storefront } from './storefront.js';
 import { neonText, pillSign } from './signs.js';
 
@@ -21,6 +21,7 @@ export function buildFurniture(scene, M, quality) {
 
   root.add(featureWall(M, A));
   root.add(counter(M, A));
+  root.add(backBar(M, A));
   root.add(theSteps(M, A, quality));
   root.add(fittingRooms(M, A));
   root.add(movement(M, A));
@@ -243,12 +244,12 @@ function counter(M, A) {
   screen.position.set(0, 0.2, 0);
   screen.rotation.x = -0.35;
   reg.add(screen, place(cyl(0.012, 0.012, 0.16, M.steel), 0, 0.08, -0.03), place(cyl(0.06, 0.07, 0.012, M.steel), 0, 0.006, -0.03));
-  reg.position.set(x - 0.55, topY, z - 0.1);
+  reg.position.set(x - 0.05, topY, z - 0.1);
   reg.rotation.y = 0.35;
   g.add(reg);
   for (let k = 0; k < 6; k++) {
     const card = box(0.09, 0.003, 0.055, M.paper, { cast: k === 5 });
-    card.position.set(x - 0.2, topY + 0.0015 + k * 0.003, z + 0.2);
+    card.position.set(x + 0.28, topY + 0.0015 + k * 0.003, z + 0.2);
     card.rotation.y = 0.2;
     g.add(card);
   }
@@ -256,17 +257,11 @@ function counter(M, A) {
   v.position.set(x - 1.05, topY, z - 0.12);
   g.add(v);
 
-  // The café half of the idea: an espresso machine and cups on the bar.
-  const em = espressoMachine(M);
-  em.position.set(x - 0.14, topY, z - 0.14);
-  em.rotation.y = 0.12;
-  g.add(em);
-  [[0.13, 0.22, 0.4], [0.27, 0.16, 2.1]].forEach(([dx, dz, ry]) => {
-    const c = coffeeCup(M);
-    c.position.set(x + dx - 0.05, topY, z + dz);
-    c.rotation.y = ry;
-    g.add(c);
-  });
+  // A coffee just set down for someone, by the register.
+  const served = coffeeCup(M);
+  served.position.set(x - 0.42, topY, z + 0.22);
+  served.rotation.y = 0.6;
+  g.add(served);
 
   // Greenery hung over the bar: an oak trough on fine rods, trailing to just above head height.
   g.add(hangingGreens(M, x, z + 0.42, w - 0.5));
@@ -276,6 +271,49 @@ function counter(M, A) {
     bag.rotation.y = 0.25 - i * 0.3;
     g.add(bag);
   }
+  return g;
+}
+
+// ---------------------------------------------------------------------------
+// The espresso bar: a low fluted oak run against the black stone, behind the counter
+// ---------------------------------------------------------------------------
+
+function backBar(M, A) {
+  const g = new THREE.Group();
+  g.name = 'back-bar';
+  const { x, w, d, h } = L.BACK_BAR;
+  const z = L.ROOM.z0 + 0.1 + d / 2;          // the black wall's face is 0.1 m proud of the back wall
+  const toe = 0.09;
+  g.add(place(box(w - 0.1, toe, d - 0.1, M.blackSteel, { cast: false }), x, toe / 2, z - 0.03));
+  const body = mesh(flutedGeometry(w - 0.04, d - 0.06, h - toe - 0.04, { reed: 0.045 }), M.oak);
+  body.position.set(x, toe, z - 0.01);
+  g.add(body);
+  g.add(place(box(w, 0.04, d, M.slabWarm, { r: 0.006, seg: 1 }), x, h - 0.02, z));
+  g.add(place(contactShadow(w, d, { opacity: 0.5 }), x, 0, z));
+  const topY = h;
+
+  const grinder = coffeeGrinder(M);
+  grinder.position.set(x - 1.25, topY, z - 0.04);
+  g.add(grinder);
+  const em = espressoMachine(M);
+  em.position.set(x - 0.68, topY, z - 0.03);
+  g.add(em);
+  [[-0.2, 0.08, 0.4], [-0.06, 0.13, 2.1], [0.08, 0.06, 1.2]].forEach(([dx, dz, ry]) => {
+    const c = coffeeCup(M);
+    c.position.set(x + dx, topY, z + dz);
+    c.rotation.y = ry;
+    g.add(c);
+  });
+  // Canisters for beans and tea.
+  [[0.42, M.ceramic, 0.2], [0.58, M.ceramicDark, 0.16]].forEach(([dx, mat, ch]) => {
+    g.add(place(lathe([[0, 0], [0.055, 0], [0.055, ch], [0.05, ch + 0.005], [0, ch + 0.005]], mat, { segments: 24 }), x + dx, topY, z - 0.06));
+    g.add(place(cyl(0.035, 0.035, 0.012, M.oak, { segments: 16 }), x + dx, topY + ch + 0.011, z - 0.06));
+  });
+  // A pothos at the end, trailing over the front edge.
+  const pothos = trailingPlant(M, { seed: 12, strands: 12, drop: 0.55, toward: Math.PI / 2, edge: d / 2 + 0.04 });
+  pothos.position.set(x + w / 2 - 0.32, topY, z - 0.04);
+  g.add(pothos);
+  A.backBar = { x, z, topY };
   return g;
 }
 
@@ -361,37 +399,6 @@ function theSteps(M, A, quality) {
     g.add(pebble);
   }
   g.add(olive(M, S.x, P.h - 0.02, S.z, quality));
-
-  // Gather round the olive: a crescent of travertine table wraps the planter on the open
-  // side, with four cream chairs pulled up to it.
-  const ringFrom = -52 * DEG, ringTo = 122 * DEG, topY = 0.74;
-  const ringTop = new THREE.Mesh(sectorGeometry(P.r + 0.02, 1.34, ringFrom, ringTo, 0.05, { bevel: 0.012, seg: 48 }), M.slabWarm);
-  applyBoxUV(ringTop.geometry, M.slabWarm.userData.uv);
-  ringTop.position.set(S.x, topY - 0.05, S.z);
-  ringTop.castShadow = ringTop.receiveShadow = true;
-  g.add(ringTop);
-  const ringBase = new THREE.Mesh(sectorGeometry(P.r + 0.02, 1.06, ringFrom + 4 * DEG, ringTo - 4 * DEG, topY - 0.05, { seg: 48 }), M.slab);
-  applyBoxUV(ringBase.geometry, M.slab.userData.uv);
-  ringBase.position.set(S.x, 0, S.z);
-  ringBase.castShadow = ringBase.receiveShadow = true;
-  g.add(ringBase);
-  [-24, 18, 60, 102].forEach((deg, i) => {
-    const a = deg * DEG, rr = 1.78;
-    const ch = bistroChair(M, { frame: M.oak, seat: M.boucle });
-    ch.position.set(S.x + Math.cos(a) * rr, 0, S.z + Math.sin(a) * rr);
-    ch.rotation.y = -a - Math.PI / 2;
-    g.add(ch);
-    if (i === 1 || i === 2) {
-      const cup = coffeeCup(M);
-      cup.position.set(S.x + Math.cos(a) * 1.16, topY + 0.012, S.z + Math.sin(a) * 1.16);
-      cup.rotation.y = i * 1.7;
-      g.add(cup);
-    }
-  });
-  const book2 = book(M, 0.15, 0.022, 0.21, 0xe9e0d1);
-  book2.position.set(S.x + Math.cos(40 * DEG) * 1.12, topY + 0.023, S.z + Math.sin(40 * DEG) * 1.12);
-  book2.rotation.y = 0.8;
-  g.add(book2);
   return g;
 }
 
@@ -569,6 +576,9 @@ function archive(M, A) {
     glow.position.set(x, levels[i] - 0.25, z0 + 0.052);
     g.add(glow);
   }
+  const pothos = trailingPlant(M, { seed: 5, strands: 10, drop: 0.7, toward: Math.PI / 2, edge: d / 2 + 0.02, pot: M.slabWarm });
+  pothos.position.set(x + w / 2 - 0.32, h - 0.005, z);
+  g.add(pothos);
   A.archiveShelves = levels.slice(0, -1).map(ly => ({ y: ly + 0.025, x0: x - w / 2 + 0.1, x1: x + w / 2 - 0.1, z: z + 0.02 }));
   g.add(place(contactShadow(w, d, { opacity: 0.45 }), x, 0, z));
   const shelfLight = new THREE.PointLight(0xffd3a0, 1.3, 2.6, 2);
@@ -650,13 +660,6 @@ function island(M, A) {
   const plinth = mesh(flutedGeometry(len - 0.5, w - 0.36, topY - 0.07, { reed: 0.055 }), M.slab);
   plinth.position.set(x, 0, z);
   g.add(plinth);
-  // Bistro chairs: a table to sit at, not just a plinth to look at.
-  [[-0.62, 1], [0.58, 1], [-0.58, -1], [0.62, -1]].forEach(([dx, side]) => {
-    const ch = bistroChair(M, { frame: M.oak });
-    ch.position.set(x + dx, 0, z + side * (w / 2 + 0.3));
-    ch.rotation.y = side > 0 ? Math.PI + (dx > 0 ? -0.12 : 0.1) : (dx > 0 ? 0.1 : -0.12);
-    g.add(ch);
-  });
   g.add(place(contactShadow(len, w, { opacity: 0.4 }), x, 0, z));
   const stack = [[0.3, 0.03, 0.38, 0xe9e0d1], [0.28, 0.025, 0.36, 0x8a7560], [0.26, 0.02, 0.34, 0xd2c4ad]];
   let yy = topY;
@@ -667,9 +670,9 @@ function island(M, A) {
     g.add(b);
     yy += bh;
   });
-  const v = vase(M, M.noce, 1.1, 6);
-  v.position.set(x + 0.45, topY, z - 0.1);
-  g.add(v);
+  const bowl = trailingPlant(M, { seed: 27, strands: 14, bowl: true, pot: M.noce });
+  bowl.position.set(x + 0.5, topY, z - 0.05);
+  g.add(bowl);
   return g;
 }
 
@@ -689,42 +692,23 @@ function roomLights(A) {
 }
 
 // ---------------------------------------------------------------------------
-// A fiddle-leaf fig in the front corner by the lounge
+// Plants on the floor: a fiddle-leaf fig in the front corner by the lounge, another by the
+// archive, and a bird of paradise in the back corner past the fitting rooms
 // ---------------------------------------------------------------------------
 
 function plants(M) {
   const g = new THREE.Group();
-  const fx = L.ROOM.x1 - 0.8, fz = L.ROOM.z1 - 0.85, scale = 0.95;
-  const pot = lathe([[0, 0], [0.3, 0], [0.34, 0.04], [0.37, 0.5], [0.35, 0.52], [0.33, 0.49], [0, 0.47]].map(([r, y]) => [r * scale, y * scale]), M.slab, { segments: 36 });
-  pot.position.set(fx, 0, fz);
-  const soil = new THREE.Mesh(new THREE.CircleGeometry(0.33 * scale, 24), M.soil);
-  soil.rotation.x = -Math.PI / 2;
-  soil.position.set(fx, 0.48 * scale, fz);
-  g.add(pot, soil, place(contactShadow(0.7, 0.7, { round: true, opacity: 0.5 }), fx, 0, fz));
-  const stem = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(fx, 0.45, fz), new THREE.Vector3(fx - 0.05, 1.2, fz + 0.03), new THREE.Vector3(fx + 0.02, 2.0, fz - 0.02)]), 16, 0.02, 6), M.trunk);
-  g.add(stem);
-  const leafShape = new THREE.Shape();
-  leafShape.moveTo(0, 0);
-  leafShape.bezierCurveTo(0.12, 0.05, 0.14, 0.22, 0, 0.3);
-  leafShape.bezierCurveTo(-0.14, 0.22, -0.12, 0.05, 0, 0);
-  const fig = new THREE.MeshStandardMaterial({ color: 0x4d6546, roughness: 0.55, side: THREE.DoubleSide });
-  const n = 34;
-  const figLeaves = new THREE.InstancedMesh(new THREE.ShapeGeometry(leafShape, 8), fig, n);
-  const dummy = new THREE.Object3D();
-  for (let i = 0; i < n; i++) {
-    const t = 0.25 + (i / n) * 0.75, a = i * 2.4;
-    dummy.position.set(fx + Math.cos(a) * 0.08, 0.45 + t * 1.6, fz + Math.sin(a) * 0.08);
-    dummy.rotation.set(-0.6 - Math.random() * 0.5, a, 0);
-    const s = 0.8 + Math.random() * 0.5;
-    dummy.scale.set(s, s, s);
-    dummy.updateMatrix();
-    figLeaves.setMatrixAt(i, dummy.matrix);
-  }
-  figLeaves.castShadow = true;
-  g.add(figLeaves);
+  const R = L.ROOM;
+  const at = (obj, x, z, ry = 0) => {
+    obj.position.set(x, 0, z);
+    obj.rotation.y = ry;
+    g.add(obj, place(contactShadow(0.75, 0.75, { round: true, opacity: 0.5 }), x, 0, z));
+  };
+  at(fiddleLeafFig(M, { seed: 21, height: 2.05 }), R.x1 - 0.8, R.z1 - 0.85);
+  at(fiddleLeafFig(M, { seed: 44, height: 1.75, potR: 0.27, potH: 0.46, pot: M.noce }), R.x1 - 1.65, R.z0 + 0.78, 1.1);
+  at(birdOfParadise(M, { seed: 8, height: 2.15, count: 15, potR: 0.27, potH: 0.5 }), R.x0 + 0.95, R.z0 + 1.0);
   return g;
 }
-
 
 /**
  * A block whose two long faces are reeded (half-round flutes), extruded upward.

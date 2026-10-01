@@ -55,6 +55,8 @@ export const SKYLIGHT = { x: -5.6, z: 2.3, r: 1.0 };
 export const COUNTER = { x: 0, z: -3.7, w: 3.4, d: 0.85, h: 1.0 };
 export const FEATURE_WALL = { x: 0, w: 5.6 };
 export const PLAQUE = { x: 0, y: 2.55, w: 2.9, h: 1.4 };
+// The espresso bar behind the counter, against the black stone wall.
+export const BACK_BAR = { x: -0.1, w: 3.6, d: 0.56, h: 0.92 };
 
 // Arched fitting rooms set into the back wall, behind the Movement rack.
 export const FITTING_ROOMS = [{ x: -6.4, w: 1.0 }, { x: -5.15, w: 1.0 }];

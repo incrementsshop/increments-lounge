@@ -40,8 +40,8 @@ The brand speaks in steps and chapters: "Small steps, big accomplishments", "The
 |---|---|---|
 | **The street** | A limewashed facade: black steel arched doors, a shop window onto the Steps, the campaign lit in an arched vitrine, INCREMENTS in halo-lit letters, olives, a café table, an A-frame | First impression; the doors swing open as you step in |
 | **01 Step inside** | The whole room: fabric waves under the floating ceiling, glowing cove, curved corners, soft light from the ceiling over the middle of the room | Orientation; the stamp card starts |
-| **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight; a crescent travertine table wraps the olive, with chairs pulled up and coffee on it | The new drop |
-| **03 The Collection** | A rough-hewn travertine bar before a black split-stone wall, greenery trailing from a hung planter; an espresso machine; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till"; a fluted island with oak bistro chairs | The whole range, and easy add-ons |
+| **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight | The new drop |
+| **03 The Collection** | A rough-hewn travertine counter before a black split-stone wall, greenery trailing from a hung planter; behind it a fluted oak espresso bar with the machine, grinder and cups; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till"; a fluted travertine island set with lookbooks and a bowl of trailing greens | The whole range, and easy add-ons |
 | **04 The Lounge** | Sand leather banquette with pampas at either end, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
 | **05 Movement** | Steel rack of pegged prints in front of two arched fitting rooms outlined in light, a pill lightbox: *Take your time* | Activewear |
 | **06 The Archive** | Travertine shelves lit from within, one book spine per past piece; *Life unfolds in increments. You define your story.* raised on the stone above | Brand story; the last few pieces still in stock |
@@ -88,13 +88,13 @@ assets/js/
     stone.js  materials.js procedural surfaces → three.js materials (world-scale UVs)
     layout.js              the floor plan (metres)
     room.js                shell: walls with arched windows, fitting-room alcoves and the lounge niche; curved corners; floating ceiling + cove; skylight; daylight
-    furniture.js           the Steps + olive, black wall + plaque, rough counter, fitting rooms, rack, banquette, archive + brand line, island, board…
+    furniture.js           the Steps + olive, black wall + plaque, rough counter + espresso bar, plants, fitting rooms, rack, banquette, archive + brand line, island, board…
     displays.js            puts the catalog into the room; hotspots
     fx.js                  window shafts, skylight column, dust (GPU-animated)
     stations.js            the seven stations + camera rig (framing, glides, look-around, lean-in)
     storefront.js          the facade, doors, shop window, vitrine, sign, olives, café table, A-frame, pavement
     signs.js               words in light: neon, pill lightbox, halo letters, LED lines
-    pieces.js              shared pieces: olive, bistro chair, cups, espresso machine, pampas
+    pieces.js              shared pieces: olive, fig, bird of paradise, trailing pothos, bistro chair (terrace), cups, espresso machine, grinder, pampas
     lighting.js            time of day: presets, the street outside, glows, fades
     lightmaps.js           baked light for the shell (shared with the baker so UVs always match)
     cutout.js              product photo → cut-out or print
