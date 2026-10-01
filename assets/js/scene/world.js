@@ -50,7 +50,7 @@ export class World extends EventTarget {
 
     const scene = this.scene = new THREE.Scene();
     scene.background = new THREE.Color(0xe9dfd0);
-    scene.fog = new THREE.Fog(0xe9dfd0, 16, 34);
+    scene.fog = new THREE.Fog(0xe9dfd0, 19, 40);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;

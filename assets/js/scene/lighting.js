@@ -25,7 +25,7 @@ export const TIMES = {
     dust: 1,
     street: 'morning',
     // What the lightmap baker uses for this time (see tools/bake.html).
-    bake: { skyColor: 0xfff4e6, sky: 2.6, skylight: 3.2, cove: 7, coveColor: 0xffe6c4, bounce: 0.3, ambient: 0.6, ceiling: 78, ceilingColor: 0xffe9cf },
+    bake: { skyColor: 0xfff4e6, sky: 2.6, skylight: 3.2, cove: 7, coveColor: 0xffe6c4, bounce: 0.3, ambient: 0.6, ceiling: 128, ceilingColor: 0xffe9cf },
   },
   golden: {
     label: 'Golden hour',
@@ -43,7 +43,7 @@ export const TIMES = {
     shafts: { opacity: 0.11, color: 0xffc27a },
     dust: 1.25,
     street: 'golden',
-    bake: { skyColor: 0xffdcb8, sky: 1.9, skylight: 2.2, cove: 8, coveColor: 0xffdcb0, bounce: 0.3, ambient: 0.6, ceiling: 78, ceilingColor: 0xffe2c0 },
+    bake: { skyColor: 0xffdcb8, sky: 1.9, skylight: 2.2, cove: 8, coveColor: 0xffdcb0, bounce: 0.3, ambient: 0.6, ceiling: 128, ceilingColor: 0xffe2c0 },
   },
   evening: {
     label: 'Evening',
@@ -60,7 +60,7 @@ export const TIMES = {
     shafts: { opacity: 0, color: 0xffc27a },
     dust: 0.25,
     street: 'evening',
-    bake: { skyColor: 0x6a7aa0, sky: 0.35, skylight: 0.6, cove: 11, coveColor: 0xffd6a4, bounce: 0.3, ambient: 0.6, ceiling: 88, ceilingColor: 0xffdcb2 },
+    bake: { skyColor: 0x6a7aa0, sky: 0.35, skylight: 0.6, cove: 11, coveColor: 0xffd6a4, bounce: 0.3, ambient: 0.6, ceiling: 145, ceilingColor: 0xffdcb2 },
   },
 };
 

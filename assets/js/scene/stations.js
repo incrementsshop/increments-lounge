@@ -1,59 +1,62 @@
 import * as THREE from 'three';
-import { ROOM, STREET } from './layout.js';
+import { ROOM, STREET, STEPS, COUNTER, BANQUETTE, MOVEMENT_RACK, ARCHIVE_SHELF, NOTICE_BOARD } from './layout.js';
 
 // The seven stations, and the camera rig that glides between them.
 // `pos`/`target` are authored for a 16:9 screen; `fit` is the width (m) that must stay
 // in view, so on a phone held upright the camera eases back instead of cropping the display.
+// Each shot is set relative to the piece it looks at, so moving a piece in layout.js moves its shot.
+
+const near = (o, dx, y, dz, z = o.z) => [o.x + dx, y, z + dz];
 
 export const STATIONS = [
   {
     id: 'entrance', stamp: 'enter', name: 'Step inside',
     eyebrow: 'The Increments Lounge', title: 'Take your <em>time.</em>',
     body: 'Life unfolds in increments. Wander the room — every station is a small step, and every step earns a stamp.',
-    pos: [5.5, 1.72, 4.9], target: [-2.6, 1.4, -1.7], fit: 9,
-    portrait: { pos: [2.5, 1.72, 4.9], target: [-0.7, 1.45, -3.2], fit: 4.4 },
+    pos: [ROOM.x1 - 1.7, 1.75, 3.1], target: [-3.6, 1.5, -2.2], fit: 11,
+    portrait: { pos: [3.0, 1.72, ROOM.z1 - 0.6], target: [-1.0, 1.45, -3.6], fit: 5 },
   },
   {
     id: 'window', stamp: 'window', name: 'The Steps',
     eyebrow: 'Now showing', title: '<em>Still</em> Becoming',
     body: 'Three colours, three steps up. Scarlet, Evergreen and Midnight, rising toward the light.',
-    pos: [-0.25, 1.85, 5.0], target: [-4.35, 1.8, 2.1], fit: 5.6,
-    portrait: { pos: [-0.9, 1.8, 4.9], target: [-4.45, 1.85, 1.55], fit: 4.3 },
+    pos: near(STEPS, 4.1, 1.85, 2.9), target: near(STEPS, 0, 1.8, 0), fit: 5.6,
+    portrait: { pos: near(STEPS, 3.45, 1.8, 2.8), target: near(STEPS, -0.1, 1.85, -0.55), fit: 4.3 },
   },
   {
     id: 'counter', stamp: 'counter', name: 'The Collection',
     eyebrow: 'Every piece', title: 'The <em>Collection</em>',
     body: 'Every piece and price, carved into the stone. Tap a line to see it. Socks and caps wait at the till.',
-    pos: [-0.25, 1.62, 0.9], target: [-0.25, 1.8, -4.4], fit: 5.4,
-    portrait: { pos: [-0.35, 1.55, 0.2], target: [-0.35, 1.75, -4.4], fit: 3.4 },
+    pos: near(COUNTER, 0, 1.62, 4.1), target: near(COUNTER, 0, 1.8, -1.2), fit: 5.4,
+    portrait: { pos: near(COUNTER, -0.1, 1.55, 3.4), target: near(COUNTER, -0.1, 1.75, -1.2), fit: 3.4 },
   },
   {
     id: 'lounge', stamp: 'lounge', name: 'The Lounge',
     eyebrow: 'Worn, all day', title: 'Worn in, <em>not worn out</em>',
     body: 'Garment-washed and faded in Cloudstone, Chestnut and Charcoal, hung in the lit niche. Pull up a chair.',
-    pos: [2.2, 1.62, 0.5], target: [6.9, 2.0, 0.1], fit: 5.4,
-    portrait: { pos: [3.5, 1.62, 0.3], target: [7.2, 2.15, 0.25], fit: 3.1 },
+    pos: near(BANQUETTE, -4.42, 1.62, 0.4), target: near(BANQUETTE, 0.28, 2.0, 0), fit: 5.4,
+    portrait: { pos: near(BANQUETTE, -3.12, 1.62, 0.2), target: near(BANQUETTE, 0.58, 2.15, 0.15), fit: 3.1 },
   },
   {
     id: 'movement', stamp: 'movement', name: 'Movement',
     eyebrow: 'For the next step', title: '<em>Movement</em>',
     body: 'Leggings, long sleeves and sets built to move. The fitting rooms are just behind.',
-    pos: [-3.1, 1.5, 0.4], target: [-4.4, 1.45, -4.1], fit: 2.9,
-    portrait: { pos: [-3.9, 1.5, -0.4], target: [-4.4, 1.5, -4.0], fit: 2.35 },
+    pos: near(MOVEMENT_RACK, 1.3, 1.5, 3.6), target: near(MOVEMENT_RACK, 0, 1.45, -0.9), fit: 2.9,
+    portrait: { pos: near(MOVEMENT_RACK, 0.5, 1.5, 2.8), target: near(MOVEMENT_RACK, 0, 1.5, -0.8), fit: 2.35 },
   },
   {
     id: 'archive', stamp: 'archive', name: 'The Archive',
     eyebrow: 'Past chapters', title: 'The <em>Archive</em>',
     body: 'Every chapter we’ve closed, shelved in the stone. A couple of pieces are still on it.',
-    pos: [3.05, 1.7, -0.9], target: [4.25, 2.15, -5.4], fit: 3.6,
-    portrait: { pos: [3.6, 1.62, -1.9], target: [4.4, 2.2, -5.4], fit: 2.8 },
+    pos: near(ARCHIVE_SHELF, -1.2, 1.7, 4.6, ROOM.z0), target: near(ARCHIVE_SHELF, 0, 2.15, 0.1, ROOM.z0), fit: 3.6,
+    portrait: { pos: near(ARCHIVE_SHELF, -0.65, 1.62, 3.6, ROOM.z0), target: near(ARCHIVE_SHELF, 0.15, 2.2, 0.1, ROOM.z0), fit: 2.8 },
   },
   {
     id: 'board', stamp: null, name: 'Notice Board',
     eyebrow: 'Community', title: 'Your next <em>increment</em>',
     body: 'Pin the next small step you’re taking and keep it as a card. Share it, and once the team has read it, it goes up here for everyone.',
-    pos: [3.25, 1.62, 1.75], target: [3.5, 1.98, 5.5], fit: 3.7,
-    portrait: { pos: [3.3, 1.62, 2.6], target: [3.32, 1.92, 5.5], fit: 2.5 }, // neon, invitation and visitors' notes; drag for the rest
+    pos: near(NOTICE_BOARD, -0.25, 1.62, -3.71), target: near(NOTICE_BOARD, 0, 1.98, 0.04), fit: 3.7,
+    portrait: { pos: near(NOTICE_BOARD, -0.2, 1.62, -2.86), target: near(NOTICE_BOARD, -0.18, 1.92, 0.04), fit: 2.5 }, // neon, invitation and visitors' notes; drag for the rest
   },
 ];
 
@@ -178,8 +181,8 @@ export class CameraRig {
     const looks = new THREE.CatmullRomCurve3([
       this.baseLook.clone(),
       new THREE.Vector3(doorPlane.x, 1.8, ROOM.z1 - 1.5),
-      new THREE.Vector3(-0.4, 1.62, 0.6),
-      new THREE.Vector3(-1.4, 1.5, -0.8),
+      new THREE.Vector3(-0.6, 1.62, 0.4),
+      new THREE.Vector3(-1.9, 1.5, -1.0),
       to.look,
     ], false, 'centripetal');
     this.#settlePush();

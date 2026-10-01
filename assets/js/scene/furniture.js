@@ -282,7 +282,7 @@ function counter(M, A) {
 /** An oak planter trough hung from the ceiling, spilling trailing leaves. */
 function hangingGreens(M, x, z, len) {
   const g = new THREE.Group();
-  const y = 3.3;
+  const y = Math.min(3.5, L.CEILING.drop - 0.6);
   g.add(place(box(len, 0.14, 0.26, M.oak, { r: 0.02, seg: 2 }), x, y, z));
   g.add(place(box(len - 0.04, 0.02, 0.22, M.soil), x, y + 0.07, z));
   for (const sx of [-1, 1]) g.add(place(cyl(0.004, 0.004, L.CEILING.drop - y - 0.07, M.steel, { segments: 5 }), x + sx * (len / 2 - 0.2), (L.CEILING.drop + y + 0.07) / 2, z));
@@ -498,7 +498,7 @@ function lounge(M, A) {
   const rug = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 4.6), M.rug);
   rug.rotation.x = -Math.PI / 2;
   rug.rotation.z = Math.PI / 2;
-  rug.position.set(5.2, 0.004, z);
+  rug.position.set(x1 - 1.8, 0.004, z);
   rug.receiveShadow = true;
   g.add(rug);
 
@@ -679,7 +679,7 @@ function island(M, A) {
 
 function roomLights(A) {
   const g = new THREE.Group();
-  for (const [lx, ly, lz, intensity, dist] of [[L.COUNTER.x, 2.9, L.COUNTER.z + 1.1, 2.6, 7.5], [5.5, 2.6, 0.1, 2.4, 6.5], [L.NOTICE_BOARD.x, 2.6, L.NOTICE_BOARD.z - 1.6, 1.5, 4.5]]) {
+  for (const [lx, ly, lz, intensity, dist] of [[L.COUNTER.x, 2.9, L.COUNTER.z + 1.1, 2.6, 7.5], [L.BANQUETTE.x - 1.12, 2.6, L.BANQUETTE.z, 2.4, 6.5], [L.NOTICE_BOARD.x, 2.6, L.NOTICE_BOARD.z - 1.6, 1.5, 4.5]]) {
     const pl = new THREE.PointLight(0xffcf9e, intensity, dist, 2);
     pl.position.set(lx, ly, lz);
     g.add(pl);
@@ -804,7 +804,7 @@ function drapePanel(M, height, width) {
 
 function drapes(M) {
   const g = new THREE.Group();
-  const rodY = 3.6, h = rodY - 0.03;
+  const rodY = H - 0.4, h = rodY - 0.03;
   const hang = (cx, cz, alongX, w) => {
     // Rod across the opening, one gathered panel each side, hanging over the wall.
     const rod = cyl(0.008, 0.008, w + 1.1, M.brass, { segments: 8 });
@@ -839,7 +839,7 @@ function wordsInLight(M, A) {
   g.add(neon);
   // By the fitting rooms, a pill lightbox.
   const pill = pillSign(['TAKE', 'YOUR', 'TIME'], { w: 0.3, h: 0.84, M, glows: A.glows });
-  pill.position.set(-3.06, 1.58, L.ROOM.z0 + 0.006);
+  pill.position.set(L.FITTING_ROOMS[1].x + 0.72, 1.58, L.ROOM.z0 + 0.006);
   g.add(pill);
   return g;
 }

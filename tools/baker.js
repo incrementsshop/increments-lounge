@@ -46,7 +46,7 @@ function directional(size) {
   l.castShadow = true;
   l.shadow.mapSize.set(size, size);
   const c = l.shadow.camera;
-  c.left = -12; c.right = 12; c.top = 12; c.bottom = -12; c.near = 1; c.far = 60;
+  c.left = -15; c.right = 15; c.top = 15; c.bottom = -15; c.near = 1; c.far = 60;
   l.shadow.bias = -0.0005;
   l.shadow.normalBias = 0.03;
   l.layers.enable(BAKE_LAYER);
@@ -88,7 +88,7 @@ export async function bake({ canvas, times = ['morning', 'golden', 'evening'], s
   const interior = anchors.lights.map(l => ({ l, base: l.intensity }));
   interior.forEach(({ l }) => { l.castShadow = false; l.layers.enable(BAKE_LAYER); });
 
-  const sun = directional(2048), sky = directional(1024), skylight = directional(1024);
+  const sun = directional(4096), sky = directional(1024), skylight = directional(1024);
   // The cove LED line, as a handful of spots spread along it (re-scattered every pass).
   const COVE_SPOTS = 6;
   const coves = Array.from({ length: COVE_SPOTS }, () => {

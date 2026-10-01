@@ -55,7 +55,7 @@ Three mechanics tie it to the name:
 
 ## Moving through the room
 
-A guided visit, not a video game: seven framed stations you glide between, with room to linger.
+A guided visit, not a video game: one open room, 18 × 12 m under a 4.4 m ceiling, and seven framed stations you glide between, with room to linger.
 
 - **Arrive.** Every visit (except deep links) starts on the street. "Step inside" swings the doors open and walks you in, one continuous move; any key or tap mid-walk hands control back.
 - **Stations.** Arrows in the dock, swipe, the station list, ←/→ or 1–7. Every move is a slow, composed camera glide.
@@ -127,8 +127,9 @@ Useful URL flags: `?quality=low|mid|high` forces a tier, `?time=morning|golden|e
 | Give the full stamp card a reward | Create a discount in Shopify, put the code in `reward.code` |
 | Rename the campaign in UTMs | `attribution` in `config.js` |
 | Station copy and camera framing | `assets/js/scene/stations.js` |
+| Move a piece or resize the room | `assets/js/scene/layout.js` (each station's shot is set relative to its piece, so it follows), then re-bake |
 | Check how every product photo will cut out | open `/tools/contact-sheet.html` locally |
-| Re-bake the lighting (after moving walls or furniture, or tuning a time of day in `scene/lighting.js → TIMES.*.bake`) | run `serve.py`, open `/tools/bake.html`, press **Bake** (~20 s), commit `assets/lightmaps/` |
+| Re-bake the lighting (after moving walls or furniture, or tuning a time of day in `scene/lighting.js → TIMES.*.bake`) | run `serve.py`, open `/tools/bake.html`, press **Bake** (~40 s), commit `assets/lightmaps/` |
 | Switch on the shared notice board | [docs/BOARD.md](docs/BOARD.md) — a free Supabase project and two values in `config.js` |
 
 The Steps look for a hoodie + sweat pair in the `window` zone (three colourways, one per step); the lounge niche for the same in `lounge`. The campaign photo is `featured.campaignImage` in `merch.json`. Movement prints and the till case take whatever is in their zones. The archive groups by `chapters` in `merch.json`.

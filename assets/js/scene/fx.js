@@ -6,8 +6,8 @@ import { ROOM, WINDOWS, SUN } from './layout.js';
 
 const sunDir = () => new THREE.Vector3(...SUN.target).sub(new THREE.Vector3(...SUN.position)).normalize();
 
-function archOutline({ z, w, sill }, n = 28) {
-  const r = w / 2, spring = sill + 1.9, pts = [];
+function archOutline({ z, w, sill, spring }, n = 28) {
+  const r = w / 2, pts = [];
   pts.push([z - r, sill], [z + r, sill], [z + r, spring]);
   for (let i = 1; i < n; i++) {
     const a = (i / n) * Math.PI;
@@ -55,7 +55,7 @@ export function createFX(scene, anchors, quality) {
     side: THREE.DoubleSide,
   });
 
-  const LEN = 7.5;
+  const LEN = 8.5;
   const shaftMeshes = WINDOWS.map(() => {
     const m = new THREE.Mesh(new THREE.BufferGeometry(), shaftMat);
     m.renderOrder = 5;
@@ -91,7 +91,7 @@ export function createFX(scene, anchors, quality) {
       const win = WINDOWS[i % WINDOWS.length];
       const r = win.w / 2 * Math.sqrt(Math.random());
       const a = Math.random() * Math.PI * 2;
-      const start = new THREE.Vector3(ROOM.x0, win.sill + 1.2 + Math.sin(a) * r * 1.1, win.z + Math.cos(a) * r);
+      const start = new THREE.Vector3(ROOM.x0, win.sill + (win.spring - win.sill) * 0.6 + Math.sin(a) * r * 1.1, win.z + Math.cos(a) * r);
       start.addScaledVector(d, 0.3 + Math.random() * LEN * 0.6);
       if (start.y < 0.2) start.y = 0.2 + Math.random() * 0.5;
       dPos.set(start.toArray(), i * 3);

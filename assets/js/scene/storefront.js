@@ -58,7 +58,7 @@ export function storefront(M, A, quality) {
   const band = (x0, x1, y, h, d, mat = M.slabWarm) => g.add(place(box(x1 - x0, h, d, mat), (x0 + x1) / 2, y + h / 2, FZ + d / 2));
   band(F.x0, D.x - D.w / 2, 0, F.plinth, 0.04, M.slab);
   band(D.x + D.w / 2, F.x1, 0, F.plinth, 0.04, M.slab);
-  band(F.x0, F.x1, 4.28, 0.1, 0.06);
+  band(F.x0, F.x1, L.ROOM.h + 0.28, 0.1, 0.06);
   band(F.x0 - 0.1, F.x1 + 0.1, F.h - 0.2, 0.2, 0.22);
   // Sills sit 4 mm proud of the openings' floors so the surfaces never share a plane.
   for (const o of [W, V]) g.add(place(box(o.w + 0.2, 0.05, 0.16, M.slabWarm), o.x, o.sill - 0.021, FZ + 0.06));
@@ -160,7 +160,7 @@ export function storefront(M, A, quality) {
 
   // --- The name, sconces and the upstairs windows ---------------------------------------------
   const sign = haloLetters('INCREMENTS', { w: 2.5, h: 0.3, sub: 'THE LOUNGE', glows });
-  sign.position.set(D.x, 3.86, FZ);
+  sign.position.set(D.x, 4.0, FZ);
   g.add(sign);
   const opal = new THREE.MeshStandardMaterial({ color: 0xfff4e2, emissive: 0xffd9a0, emissiveIntensity: 1.1, roughness: 0.4 });
   opal.userData.glowEmissive = 1.1;
@@ -183,8 +183,8 @@ export function storefront(M, A, quality) {
   upGlass.emissiveIntensity = 0.3;
   upGlass.userData.glowEmissive = 0.3;
   glows.push(upGlass);
-  for (const ux of [-3.6, 0, 3.6]) {
-    const uw = 1.05, uh = 1.75, uy = 4.72;
+  for (const ux of [W.x, D.x, V.x]) {
+    const uw = 1.05, uh = 1.75, uy = L.ROOM.h + 0.72;
     g.add(place(new THREE.Mesh(new THREE.PlaneGeometry(uw, uh), upGlass), ux, uy + uh / 2, FZ + 0.004));
     for (const [w, h, x, y] of [[uw + 0.1, 0.06, ux, uy], [uw + 0.1, 0.06, ux, uy + uh], [0.06, uh, ux - uw / 2, uy + uh / 2], [0.06, uh, ux + uw / 2, uy + uh / 2], [0.035, uh, ux, uy + uh / 2], [uw, 0.035, ux, uy + uh * 0.62]]) {
       g.add(place(box(w, h, 0.05, M.blackSteel), x, y, FZ + 0.025));
@@ -193,7 +193,7 @@ export function storefront(M, A, quality) {
   }
 
   // --- On the pavement ------------------------------------------------------------------------------
-  const pw = 28, pd = L.PAVEMENT.z1 - FZ;
+  const pw = 32, pd = L.PAVEMENT.z1 - FZ;
   const paveGeo = new THREE.PlaneGeometry(pw, pd);
   paveGeo.rotateX(-Math.PI / 2);
   paveGeo.translate(0, 0, FZ + pd / 2);
@@ -232,7 +232,7 @@ export function storefront(M, A, quality) {
   }
 
   // The A-frame on the pavement.
-  g.add(aFrame(M, D.x + 3.3, FZ + 1.45, -0.28));
+  g.add(aFrame(M, V.x + 0.95, FZ + 1.45, -0.28));
 
   // So the camera knows where the door is.
   A.street = { doorOut: new THREE.Vector3(D.x, 1.62, FZ + 1.4), doorIn: new THREE.Vector3(D.x, 1.66, z1 - 1.0) };

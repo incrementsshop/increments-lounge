@@ -62,7 +62,7 @@ export function buildRoom(scene, M, quality) {
   root.add(L, B, Rt, F);
 
   // Window wall (u = +z).
-  receivers.walls.left = solidWall(L, z0 + R, z1 - R, WINDOWS.map(w => archPath(w.z, w.w, w.sill, w.sill + 1.9)), mats);
+  receivers.walls.left = solidWall(L, z0 + R, z1 - R, WINDOWS.map(w => archPath(w.z, w.w, w.sill, w.spring)), mats);
 
   // Back wall (u = -x): two arched fitting rooms, recessed.
   const fitPaths = FITTING_ROOMS.map(f => archPath(-f.x, f.w, 0, FITTING.spring));
@@ -107,7 +107,7 @@ export function buildRoom(scene, M, quality) {
 
   for (const win of WINDOWS) {
     root.add(windowAssembly(win, M));
-    const led = ledLine(archPoints(win.z, win.w, win.sill + 0.01, win.sill + 1.9, { inset: 0.018 }), { glows });
+    const led = ledLine(archPoints(win.z, win.w, win.sill + 0.01, win.spring, { inset: 0.018 }), { glows });
     led.position.z = -0.01;
     L.add(led);
   }
@@ -123,7 +123,7 @@ export function buildRoom(scene, M, quality) {
   // --- Light from the cove ------------------------------------------------
   // Every wall carries a soft wash from the hidden LED line above it.
   const washMat = M.wash(0xffcf96, 0.44);
-  const washH = 1.9;
+  const washH = 2.1;
   const straightWash = (fr, u0, u1) => {
     const g = new THREE.PlaneGeometry(u1 - u0, washH);
     g.translate((u0 + u1) / 2, H - washH / 2, -0.012);
@@ -155,7 +155,7 @@ export function buildRoom(scene, M, quality) {
   const rim = new THREE.Mesh(new THREE.TorusGeometry(SKYLIGHT.r, 0.012, 8, 64), M.led);
   rim.rotation.x = Math.PI / 2;
   rim.position.set(SKYLIGHT.x, CEILING.drop - 0.005, SKYLIGHT.z);
-  const skyLight = new THREE.SpotLight(0xfff3e4, 34, 9, 0.62, 0.9, 1.6);
+  const skyLight = new THREE.SpotLight(0xfff3e4, 34, 10, 0.62, 0.9, 1.6);
   skyLight.position.set(SKYLIGHT.x, CEILING.drop - 0.05, SKYLIGHT.z);
   skyLight.target.position.set(SKYLIGHT.x, 0, SKYLIGHT.z);
   sky.add(throat, pane, rim, skyLight, skyLight.target);
@@ -212,7 +212,7 @@ export function buildRoom(scene, M, quality) {
   sun.castShadow = true;
   sun.shadow.mapSize.set(quality.shadow, quality.shadow);
   const sc = sun.shadow.camera;
-  sc.left = -11; sc.right = 11; sc.top = 9.5; sc.bottom = -9.5; sc.near = 4; sc.far = 36;
+  sc.left = -13.5; sc.right = 13.5; sc.top = 11; sc.bottom = -11; sc.near = 4; sc.far = 40;
   sun.shadow.bias = -0.0004;
   sun.shadow.normalBias = 0.025;
   sun.shadow.radius = 3;
@@ -293,8 +293,8 @@ function archPath(u, w, v0, spring) {
 
 /** Steel frame, glazing bars, glass and a travertine sill for one arched window. */
 function windowAssembly(win, M) {
-  const { z, w, sill } = win;
-  const r = w / 2, spring = sill + 1.9;
+  const { z, w, sill, spring } = win;
+  const r = w / 2;
   const g = new THREE.Group();
   const bar = 0.035, xMid = x0 - T / 2;
 
