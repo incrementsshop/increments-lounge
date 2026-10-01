@@ -381,7 +381,10 @@ export function trailingPlant(M, { seed = 3, strands = 11, drop = 0.6, toward = 
     for (let j = 0; j < perStrand; j++) {
       const p = curve.getPoint(j / perStrand);
       d.position.set(p.x + (r() - 0.5) * 0.025, p.y + 0.004, p.z + (r() - 0.5) * 0.025);
-      d.rotation.set(-0.6 - r() * 1.4, r() * Math.PI * 2, r() * 0.6);
+      // Leaves resting on the surface lie flat with their tips lifted, so none dip into it;
+      // leaves on the hanging part turn every which way.
+      if (p.y > -0.005 && p.y < 0.04) d.rotation.set(-Math.PI / 2 + 0.1 + r() * 0.3, r() * Math.PI * 2, 0, 'YXZ');
+      else d.rotation.set(-0.6 - r() * 1.4, r() * Math.PI * 2, r() * 0.6, 'XYZ');
       d.scale.setScalar(0.75 + r() * 0.6 - j * 0.015);
       d.updateMatrix();
       leaves.setMatrixAt(k, d.matrix);

@@ -605,7 +605,8 @@ export class Displays {
       standPlaque(plaque(first.name, String(first.year || '')), eye.x0 + 0.12 + (endX - eye.x0 - 0.12) / 2, eye, { kind: 'archive', chapter: first.name, station: 'archive' });
       this.hotspot('archive', new THREE.Vector3((eye.x0 + endX) / 2 + 0.06, eye.y + 0.2, eye.z + 0.16), first.name, `${first.year} · ${first.products.length} pieces`, { type: 'archive', chapter: first.name });
       const afterFill = placeRow(eye, fillers(5, [0xd8cdbb, 0x3a2c24, 0xbfae95]), endX + 0.12);
-      this.shelfVase(eye, afterFill + 0.14, M.ceramic, 0.9, 4);
+      const nextStart = second ? eye.x1 - Math.ceil(second.products.length / 2) * 0.058 - 0.1 : eye.x1;
+      this.shelfVase(eye, (afterFill + nextStart) / 2, M.ceramic, 0.9, 4, this.shelfRoom(3));
     }
     if (second) {
       const half = Math.ceil(second.products.length / 2);
@@ -617,12 +618,15 @@ export class Displays {
       this.hotspot('archive', new THREE.Vector3(startEye + half * 0.03, eye.y + 0.18, eye.z + 0.16), second.name, `${second.year} · ${second.products.length} pieces`, { type: 'archive', chapter: second.name }, { flip: true });
       // A couple of stacked books lying flat, and a vase.
       const stack = fillers(4, [0xe9e1d3, 0x6e4330, 0x2a1d16]);
+      let top = below.y;
       stack.forEach((it, k) => {
-        const b = new THREE.Mesh(spineGeo(0.2, it.w * 0.8, 0.26), it.mats);
-        b.position.set(below.x1 - 0.3, below.y + it.w * 0.4 + k * it.w * 0.8, below.z + 0.02);
-        b.rotation.y = (rng() - 0.5) * 0.3;
+        const t = it.w * 0.8, bw = 0.22 - k * 0.012;     // a little smaller as the pile rises
+        const b = new THREE.Mesh(spineGeo(bw, t, 0.25 - k * 0.01), it.mats);
+        b.position.set(below.x1 - 0.3, top + t / 2, below.z + 0.01);
+        b.rotation.y = (rng() - 0.5) * 0.25;
         b.castShadow = true;
         this.root.add(b);
+        top += t;
       });
     }
 
@@ -657,22 +661,31 @@ export class Displays {
     this.root.add(open);
     this.hotspot('archive', new THREE.Vector3(open.position.x, topShelf.y + 0.1, topShelf.z + 0.16), 'Still Becoming', 'The chapter being written', { type: 'station', id: 'window' });
     placeRow(topShelf, fillers(7, [0xd9d3c8, 0x8c2027, 0x6e4330, 0x1d2335]), topShelf.x1 - 0.6);
-    this.shelfVase(topShelf, topShelf.x0 + 0.3, M.noce, 1.1, 6);
+    this.shelfVase(topShelf, topShelf.x0 + 0.3, M.noce, 0.8, 5, this.shelfRoom(4));
     placeRow(topShelf, fillers(4, [0xe9e1d3, 0x6e4330]), topShelf.x0 + 0.55);
     this.archiveShelf = below;
 
     // Low shelves: linen boxes and fillers.
-    for (const shelf of shelves.slice(0, 2)) {
-      placeRow(shelf, fillers(12, [0xd8cdbb, 0xc9b89c, 0x3a2c24, 0x6e4330, 0xe9e1d3]), shelf.x0 + 0.08);
+    shelves.slice(0, 2).forEach((shelf, i) => {
+      const books = fillers(12, [0xd8cdbb, 0xc9b89c, 0x3a2c24, 0x6e4330, 0xe9e1d3]);
+      const run = books.reduce((sum, it) => sum + it.w + 0.004, 0);
+      placeRow(shelf, books, i === 0 ? shelf.x0 + 0.08 : shelf.x1 - 0.08 - run);
       for (let k = 0; k < 2; k++) {
         const bx = box(0.42, 0.28, 0.3, new THREE.MeshStandardMaterial({ color: 0xe6dccb, roughness: 1 }));
-        bx.position.set(shelf.x1 - 0.3 - k * 0.48, shelf.y + 0.14, shelf.z);
+        bx.position.set(i === 0 ? shelf.x1 - 0.3 - k * 0.48 : shelf.x0 + 0.3 + k * 0.48, shelf.y + 0.14, shelf.z);
         this.root.add(bx);
       }
-    }
+    });
   }
 
-  shelfVase(shelf, x, mat, scale, stems) {
+  /** Clear height above archive shelf `i`, up to the underside of the board (or the top) above it. */
+  shelfRoom(i) {
+    const shelves = this.A.archiveShelves, next = shelves[i + 1];
+    const ceiling = next ? next.y - 0.05 : L.ARCHIVE_SHELF.h - 0.055;
+    return ceiling - shelves[i].y;
+  }
+
+  shelfVase(shelf, x, mat, scale, stems, room = 0.44) {
     const g = new THREE.Group();
     const pts = [[0, 0], [0.05, 0], [0.075, 0.06], [0.07, 0.16], [0.035, 0.22], [0.03, 0.26], [0.036, 0.27], [0, 0.26]];
     const v = new THREE.Mesh(new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r * scale, y * scale)), 28), mat);
@@ -681,8 +694,8 @@ export class Displays {
     const twig = new THREE.MeshStandardMaterial({ color: 0x8a6a4a, roughness: 1 });
     for (let i = 0; i < stems; i++) {
       const a = (i / stems) * Math.PI * 2, lean = 0.08 + (i % 3) * 0.04;
-      const tip = new THREE.Vector3(Math.cos(a) * lean, 0.2 * scale + 0.3 + (i % 2) * 0.08, Math.sin(a) * lean * 0.4);
-      const curve = new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0.2 * scale, 0), tip.clone().multiplyScalar(0.5).setY(0.2 * scale + 0.16), tip]);
+      const tip = new THREE.Vector3(Math.cos(a) * lean, Math.min(0.2 * scale + 0.3 + (i % 2) * 0.08, room - 0.04), Math.sin(a) * lean * 0.4);
+      const curve = new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0.2 * scale, 0), tip.clone().multiplyScalar(0.5).setY(0.2 * scale + (tip.y - 0.2 * scale) * 0.55), tip]);
       g.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 6, 0.0035, 4), twig));
     }
     g.position.set(x, shelf.y, shelf.z + 0.02);
@@ -891,17 +904,18 @@ export class Displays {
     const { material, aspect } = this.photoMaterial(image, { width: 640 });
     const w = width, h = width / aspect;
     const g = new THREE.Group();
-    const f = 0.035;
-    const frame = box(w + f * 2 + (mount ? 0.06 : 0), h + f * 2 + (mount ? 0.06 : 0), 0.03, mat);
-    frame.position.set(0, (h + f * 2) / 2, 0);
+    const f = 0.035, m = mount ? 0.06 : 0;
+    const fh = h + f * 2 + m, cy = fh / 2;           // the frame's foot sits at y = 0
+    const frame = box(w + f * 2 + m, fh, 0.03, mat);
+    frame.position.set(0, cy, 0);
     g.add(frame);
     if (mount) {
       const mnt = new THREE.Mesh(new THREE.PlaneGeometry(w + 0.06, h + 0.06), this.M.paper);
-      mnt.position.set(0, (h + f * 2) / 2, 0.016);
+      mnt.position.set(0, cy, 0.016);
       g.add(mnt);
     }
     const photo = new THREE.Mesh(new THREE.PlaneGeometry(w, h), material);
-    photo.position.set(0, (h + f * 2) / 2, 0.018);
+    photo.position.set(0, cy, 0.018);
     g.add(photo);
     g.traverse(o => { if (o.isMesh) o.castShadow = true; });
     return g;
