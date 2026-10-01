@@ -44,7 +44,7 @@ export function openProduct(app, handle, { colour, from, lean = false } = {}) {
       body.append(...[
         gallery,
         !p.available ? h('span', { class: 'product__badge' }, p.zone === 'archive' ? 'Chapter closed' : 'Sold out') : null,
-        p.zone === 'archive' && p.available ? h('span', { class: 'product__badge', style: { background: 'var(--evergreen)' } }, 'Last few from the archive') : null,
+        p.zone === 'archive' && p.available ? h('span', { class: 'product__badge', style: { background: 'var(--chestnut)' } }, 'Last few from the archive') : null,
         h('div', { class: 'product__meta' },
           p.tagline ? h('p', { class: 'product__tagline' }, `“${p.tagline}”`) : h('span'),
           priceEl),

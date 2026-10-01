@@ -102,12 +102,29 @@ export async function bake({ canvas, times = ['morning', 'golden', 'evening'], s
   });
   scene.add(sun, sun.target, sky, sky.target, skylight, skylight.target);
   coves.forEach(c => scene.add(c, c.target));
+  // Soft light from the ceiling over the middle of the room (the glow above the fabric waves):
+  // a few wide downlights re-scattered under the floating slab every pass, so the floor
+  // under the ceiling is lit and everything on it casts a soft shadow straight down.
+  const CEIL_SPOTS = 4;
+  const ceils = Array.from({ length: CEIL_SPOTS }, () => {
+    const c = new THREE.SpotLight(0xffffff, 0, 0, Math.PI / 2.4, 1, 2);
+    c.castShadow = true;
+    c.shadow.mapSize.set(256, 256);
+    c.shadow.bias = -0.001;
+    c.shadow.camera.near = 0.05;
+    c.layers.enable(BAKE_LAYER);
+    scene.add(c, c.target);
+    return c;
+  });
+  const ceilX0 = L.ROOM.x0 + 0.9, ceilX1 = L.ROOM.x1 - 0.9, ceilZ0 = L.ROOM.z0 + 0.9, ceilZ1 = L.ROOM.z1 - 0.9;
   const { points: coveLine, length: coveLength } = covePath();
   const center = new THREE.Vector3(0, 0, 0);
 
-  // Light bounced off the floor, standing in for one bounce of global illumination: the
-  // ceiling and the upper walls face the bright floor, so they glow with its colour.
+  // Light bounced round the room, standing in for global illumination: the ceiling and upper
+  // walls glow with the bright floor's colour (ground), and the floor gets some of it back
+  // from the walls and ceiling (sky) — which keeps the middle of the room from going dark.
   const bounce = new THREE.HemisphereLight(0x000000, 0xffffff, 0);
+  const WALL_BOUNCE = 0.6;
   bounce.layers.enable(BAKE_LAYER);
   scene.add(bounce);
 
@@ -151,6 +168,7 @@ export async function bake({ canvas, times = ['morning', 'golden', 'evening'], s
     sky.color.set(P.bake.skyColor);
     skylight.color.set(P.bake.skyColor);
     coves.forEach(c => c.color.set(P.bake.coveColor));
+    ceils.forEach(c => c.color.set(P.bake.ceilingColor ?? 0xffe6c8));
     const sunDir = P.sun ? new THREE.Vector3(...P.sun.position).normalize() : null; // points toward the sun
 
     const makeTargets = list => list.map(s => {
@@ -187,7 +205,18 @@ export async function bake({ canvas, times = ['morning', 'golden', 'evening'], s
         c.target.position.set(cp.x + toWall.x * 0.3, 1.6, cp.y + toWall.z * 0.3);
         c.intensity = P.bake.cove * coveLength / COVE_SPOTS;
       });
-      for (const l of [sun, sky, skylight, sun.target, sky.target, skylight.target, ...coves, ...coves.map(c => c.target)]) l.updateMatrixWorld();
+      ceils.forEach((c, j) => {
+        let x, z, tries = 0;
+        do {
+          const u = (halton(k * CEIL_SPOTS + j + tries * 97, 23)), v = (halton(k * CEIL_SPOTS + j + tries * 97, 29));
+          x = ceilX0 + u * (ceilX1 - ceilX0); z = ceilZ0 + v * (ceilZ1 - ceilZ0);
+          tries++;
+        } while (Math.hypot(x - L.SKYLIGHT.x, z - L.SKYLIGHT.z) < L.SKYLIGHT.r + 0.3 && tries < 8);
+        c.position.set(x, L.CEILING.drop - 0.05, z);
+        c.target.position.set(x, 0, z);
+        c.intensity = (P.bake.ceiling ?? 0) / CEIL_SPOTS;
+      });
+      for (const l of [sun, sky, skylight, sun.target, sky.target, skylight.target, ...coves, ...coves.map(c => c.target), ...ceils, ...ceils.map(c => c.target)]) l.updateMatrixWorld();
 
       renderer.shadowMap.needsUpdate = true;
       renderer.setRenderTarget(dummy);
@@ -221,6 +250,7 @@ export async function bake({ canvas, times = ['morning', 'golden', 'evening'], s
     for (let i = 0; i < fpx.length; i += 4) sum += (fpx[i] + fpx[i + 1] + fpx[i + 2]) / 3;
     const floorIrradiance = (sum / (fpx.length / 4)) * Math.PI; // the bake writes E/π for a white surface
     bounce.groundColor.copy(floorTint);
+    bounce.color.copy(floorTint).multiplyScalar(WALL_BOUNCE);
     bounce.intensity = floorIrradiance * P.bake.bounce;
     console.info(`[bake] ${time}: floor irradiance ${floorIrradiance.toFixed(2)}, bounce ${bounce.intensity.toFixed(2)}`);
 

@@ -39,7 +39,7 @@ export const STREET = {
 };
 
 // Sun comes in low through the arched windows, from the street side.
-export const SUN = { position: [-15, 8.2, 6.5], target: [0, 0, -0.5], color: 0xffe0b8 };
+export const SUN = { position: [-15, 12.4, 6.5], target: [0, 0, -0.5], color: 0xffe0b8 };
 
 // Floating ceiling, inset from the walls; the gap is the light cove.
 export const CEILING = { drop: 3.72, inset: 0.42 };
@@ -71,7 +71,5 @@ export const ISLAND = { x: 1.55, z: -0.35, len: 2.6, w: 0.95 };
 
 // Soft fabric waves hung under the floating ceiling, over the middle of the room.
 export const SAILS = { x0: -1.7, x1: 5.5, z0: -2.35, z1: 3.25, count: 9, top: 3.66 };
-// Cream-and-evergreen checker inlaid just inside the door.
-export const INLAY = { x: 0, z: 4.62, w: 2.3, d: 1.66, tile: 0.2 };
 export const NOTICE_BOARD = { x: 3.5, y: 1.64, z: 5.46, w: 3.3, h: 1.76 };
 export const CAMPAIGN_PRINT = { z: -3.45 };

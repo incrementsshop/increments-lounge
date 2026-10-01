@@ -6,7 +6,7 @@ import { haloLetters, glowDisc, ledLine, archPoints } from './signs.js';
 import * as L from './layout.js';
 
 // The storefront: where the visit begins. A limewashed facade on a quiet street — an
-// arched glass door in evergreen steel, a shop window looking in on the Steps, an arched
+// arched pair of glass doors in black steel, a shop window looking in on the Steps, an arched
 // vitrine showing the campaign, the name in halo-lit letters, olives in planters and a
 // café table under the window. "Step inside" swings the door open and walks you in.
 
@@ -60,9 +60,10 @@ export function storefront(M, A, quality) {
   band(D.x + D.w / 2, F.x1, 0, F.plinth, 0.04, M.slab);
   band(F.x0, F.x1, 4.28, 0.1, 0.06);
   band(F.x0 - 0.1, F.x1 + 0.1, F.h - 0.2, 0.2, 0.22);
-  for (const o of [W, V]) g.add(place(box(o.w + 0.2, 0.05, 0.16, M.slabWarm), o.x, o.sill - 0.025, FZ + 0.06));
+  // Sills sit 4 mm proud of the openings' floors so the surfaces never share a plane.
+  for (const o of [W, V]) g.add(place(box(o.w + 0.2, 0.05, 0.16, M.slabWarm), o.x, o.sill - 0.021, FZ + 0.06));
 
-  // --- Doors: a pair of glass leaves in evergreen steel that part in the middle ------------
+  // --- Doors: a pair of glass leaves in black steel that part in the middle ---------------
   const leafW = D.w / 2 - 0.015, leafH = D.h - 0.01, st = 0.06;
   const leaves = [];
   for (const side of [-1, 1]) {
@@ -73,7 +74,7 @@ export function storefront(M, A, quality) {
     // Built from the hinge toward the middle: local x runs 0 → leafW toward the centre.
     const dir = -side;
     for (const [w, h, x, y] of [[st, leafH, st / 2, leafH / 2], [st, leafH, leafW - st / 2, leafH / 2], [leafW, st, leafW / 2, leafH - st / 2], [leafW, 0.14, leafW / 2, 0.07], [leafW, 0.04, leafW / 2, 1.05]]) {
-      leaf.add(place(box(w, h, 0.05, M.evergreen), dir * x, y, 0));
+      leaf.add(place(box(w, h, 0.05, M.blackSteel), dir * x, y, 0));
     }
     const glass = new THREE.Mesh(new THREE.PlaneGeometry(leafW - st * 2, leafH - 0.2), M.glass);
     glass.position.set(dir * leafW / 2, 0.14 + (leafH - 0.2) / 2, 0);
@@ -92,18 +93,18 @@ export function storefront(M, A, quality) {
   // Casing on the facade and a travertine threshold through both walls.
   const cas = 0.07;
   for (const [w, h, x, y] of [[cas, D.h + cas, D.x - D.w / 2 - cas / 2, (D.h + cas) / 2], [cas, D.h + cas, D.x + D.w / 2 + cas / 2, (D.h + cas) / 2]]) {
-    g.add(place(box(w, h, 0.04, M.evergreen), x, y, FZ + 0.02));
+    g.add(place(box(w, h, 0.056, M.blackSteel), x, y, FZ + 0.028)); // proud of the plinth (0.04), so their faces never coincide
   }
   g.add(place(box(D.w, 0.014, T + F.t + 0.12, M.slabWarm, { cast: false }), D.x, 0.007, z1 + (T + F.t + 0.12) / 2));
 
-  // Fanlight: a half-round of dark glass and radial bars in evergreen.
+  // Fanlight: a half-round of dark glass with radial bars.
   const fanR = D.w / 2 + cas;
   const fanFrameShape = new THREE.Shape();
   fanFrameShape.absarc(0, 0, fanR + 0.04, 0, Math.PI, false);
   fanFrameShape.lineTo(-fanR + 0.02, 0);
   fanFrameShape.absarc(0, 0, fanR - 0.03, Math.PI, 0, true);
   fanFrameShape.lineTo(fanR + 0.04, 0);
-  const fanFrame = new THREE.Mesh(new THREE.ExtrudeGeometry(fanFrameShape, { depth: 0.04, bevelEnabled: false, curveSegments: 32 }), M.evergreen);
+  const fanFrame = new THREE.Mesh(new THREE.ExtrudeGeometry(fanFrameShape, { depth: 0.04, bevelEnabled: false, curveSegments: 32 }), M.blackSteel);
   fanFrame.position.set(D.x, D.h + cas, FZ);
   g.add(fanFrame);
   const darkGlass = new THREE.MeshStandardMaterial({ color: 0x3b3d3a, roughness: 0.08, metalness: 0.4, emissive: 0xffb36b, emissiveIntensity: 0.12, envMapIntensity: 1.5 });
@@ -113,16 +114,16 @@ export function storefront(M, A, quality) {
   fan.position.set(D.x, D.h + cas, FZ + 0.005);
   g.add(fan);
   for (const a of [Math.PI / 4, Math.PI / 2, (3 * Math.PI) / 4]) {
-    const bar = box(0.022, fanR - 0.06, 0.03, M.evergreen);
+    const bar = box(0.022, fanR - 0.06, 0.03, M.blackSteel);
     bar.position.set(D.x + Math.cos(a) * (fanR - 0.03) / 2, D.h + cas + Math.sin(a) * (fanR - 0.03) / 2, FZ + 0.02);
     bar.rotation.z = a - Math.PI / 2;
     g.add(bar);
   }
-  g.add(place(box(D.w + cas * 2, 0.05, 0.05, M.evergreen), D.x, D.h + cas / 2, FZ + 0.025));
+  g.add(place(box(D.w + cas * 2, 0.05, 0.05, M.blackSteel), D.x, D.h + cas / 2, FZ + 0.025));
 
-  // --- Shop window and vitrine: evergreen surrounds on the street face -------------------
-  g.add(place(archFrame(W.x, W.w, W.sill, W.spring, 0.07, 0.035, M.evergreen), 0, 0, FZ));
-  g.add(place(archFrame(V.x, V.w, V.sill, V.spring, 0.07, 0.035, M.evergreen), 0, 0, FZ));
+  // --- Shop window and vitrine: black steel surrounds on the street face ------------------
+  g.add(place(archFrame(W.x, W.w, W.sill, W.spring, 0.07, 0.035, M.blackSteel), 0, 0, FZ));
+  g.add(place(archFrame(V.x, V.w, V.sill, V.spring, 0.07, 0.035, M.blackSteel), 0, 0, FZ));
 
   // The vitrine: a shallow lit box set into the facade. displays.js hangs the campaign in it.
   const vBack = WALL_OUT + 0.012;
@@ -186,7 +187,7 @@ export function storefront(M, A, quality) {
     const uw = 1.05, uh = 1.75, uy = 4.72;
     g.add(place(new THREE.Mesh(new THREE.PlaneGeometry(uw, uh), upGlass), ux, uy + uh / 2, FZ + 0.004));
     for (const [w, h, x, y] of [[uw + 0.1, 0.06, ux, uy], [uw + 0.1, 0.06, ux, uy + uh], [0.06, uh, ux - uw / 2, uy + uh / 2], [0.06, uh, ux + uw / 2, uy + uh / 2], [0.035, uh, ux, uy + uh / 2], [uw, 0.035, ux, uy + uh * 0.62]]) {
-      g.add(place(box(w, h, 0.05, M.evergreen), x, y, FZ + 0.025));
+      g.add(place(box(w, h, 0.05, M.blackSteel), x, y, FZ + 0.025));
     }
     g.add(place(box(uw + 0.24, 0.05, 0.14, M.slabWarm), ux, uy - 0.05, FZ + 0.07));
   }
@@ -215,8 +216,8 @@ export function storefront(M, A, quality) {
   // A café table under the shop window.
   const tx = W.x, tz = FZ + 0.95;
   const table = new THREE.Group();
-  table.add(place(cyl(0.2, 0.22, 0.03, M.evergreen, { segments: 28 }), 0, 0.015, 0));
-  table.add(place(cyl(0.025, 0.025, 0.7, M.evergreen, { segments: 12 }), 0, 0.37, 0));
+  table.add(place(cyl(0.2, 0.22, 0.03, M.blackSteel, { segments: 28 }), 0, 0.015, 0));
+  table.add(place(cyl(0.025, 0.025, 0.7, M.blackSteel, { segments: 12 }), 0, 0.37, 0));
   table.add(place(cyl(0.32, 0.32, 0.03, M.slabWarm, { segments: 40 }), 0, 0.735, 0));
   const c1 = coffeeCup(M); c1.position.set(-0.1, 0.75, 0.05); table.add(c1);
   const c2 = coffeeCup(M); c2.position.set(0.12, 0.75, -0.06); c2.rotation.y = 2.2; table.add(c2);
@@ -224,7 +225,7 @@ export function storefront(M, A, quality) {
   g.add(table, outsideShadow(0.7, 0.7, { round: true, opacity: 0.4 }));
   g.children[g.children.length - 1].position.set(tx, 0.003, tz);
   for (const sx of [-1, 1]) {
-    const ch = bistroChair(M);
+    const ch = bistroChair(M, { frame: M.blackSteel });
     ch.position.set(tx + sx * 0.6, 0, tz + 0.05);
     ch.rotation.y = -sx * Math.PI / 2 + sx * 0.25;
     g.add(ch);
@@ -242,7 +243,7 @@ function aFrame(M, x, z, ry) {
   const g = new THREE.Group();
   const bw = 0.62, bh = 0.98, lean = 0.2;
   const face = canvasTexture(620, 980, (ctx, w, h) => {
-    ctx.fillStyle = '#264030'; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#2a1d16'; ctx.fillRect(0, 0, w, h);
     ctx.strokeStyle = 'rgba(244,236,222,0.55)'; ctx.lineWidth = 3; ctx.strokeRect(24, 24, w - 48, h - 48);
     ctx.fillStyle = '#f4ecde'; ctx.textAlign = 'center';
     ctx.font = '500 30px "Azeret Mono", monospace'; ctx.letterSpacing = '9px';
@@ -267,7 +268,7 @@ function aFrame(M, x, z, ry) {
   const a = Math.sin(lean) * bh;
   for (const side of [1, -1]) {
     const board = new THREE.Group();
-    const b = box(bw, bh, 0.025, [M.evergreenPaint, M.evergreenPaint, M.evergreenPaint, M.evergreenPaint, faceMat, M.evergreenPaint]);
+    const b = box(bw, bh, 0.025, [M.signPaint, M.signPaint, M.signPaint, M.signPaint, faceMat, M.signPaint]);
     b.position.y = bh / 2;
     b.castShadow = true;
     board.add(b);

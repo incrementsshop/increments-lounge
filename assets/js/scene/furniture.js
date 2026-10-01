@@ -3,7 +3,7 @@ import { mesh, box, cyl, lathe, place, group, contactShadow, canvasTexture } fro
 import { applyBoxUV } from './materials.js';
 import { seeded } from './stone.js';
 import * as L from './layout.js';
-import { olive, bistroChair, coffeeCup, espressoMachine, pampasVase, wheatRow } from './pieces.js';
+import { olive, bistroChair, coffeeCup, espressoMachine, pampasVase } from './pieces.js';
 import { storefront } from './storefront.js';
 import { neonText, pillSign } from './signs.js';
 
@@ -17,7 +17,7 @@ export function buildFurniture(scene, M, quality) {
   const root = new THREE.Group();
   root.name = 'furniture';
   scene.add(root);
-  const A = { steam: [], lights: [], glows: [], floorDecals: [] };
+  const A = { steam: [], lights: [], glows: [] };
 
   root.add(featureWall(M, A));
   root.add(counter(M, A));
@@ -34,7 +34,6 @@ export function buildFurniture(scene, M, quality) {
   root.add(sails(M));
   root.add(drapes(M));
   root.add(wordsInLight(M, A));
-  root.add(entryInlay(M, A));
   return { root, anchors: A };
 }
 export default buildFurniture;
@@ -257,7 +256,7 @@ function counter(M, A) {
   v.position.set(x - 1.05, topY, z - 0.12);
   g.add(v);
 
-  // The café half of the idea: an evergreen espresso machine and cups on the bar.
+  // The café half of the idea: an espresso machine and cups on the bar.
   const em = espressoMachine(M);
   em.position.set(x - 0.14, topY, z - 0.14);
   em.rotation.y = 0.12;
@@ -488,10 +487,7 @@ function lounge(M, A) {
     g.add(ch);
   }
   g.add(place(box(0.16, 0.04, len, M.slabWarm), x1 - 0.08, 1.04, z));
-  // Dried wheat along the ledge behind the banquette, and pampas standing at either end.
-  const wheat = wheatRow(len - 0.3, { count: 280 });
-  wheat.position.set(x1 - 0.08, 1.06, z);
-  g.add(wheat);
+  // Pampas standing at either end of the banquette.
   [[z - len / 2 - 0.34, 3], [z + len / 2 + 0.34, 9]].forEach(([pz, seed]) => {
     const pv = pampasVase(M, { seed, plumes: 6 });
     pv.position.set(x1 - 0.42, 0, pz);
@@ -654,9 +650,9 @@ function island(M, A) {
   const plinth = mesh(flutedGeometry(len - 0.5, w - 0.36, topY - 0.07, { reed: 0.055 }), M.slab);
   plinth.position.set(x, 0, z);
   g.add(plinth);
-  // Evergreen bistro chairs: a table to sit at, not just a plinth to look at.
+  // Bistro chairs: a table to sit at, not just a plinth to look at.
   [[-0.62, 1], [0.58, 1], [-0.58, -1], [0.62, -1]].forEach(([dx, side]) => {
-    const ch = bistroChair(M);
+    const ch = bistroChair(M, { frame: M.oak });
     ch.position.set(x + dx, 0, z + side * (w / 2 + 0.3));
     ch.rotation.y = side > 0 ? Math.PI + (dx > 0 ? -0.12 : 0.1) : (dx > 0 ? 0.1 : -0.12);
     g.add(ch);
@@ -846,41 +842,4 @@ function wordsInLight(M, A) {
   pill.position.set(-3.06, 1.58, L.ROOM.z0 + 0.006);
   g.add(pill);
   return g;
-}
-
-// ---------------------------------------------------------------------------
-// A cream-and-evergreen checker inlaid inside the door
-// ---------------------------------------------------------------------------
-
-function entryInlay(M, A) {
-  const I = L.INLAY;
-  const cols = Math.round(I.w / I.tile), rows = Math.round(I.d / I.tile);
-  const px = 64;
-  const map = canvasTexture(cols * px + 32, rows * px + 32, (ctx, w, h) => {
-    const r = seeded(12);
-    ctx.fillStyle = '#e3d4bd'; ctx.fillRect(0, 0, w, h);                  // travertine border
-    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-      const green = (i + j) % 2 === 0;
-      const base = green ? [44, 66, 52] : [236, 227, 212];
-      const jit = (r() - 0.5) * 10;
-      ctx.fillStyle = `rgb(${base[0] + jit},${base[1] + jit},${base[2] + jit})`;
-      ctx.fillRect(16 + i * px + 1, 16 + j * px + 1, px - 2, px - 2);
-      for (let k = 0; k < 14; k++) {
-        ctx.fillStyle = green ? 'rgba(255,255,255,0.03)' : 'rgba(120,100,70,0.05)';
-        ctx.fillRect(16 + i * px + r() * px, 16 + j * px + r() * px, 2 + r() * 8, 1);
-      }
-    }
-    ctx.strokeStyle = 'rgba(90,72,52,0.35)'; ctx.lineWidth = 1;
-    for (let j = 0; j <= rows; j++) { ctx.beginPath(); ctx.moveTo(16, 16 + j * px); ctx.lineTo(16 + cols * px, 16 + j * px); ctx.stroke(); }
-    for (let i = 0; i <= cols; i++) { ctx.beginPath(); ctx.moveTo(16 + i * px, 16); ctx.lineTo(16 + i * px, 16 + rows * px); ctx.stroke(); }
-  });
-  const mat = new THREE.MeshStandardMaterial({ map, roughness: 0.55, envMapIntensity: 0.6 });
-  const geo = new THREE.PlaneGeometry(I.w + 0.1, I.d + 0.1);
-  geo.rotateX(-Math.PI / 2);
-  geo.translate(I.x, 0.0025, I.z);
-  const m = new THREE.Mesh(geo, mat);
-  m.receiveShadow = true;
-  m.name = 'inlay';
-  A.floorDecals.push(m);
-  return m;
 }

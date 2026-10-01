@@ -18,6 +18,11 @@ for everyone — after someone from Increments has read them.
 Preview it before setting anything up: add `?boardDemo` to the Lounge URL. The board fills with
 notes labelled "Sample", and nothing is sent.
 
+**Starter notes.** So the board isn't empty on day one, `board.starterNotes` in `config.js` holds a
+few of the team's own next steps, signed "— the Increments team". They fill the spaces visitors'
+notes haven't taken and step aside as approved notes arrive. The ones there now are drafts:
+swap in the team's real ones before launch.
+
 ## Set it up (about 10 minutes)
 
 1. **Create a Supabase account** at [supabase.com](https://supabase.com). Use the Increments

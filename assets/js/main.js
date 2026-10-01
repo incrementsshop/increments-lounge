@@ -22,6 +22,7 @@ import { openProduct } from './ui/product.js';
 import { openTray, openMenu, openStamps, openStations, openArchive } from './ui/panels.js';
 import { openComposer, savedIncrements } from './ui/composer.js';
 import { openAtmosphere } from './ui/atmosphere.js';
+import { maybeAskConsent } from './ui/consent.js';
 import { openBoardPanel } from './ui/boardpanel.js';
 import { Board } from './board.js';
 import { batchStatic, objectsIn } from './scene/batch.js';
@@ -104,7 +105,7 @@ async function boot() {
 
   // Time of day, with the room's pre-calculated light where a bake exists.
   progress(0.52, 'Opening the blinds…');
-  const lightmaps = new Lightmaps(room.receivers, world.scene, { decals: anchors.floorDecals });
+  const lightmaps = new Lightmaps(room.receivers, world.scene);
   const lighting = app.lighting = new Lighting({ world, room, anchors, fx, lightmaps, glows: [...room.glows, ...anchors.glows] });
   app.door = anchors.door;
   app.street = anchors.street;
@@ -193,10 +194,11 @@ async function enter() {
   if (app.rig.outside) {
     await app.rig.walkIn({ via: app.street, onProgress: swingDoor });
     swingDoor(1);
-    if (app.rig.index !== 0 || app.rig.moving) { lookHint(); return; } // they moved on mid-walk
+    if (app.rig.index !== 0 || app.rig.moving) { lookHint(); maybeAskConsent(); return; } // they moved on mid-walk
   }
   arrive();
   lookHint();
+  maybeAskConsent();
 }
 
 /** The door opens as you reach it and closes once you're in. */

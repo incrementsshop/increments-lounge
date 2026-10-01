@@ -18,7 +18,7 @@
   --scarlet: #8c2027;
   --scarlet-ink: #a3262e;
   --steel: #a9a7a1;
-  --evergreen: #22402f;
+  --brass: #b48f55;
 
   --ink: var(--espresso);
   --ink-soft: #6c5746;
@@ -1100,7 +1100,7 @@ dialog::backdrop {
 .archive__item img { width: 88%; height: 88%; object-fit: contain; filter: saturate(0.85); }
 .archive__item span { display: block; margin-top: 6px; font-size: 13px; line-height: 1.25; }
 .archive__item small { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); letter-spacing: 0.06em; }
-.archive__item.is-available small { color: var(--evergreen); }
+.archive__item.is-available small { color: var(--chestnut); }
 .archive__intro { margin: 0 0 14px; color: var(--ink-soft); font-size: 14.5px; }
 
 .composer textarea {
@@ -1427,7 +1427,7 @@ body.is-walking .hotspots { opacity: 0.85; }
   width: 10px; height: 10px;
   margin-left: -5px;
   border-radius: 50%;
-  background: var(--evergreen);
+  background: var(--brass);
   box-shadow: 0 2px 3px rgba(42, 29, 22, 0.3);
 }
 .note-card.is-own::before { background: var(--scarlet); }
@@ -1441,3 +1441,27 @@ body.is-walking .hotspots { opacity: 0.85; }
 @media (max-width: 899px) {
   .dialog--sheet.is-lean, .dialog--sheet.is-lean .panel { max-height: 61dvh; }
 }
+
+/* One-time analytics question, tucked above the dock. */
+.consent {
+  position: fixed;
+  z-index: 7;
+  right: calc(var(--safe-right) + var(--gutter));
+  bottom: calc(var(--safe-bottom) + 84px);
+  width: min(calc(100vw - 2 * var(--gutter)), 340px);
+  padding: 14px 16px;
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border-radius: 3px;
+  box-shadow: var(--shadow-soft);
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.consent.is-shown { opacity: 1; transform: none; }
+.consent p { margin: 0 0 10px; }
+.consent__actions { display: flex; gap: 6px; }
+@media (max-width: 600px) { .consent { left: calc(var(--safe-left) + var(--gutter)); right: auto; bottom: auto; top: calc(var(--safe-top) + 68px); transform: translateY(-10px); } }

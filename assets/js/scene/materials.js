@@ -102,11 +102,9 @@ export function createMaterials(renderer, quality) {
   const steelC = S.brushedMetal({ width: 256, height: 256 });
   const steel = std({ map: tex(steelC.map), color: 0xd8d6d0, metalness: 1, roughness: 0.3, envMapIntensity: 1.1 }, [0.5, 0.5]);
 
-  // --- Storefront & the second accent ---------------------------------------
-  // Evergreen: powder-coated steel for the door, shop window, bistro chairs and espresso machine
-  // (the colourway of the same name). Scarlet stays the drop's colour; green lives with the plants.
-  const evergreen = new THREE.MeshStandardMaterial({ color: 0x2b4535, metalness: 0.45, roughness: 0.42, envMapIntensity: 0.9 });
-  const evergreenPaint = new THREE.MeshStandardMaterial({ color: 0x264030, roughness: 0.78 });
+  // --- Storefront -----------------------------------------------------------------
+  // Doors and window frames are the same black steel as the arched windows inside.
+  const signPaint = new THREE.MeshStandardMaterial({ color: 0x2a1d16, roughness: 0.8 });
   const facade = std({ map: plasterMap, color: 0xfaf0e2, bumpMap: plasterBump, bumpScale: 0.8, roughness: 0.96, envMapIntensity: 0.5 }, [2.6, 2.6]);
   // Pavement: the floor's stone, greyed and laid at a larger scale (no extra texture to generate).
   const pavement = std({ map: floor.map, color: 0xcbc2b4, bumpMap: floor.bumpMap, bumpScale: 1.4, roughness: 0.92, envMapIntensity: 0.3 }, [3.6, 3.6]);
@@ -125,7 +123,7 @@ export function createMaterials(renderer, quality) {
     floor, claddingRough, blackStone, slab, slabWarm, noce,
     plaster: plasterMat, ceiling,
     wood, oak, leather, boucle, rug, linen, curtain, steel,
-    evergreen, evergreenPaint, facade, pavement, sheer, sail,
+    signPaint, facade, pavement, sheer, sail,
     paperMap, glowMap,
     // Hidden-light pieces: the LED line itself, and the soft spill it throws on walls.
     led: new THREE.MeshBasicMaterial({ color: 0xfff1d8 }),

@@ -34,15 +34,15 @@ On a phone, every station has its own portrait framing (the board is shown with 
 
 ## The idea
 
-The brand speaks in steps and chapters: "Small steps, big accomplishments", "The First Chapter", "Still Becoming". The client's boards are tone-on-tone limestone and plaster, curved and carved rooms, hidden light, raw stone, stairs, a tree under a skylight, words on the walls — and, from her café board, arched shopfronts, fabric ceilings, olives you sit around, fluted counters, greenery and neon. So the Lounge is one warm, quiet material, with scarlet for the drop and evergreen for everything living:
+The brand speaks in steps and chapters: "Small steps, big accomplishments", "The First Chapter", "Still Becoming". The client's boards are tone-on-tone limestone and plaster, curved and carved rooms, hidden light, raw stone, stairs, a tree under a skylight, words on the walls — and, from her café board, arched shopfronts, fabric ceilings, olives you sit around, fluted counters, greenery and neon. So the Lounge is one warm, quiet material — travertine, plaster, oak, black steel — with scarlet as the only colour, and green left to the plants:
 
 | Station | What's there | What it does for the shop |
 |---|---|---|
-| **The street** | A limewashed facade: evergreen arched doors, a shop window onto the Steps, the campaign lit in an arched vitrine, INCREMENTS in halo-lit letters, olives, a café table, an A-frame | First impression; the doors swing open as you step in |
-| **01 Step inside** | The whole room: fabric waves under the floating ceiling, glowing cove, curved corners, a cream-and-evergreen checker at the door | Orientation; the stamp card starts |
+| **The street** | A limewashed facade: black steel arched doors, a shop window onto the Steps, the campaign lit in an arched vitrine, INCREMENTS in halo-lit letters, olives, a café table, an A-frame | First impression; the doors swing open as you step in |
+| **01 Step inside** | The whole room: fabric waves under the floating ceiling, glowing cove, curved corners, soft light from the ceiling over the middle of the room | Orientation; the stamp card starts |
 | **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight; a crescent travertine table wraps the olive, with chairs pulled up and coffee on it | The new drop |
-| **03 The Collection** | A rough-hewn travertine bar before a black split-stone wall, greenery trailing from a hung planter; an evergreen espresso machine; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till"; a fluted island with evergreen bistro chairs | The whole range, and easy add-ons |
-| **04 The Lounge** | Sand leather banquette with dried wheat along its ledge and pampas at either end, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
+| **03 The Collection** | A rough-hewn travertine bar before a black split-stone wall, greenery trailing from a hung planter; an espresso machine; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till"; a fluted island with oak bistro chairs | The whole range, and easy add-ons |
+| **04 The Lounge** | Sand leather banquette with pampas at either end, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
 | **05 Movement** | Steel rack of pegged prints in front of two arched fitting rooms outlined in light, a pill lightbox: *Take your time* | Activewear |
 | **06 The Archive** | Travertine shelves lit from within, one book spine per past piece; *Life unfolds in increments. You define your story.* raised on the stone above | Brand story; the last few pieces still in stock |
 | **07 Notice Board** | Under *small steps, big accomplishments.* in warm neon: team quotes, Polaroids, "Your next increment", and *Notes from the Lounge* — other visitors' next steps, approved by the team | Community + shareable UGC |
@@ -94,7 +94,7 @@ assets/js/
     stations.js            the seven stations + camera rig (framing, glides, look-around, lean-in)
     storefront.js          the facade, doors, shop window, vitrine, sign, olives, café table, A-frame, pavement
     signs.js               words in light: neon, pill lightbox, halo letters, LED lines
-    pieces.js              shared pieces: olive, bistro chair, cups, espresso machine, pampas, wheat
+    pieces.js              shared pieces: olive, bistro chair, cups, espresso machine, pampas
     lighting.js            time of day: presets, the street outside, glows, fades
     lightmaps.js           baked light for the shell (shared with the baker so UVs always match)
     cutout.js              product photo → cut-out or print
@@ -165,7 +165,7 @@ The Steps look for a hoodie + sweat pair in the `window` zone (three colourways,
 
 ## Analytics
 
-Every interaction is pushed to `window.dataLayer` as `lounge_<event>` (ready for GTM/GA4/Meta). Set `analytics.ga4` in `config.js` to load GA4 directly. Events: `open`, `enter`, `station_view`, `product_open`, `colour_select`, `size_select`, `add_to_tray`, `tray_open`, `checkout_click`, `menu_open`, `stamp_earned`, `card_complete`, `archive_open`, `increment_created`, `increment_shared`, `increment_submitted`, `increment_submit_failed`, `board_open`, `look_around`, `lean_in`, `walk_start`, `walk_end`, `time_select`, `sound_toggle`, `newsletter_click`, `quality_change`, `webgl_unavailable`, `closed_view`, `boot_error`. (Event names predate the boutique wording: `tray` is the bag, `menu` is the collection list.)
+Every interaction is pushed to `window.dataLayer` as `lounge_<event>` (ready for GTM/GA4/Meta) and sent through the store's own Google tag (`analytics.googleTag` in `config.js`, the one Shopify's Google & YouTube app installs), so Lounge traffic appears in the same Google Analytics property as increments.ca — filter by hostname `incrementsshop.github.io` to see it alone. Consent Mode is on: no analytics cookies and no ad signals until a visitor says yes to a one-time prompt; before that Google receives cookieless pings only. Events: `open`, `enter`, `station_view`, `product_open`, `colour_select`, `size_select`, `add_to_tray`, `tray_open`, `checkout_click`, `menu_open`, `stamp_earned`, `card_complete`, `archive_open`, `increment_created`, `increment_shared`, `increment_submitted`, `increment_submit_failed`, `board_open`, `look_around`, `lean_in`, `walk_start`, `walk_end`, `time_select`, `sound_toggle`, `newsletter_click`, `quality_change`, `webgl_unavailable`, `closed_view`, `boot_error`. (Event names predate the boutique wording: `tray` is the bag, `menu` is the collection list.)
 
 In Shopify, Lounge orders carry the cart attribute **Found in: The Increments Lounge** and arrive with `utm_source=increments-lounge`.
 

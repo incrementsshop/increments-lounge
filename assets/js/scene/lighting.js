@@ -10,7 +10,8 @@ import * as THREE from 'three';
 export const TIMES = {
   morning: {
     label: 'Morning',
-    sun: { position: [-15, 8.2, 6.5], color: 0xffe0b8, intensity: 4.4 },
+    // Sun high enough (~37°) that its patches and the olive's shadow stay round the Steps.
+    sun: { position: [-15, 12.4, 6.5], color: 0xffe0b8, intensity: 4.4 },
     hemi: { sky: 0xfff0db, ground: 0xdcc4a0, intensity: 0.7 },
     fill: 0.26,
     exposure: 1.02,
@@ -24,11 +25,12 @@ export const TIMES = {
     dust: 1,
     street: 'morning',
     // What the lightmap baker uses for this time (see tools/bake.html).
-    bake: { skyColor: 0xfff4e6, sky: 2.6, skylight: 3.2, cove: 7, coveColor: 0xffe6c4, bounce: 0.3, ambient: 0.6 },
+    bake: { skyColor: 0xfff4e6, sky: 2.6, skylight: 3.2, cove: 7, coveColor: 0xffe6c4, bounce: 0.3, ambient: 0.6, ceiling: 78, ceilingColor: 0xffe9cf },
   },
   golden: {
     label: 'Golden hour',
-    sun: { position: [-16, 3.4, 1.5], color: 0xffae62, intensity: 5.4 },
+    // Low and warm (~21°): long light across the floor without the tree's shadow crossing the room.
+    sun: { position: [-16, 6.3, 2.2], color: 0xffae62, intensity: 5.4 },
     hemi: { sky: 0xffdcb4, ground: 0xcfa982, intensity: 0.55 },
     fill: 0.2,
     exposure: 1.0,
@@ -41,7 +43,7 @@ export const TIMES = {
     shafts: { opacity: 0.11, color: 0xffc27a },
     dust: 1.25,
     street: 'golden',
-    bake: { skyColor: 0xffdcb8, sky: 1.9, skylight: 2.2, cove: 8, coveColor: 0xffdcb0, bounce: 0.3, ambient: 0.6 },
+    bake: { skyColor: 0xffdcb8, sky: 1.9, skylight: 2.2, cove: 8, coveColor: 0xffdcb0, bounce: 0.3, ambient: 0.6, ceiling: 78, ceilingColor: 0xffe2c0 },
   },
   evening: {
     label: 'Evening',
@@ -58,7 +60,7 @@ export const TIMES = {
     shafts: { opacity: 0, color: 0xffc27a },
     dust: 0.25,
     street: 'evening',
-    bake: { skyColor: 0x6a7aa0, sky: 0.35, skylight: 0.6, cove: 11, coveColor: 0xffd6a4, bounce: 0.3, ambient: 0.6 },
+    bake: { skyColor: 0x6a7aa0, sky: 0.35, skylight: 0.6, cove: 11, coveColor: 0xffd6a4, bounce: 0.3, ambient: 0.6, ceiling: 88, ceilingColor: 0xffdcb2 },
   },
 };
 

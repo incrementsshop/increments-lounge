@@ -342,13 +342,14 @@ function windowAssembly(win, M) {
   g.add(glass);
 
   const sillSlab = box(0.4, 0.05, w + 0.16, M.slabWarm);
-  sillSlab.position.set(x0 - 0.06, sill - 0.025, z);
+  // 4 mm proud of the opening's floor, so the two surfaces never share a plane (they flickered).
+  sillSlab.position.set(x0 - 0.06, sill - 0.021, z);
   g.add(sillSlab);
   return g;
 }
 
 /**
- * The shop window in the front wall, from inside: glass mid-wall with evergreen glazing bars
+ * The shop window in the front wall, from inside: glass mid-wall with black steel glazing bars
  * and a travertine sill. The street side (surround, sill) belongs to storefront.js.
  */
 function shopWindow(M, glows) {
@@ -366,20 +367,20 @@ function shopWindow(M, glows) {
   frame.moveTo(x - r, sill); frame.lineTo(x + r, sill); frame.lineTo(x + r, spring);
   frame.absarc(x, spring, r, 0, Math.PI, false); frame.lineTo(x - r, sill);
   frame.holes.push(archPathInner(x, w - 0.1, sill + 0.05, spring));
-  const fr = mesh(new THREE.ExtrudeGeometry(frame, { depth: 0.05, bevelEnabled: false, curveSegments: 32 }), M.evergreen, { uv: false });
+  const fr = mesh(new THREE.ExtrudeGeometry(frame, { depth: 0.05, bevelEnabled: false, curveSegments: 32 }), M.blackSteel, { uv: false });
   fr.position.z = zMid - 0.025;
   g.add(fr);
-  g.add(place(box(bar, spring - sill + r - 0.06, bar, M.evergreen), x, sill + (spring - sill + r) / 2, zMid));
-  g.add(place(box(w - 0.08, bar, bar, M.evergreen), x, spring, zMid));
-  g.add(place(box(w - 0.08, bar * 0.8, bar * 0.8, M.evergreen), x, sill + (spring - sill) * 0.5, zMid));
+  g.add(place(box(bar, spring - sill + r - 0.06, bar, M.blackSteel), x, sill + (spring - sill + r) / 2, zMid));
+  g.add(place(box(w - 0.08, bar, bar, M.blackSteel), x, spring, zMid));
+  g.add(place(box(w - 0.08, bar * 0.8, bar * 0.8, M.blackSteel), x, sill + (spring - sill) * 0.5, zMid));
   for (const a of [Math.PI / 4, (3 * Math.PI) / 4]) {
     const len = r - 0.06;
-    const rb = box(bar * 0.8, len, bar * 0.8, M.evergreen);
+    const rb = box(bar * 0.8, len, bar * 0.8, M.blackSteel);
     rb.position.set(x + Math.cos(a) * len / 2, spring + Math.sin(a) * len / 2, zMid);
     rb.rotation.z = a - Math.PI / 2;
     g.add(rb);
   }
-  g.add(place(box(w + 0.16, 0.05, 0.3, M.slabWarm), x, sill - 0.025, -0.06));
+  g.add(place(box(w + 0.16, 0.05, 0.3, M.slabWarm), x, sill - 0.021, -0.06)); // proud of the opening, see windowAssembly
   const led = ledLine(archPoints(x, w, sill + 0.01, spring, { inset: 0.018 }), { glows });
   led.position.z = -0.01;
   g.add(led);

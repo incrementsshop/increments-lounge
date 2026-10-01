@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { CONFIG } from '../config.js';
 import { prepareProductImage, loadImage, shopifyImage } from './cutout.js';
 import { box, cyl, place, canvasTexture, pickable } from './helpers.js';
 import { drawTravertine, seeded, TRAVERTINE } from './stone.js';
@@ -655,7 +656,7 @@ export class Displays {
     pickable(open, { kind: 'station', id: 'window' });
     this.root.add(open);
     this.hotspot('archive', new THREE.Vector3(open.position.x, topShelf.y + 0.1, topShelf.z + 0.16), 'Still Becoming', 'The chapter being written', { type: 'station', id: 'window' });
-    placeRow(topShelf, fillers(7, [0xd9d3c8, 0x8c2027, 0x22402f, 0x1d2335]), topShelf.x1 - 0.6);
+    placeRow(topShelf, fillers(7, [0xd9d3c8, 0x8c2027, 0x6e4330, 0x1d2335]), topShelf.x1 - 0.6);
     this.shelfVase(topShelf, topShelf.x0 + 0.3, M.noce, 1.1, 6);
     placeRow(topShelf, fillers(4, [0xe9e1d3, 0x6e4330]), topShelf.x0 + 0.55);
     this.archiveShelf = below;
@@ -739,7 +740,7 @@ export class Displays {
         ctx.fillText('— Increments Team', 44, h - 36);
       });
       put(q, u, v, rot);
-      pin(u, v + 0.14, [0x8c2027, 0x22402f, 0xb48f55][i]);
+      pin(u, v + 0.14, [0x8c2027, 0x2a1d16, 0xb48f55][i]);
     });
     this.polaroidSlots = [[-1.32, -0.34, -0.06], [-0.32, -0.12, 0.07]];
 
@@ -771,7 +772,7 @@ export class Displays {
       ctx.fillText('NOTES FROM THE LOUNGE', w / 2 + 7, h / 2 + 15);
     });
     put(header, 1.0, 0.71, 0.004);
-    pin(0.6, 0.71, 0x22402f); pin(1.4, 0.71, 0x22402f);
+    pin(0.6, 0.71, 0x2a1d16); pin(1.4, 0.71, 0x2a1d16);
     pickable(header, { kind: 'board', station: 'board' });
     this.boardHotspot = { type: 'board' };
     this.hotspot('board', new THREE.Vector3(b.x - 1.0, b.y + 0.66, b.z - 0.05), 'Read the board', 'Notes from visitors', this.boardHotspot, { target: header });
@@ -797,7 +798,7 @@ export class Displays {
   setCommunity(notes, { shared = true } = {}) {
     this.communityNotes = notes;
     const n = notes.length;
-    this.boardHotspotItem.sub = !shared ? 'Your notes, kept on this device'
+    this.boardHotspotItem.sub = !shared ? 'Notes from the team — add yours'
       : n ? `${n} note${n === 1 ? '' : 's'} from visitors` : 'Be the first to pin one';
     this.renderNotes();
   }
@@ -809,9 +810,12 @@ export class Displays {
       m.traverse(o => { o.geometry?.dispose(); if (o.material) { o.material.map?.dispose(); o.material.dispose(); } });
     }
     const own = [...this.ownNotes].reverse().map(text => ({ text, own: true }));
-    const cards = [...own, ...this.communityNotes].slice(0, this.noteSlots.length);
-    // Blank cards invite the next note — more of them while the board is quiet.
-    const blanks = Math.min(Math.max(2, 5 - cards.length), this.noteSlots.length - cards.length);
+    // The team's starter notes fill whatever visitors haven't, leaving room for two blanks.
+    const starters = (CONFIG.board?.starterNotes || []).map(text => ({ text, name: CONFIG.board.starterSignature || 'the Increments team', starter: true }));
+    const room = Math.max(0, this.noteSlots.length - 2 - own.length - this.communityNotes.length);
+    const cards = [...own, ...this.communityNotes, ...starters.slice(0, room)].slice(0, this.noteSlots.length);
+    // Blank cards invite the next note.
+    const blanks = Math.min(2, this.noteSlots.length - cards.length);
     cards.forEach((c, i) => this.#noteCard(c, i, fresh && i === 0));
     for (let i = 0; i < blanks; i++) this.#noteCard(null, cards.length + i, false);
   }
@@ -846,7 +850,7 @@ export class Displays {
     m.position.set(b.x - u, b.y + v, b.z - 0.008 - index * 0.0006);
     m.rotation.set(0, Math.PI, rot);
     pickable(m, card ? { kind: 'board', station: 'board' } : { kind: 'compose', station: 'board' });
-    const pinM = new THREE.Mesh(new THREE.SphereGeometry(0.011, 10, 8), new THREE.MeshStandardMaterial({ color: card?.own ? 0x8c2027 : [0x22402f, 0xb48f55, 0xefe6d8][index % 3], roughness: 0.3 }));
+    const pinM = new THREE.Mesh(new THREE.SphereGeometry(0.011, 10, 8), new THREE.MeshStandardMaterial({ color: card?.own ? 0x8c2027 : [0x2a1d16, 0xb48f55, 0xefe6d8][index % 3], roughness: 0.3 }));
     pinM.position.set(0, 0.1, 0.012); // local +z faces the room (the card is turned to face you)
     m.add(pinM);
     this.pinned.add(m);

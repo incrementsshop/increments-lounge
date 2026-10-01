@@ -33,10 +33,12 @@ export const CONFIG = {
     rewardMessage: 'Your card is full — this one’s on us at checkout.',
   },
 
-  // Optional analytics. Events always go to window.dataLayer (for GTM) — set a GA4
-  // measurement ID to also load gtag directly.
+  // Analytics. Events always go to window.dataLayer (for GTM). `googleTag` is the store's
+  // own Google tag (Shopify → Google & YouTube app), so Lounge traffic shows up in the same
+  // Google Analytics property as increments.ca — filter by hostname to see it on its own.
+  // Visitors are asked once before any analytics cookies are set. Empty it to switch off.
   analytics: {
-    ga4: '',
+    googleTag: 'GT-TB7DHKM',
     debug: new URLSearchParams(location.search).has('debug'),
   },
 
@@ -48,6 +50,18 @@ export const CONFIG = {
     supabaseUrl: '',
     anonKey: '',
     table: 'increments',
+    // So the board isn't empty on day one: the team's own next steps, signed as the team.
+    // They fill the spaces visitors' notes haven't taken yet and step aside as notes arrive.
+    // DRAFTS — swap in the team's real ones before launch.
+    starterNotes: [
+      'Walk to the studio twice a week instead of driving',
+      'Finish the sketchbook I started in March',
+      'Learn to pull a proper espresso',
+      'Read before bed — phone in the other room',
+      'Run the spring 5K with my sister',
+      'Ten minutes of stretching, every morning',
+    ],
+    starterSignature: 'the Increments team',
   },
 
   newsletterUrl: 'https://increments.ca/#shopify-section-footer',

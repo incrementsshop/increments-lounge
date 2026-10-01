@@ -3,7 +3,7 @@ import { box, cyl, lathe, place, canvasTexture } from './helpers.js';
 import { seeded } from './stone.js';
 
 // Small pieces used in more than one place: olives, bistro chairs, café cups, the
-// espresso machine, dried pampas and wheat.
+// espresso machine and dried pampas.
 
 /** A gnarled, multi-stemmed olive. `scale` 1 is the 2.2 m tree under the skylight. */
 export function olive(M, x, y0, z, quality, { scale = 1, seed = 77, density = 2.6, turn = 0 } = {}) {
@@ -57,8 +57,8 @@ export function olive(M, x, y0, z, quality, { scale = 1, seed = 77, density = 2.
   return g;
 }
 
-/** A café bistro chair: evergreen steel hoop back, round cream cushion. Faces +z. */
-export function bistroChair(M, { frame = M.evergreen, seat = M.boucle } = {}) {
+/** A café bistro chair: a thin hoop-backed frame and a round cream cushion. Faces +z. */
+export function bistroChair(M, { frame = M.oak, seat = M.boucle } = {}) {
   const g = new THREE.Group();
   const tube = 0.011, sy = 0.45;
   const legs = [[-0.17, 0.15], [0.17, 0.15], [-0.16, -0.14], [0.16, -0.14]];
@@ -106,10 +106,10 @@ export function coffeeCup(M, { material = M.ceramic } = {}) {
   return g;
 }
 
-/** A compact two-group espresso machine in evergreen, for the counter. Faces +z. */
+/** A compact two-group espresso machine in brushed steel, for the counter. Faces +z. */
 export function espressoMachine(M) {
   const g = new THREE.Group();
-  const body = box(0.46, 0.32, 0.4, M.evergreen, { r: 0.03, seg: 3 });
+  const body = box(0.46, 0.32, 0.4, M.steel, { r: 0.03, seg: 3 });
   body.position.set(0, 0.2, 0);
   g.add(body);
   g.add(place(box(0.44, 0.04, 0.3, M.steel, { r: 0.01, seg: 2 }), 0, 0.02, 0.08));   // drip tray
@@ -188,30 +188,5 @@ export function pampasVase(M, { height = 0.62, plumes = 5, seed = 5 } = {}) {
     pl.position.copy(tip).addScaledVector(dir, -0.26);
     g.add(pl);
   }
-  return g;
-}
-
-/** A row of dried wheat along a ledge, `len` metres along z. */
-export function wheatRow(len, { count = 150, seed = 8 } = {}) {
-  const r = seeded(seed);
-  const stems = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.0022, 0.0028, 1, 4), new THREE.MeshStandardMaterial({ color: 0xc8b089, roughness: 1 }), count);
-  const heads = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 6, 5), new THREE.MeshStandardMaterial({ color: 0xd9c299, roughness: 1 }), count);
-  const d = new THREE.Object3D();
-  for (let i = 0; i < count; i++) {
-    const z = (r() - 0.5) * len, x = (r() - 0.5) * 0.08;
-    const h = 0.28 + r() * 0.22, lx = (r() - 0.5) * 0.12, lz = (r() - 0.5) * 0.12;
-    d.position.set(x + lx / 2, h / 2, z + lz / 2);
-    d.rotation.set(lz * 1.6, 0, -lx * 1.6);
-    d.scale.set(1, h, 1);
-    d.updateMatrix();
-    stems.setMatrixAt(i, d.matrix);
-    d.position.set(x + lx, h + 0.03, z + lz);
-    d.scale.set(0.009, 0.045, 0.009);
-    d.updateMatrix();
-    heads.setMatrixAt(i, d.matrix);
-  }
-  stems.castShadow = heads.castShadow = true;
-  const g = new THREE.Group();
-  g.add(stems, heads);
   return g;
 }

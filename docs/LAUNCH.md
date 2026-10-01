@@ -10,6 +10,8 @@ A one-off experience that runs alongside the store for a set window (suggested: 
 - [ ] Confirm what's merchandised where (`data/merch.json`). Today: Still Becoming → the Steps, Worn → the Lounge niche, activewear → Movement, socks & caps → the till, FC/First Chapter → the Archive.
 - [ ] Decide on the stamp-card reward. If yes: create a Shopify discount (e.g. `SMALLSTEPS`, 10%, one use per customer, active only for the run), put it in `config.js → reward.code`.
 - [ ] Set `opensOn` / `closesOn` in `config.js`.
+- [ ] Replace the draft **starter notes** in `config.js → board.starterNotes` with the team's real next steps.
+- [ ] Check Lounge traffic arrives in Google Analytics (Realtime → filter hostname `incrementsshop.github.io`). Lounge events are named `lounge_*`.
 - [ ] Decide on the **shared notice board**: switch it on (visitors' notes go up after approval) or keep notes on each visitor's device. If on, decide who moderates and how often (daily is plenty), then follow [BOARD.md](BOARD.md). Preview it with `?boardDemo`.
 
 **Store-side**

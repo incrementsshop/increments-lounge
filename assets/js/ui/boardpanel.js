@@ -2,6 +2,7 @@ import { h, iconEl } from './dom.js';
 import { openDialog } from './dialogs.js';
 import { savedIncrements } from './composer.js';
 import { track } from '../analytics.js';
+import { CONFIG } from '../config.js';
 
 // "Read the board": every approved note from visitors, plus the visitor's own, as paper
 // cards. Notes are always inserted as text, never as HTML.
@@ -33,9 +34,11 @@ export async function openBoardPanel(app, { openComposer }) {
   if (!api.dlg.open) return api;
   const grid = api.body.querySelector('.boardpanel__grid');
   grid.removeAttribute('aria-busy');
+  const starters = notes.length < 8 ? (CONFIG.board?.starterNotes || []) : [];
   const cards = [
     ...own.map(n => card(n.text, 'You', true)),
     ...notes.map(n => card(n.text, [n.name, n.city].filter(Boolean).join(', ') || 'A visitor', false, n.sample)),
+    ...starters.map(text => card(text, CONFIG.board.starterSignature || 'the Increments team', false)),
   ];
   grid.replaceChildren(...(cards.length ? cards : [h('p', { class: 'boardpanel__empty' }, 'The board’s waiting for its first note. Yours?')]));
   return api;
