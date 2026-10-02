@@ -147,7 +147,7 @@ export function storefront(M, A, quality) {
   g.add(vGlass);
   // A travertine block to stand the campaign on.
   g.add(place(box(1.0, 0.34, 0.12, M.slab), V.x, V.sill + 0.17, vBack + 0.07));
-  A.vitrine = { x: V.x, y: V.sill + 0.34, z: vBack + 0.03, w: V.w - 0.34, h: vH - 0.6 };
+  A.vitrine = { x: V.x, y: V.sill + 0.34, z: vBack + 0.03, w: V.w - 0.34, h: vH - 0.6, back: vBack };
   const plate = canvasTexture(512, 64, (ctx, w, h) => {
     ctx.fillStyle = '#b48f55'; ctx.fillRect(0, 0, w, h);
     ctx.fillStyle = '#2a1d16'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -203,7 +203,7 @@ export function storefront(M, A, quality) {
 
   // Olive standards in travertine planters either side of the door.
   [-1, 1].forEach((sx, i) => {
-    const px = D.x + sx * (D.w / 2 + 0.44), pz = FZ + 0.42;
+    const px = D.x + sx * (D.w / 2 + 0.44), pz = FZ + 0.75; // canopies clear the facade (at 0.42 they grew into it)
     g.add(place(cyl(0.3, 0.26, 0.62, M.slab, { segments: 40 }), px, 0.31, pz));
     const soil = new THREE.Mesh(new THREE.CircleGeometry(0.27, 24), M.soil);
     soil.rotation.x = -Math.PI / 2;

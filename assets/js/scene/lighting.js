@@ -129,7 +129,9 @@ export class Lighting {
       r.sun.position.set(...p.sun.position);
       this.fx?.setSun(r.sun.position, r.sun.target.position);
     }
-    r.sun.castShadow = !!p.sun;
+    // The sun's shadow stays on even in the evening (at zero intensity it costs nothing visible):
+    // turning it off up front let the fading sun light the room through its walls for a second,
+    // and toggling it recompiles every shader — a hitch on phones.
     this.#street(p.street);
     const ready = this.lightmaps?.use(name) ?? Promise.resolve(false);
     this.world.renderer.shadowMap.needsUpdate = true;
@@ -203,6 +205,8 @@ export class Lighting {
       t.colorSpace = THREE.SRGBColorSpace;
       this.streets[name] = t;
     }
+    const old = r.street.map;
+    if (old && old !== this.streets[name] && !Object.values(this.streets).includes(old)) old.dispose(); // room.js's first one
     r.street.map = this.streets[name];
     r.street.needsUpdate = true;
   }

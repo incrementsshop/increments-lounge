@@ -752,7 +752,7 @@ function sails(M) {
       const ends = Math.sin(Math.min(1, u * 5) * Math.PI / 2) * Math.sin(Math.min(1, (1 - u) * 5) * Math.PI / 2);
       const drop = sag * wave * ends;
       const tilt = Math.sin(u * len / period * Math.PI + phase * 0.7) * twist;
-      const y = S.top - drop - t * width * Math.sin(tilt) * 0.8 - (1 - ends) * 0.02;
+      const y = Math.min(L.CEILING.drop - 0.02, S.top - drop - t * width * Math.sin(tilt) * 0.8 - (1 - ends) * 0.02); // the tilted edge used to rise into the ceiling
       const zz = zc + t * width * Math.cos(tilt);
       pos.setXYZ(k, S.x0 + u * len, y, zz);
       // Brighter where the fabric rises toward the cove, a touch warmer in the troughs.

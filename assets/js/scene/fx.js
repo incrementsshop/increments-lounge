@@ -65,6 +65,7 @@ export function createFX(scene, anchors, quality) {
   });
   const buildShafts = d => {
     WINDOWS.forEach((win, wi) => {
+      shaftMeshes[wi].geometry.dispose(); // frees the old buffers before new ones are set
       const ring = archOutline(win);
       const pos = [], t = [];
       for (let i = 0; i < ring.length; i++) {

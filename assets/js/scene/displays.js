@@ -64,7 +64,8 @@ export class Displays {
       f.obj.scale.setScalar(0.94 + 0.06 * e);
       f.mats.forEach(m => { m.opacity = e; });
       if (f.t >= 1) {
-        f.mats.forEach(m => { m.transparent = m.userData.wasTransparent; m.opacity = 1; m.needsUpdate = true; });
+        for (const [o, original] of f.swaps) o.material = original;
+        f.mats.forEach(m => m.dispose());
         this.fadeIns.splice(i, 1);
       }
     }
@@ -76,19 +77,23 @@ export class Displays {
     this.hotspots.push({ station, position: position.clone(), label, sub, action, ...opts });
   }
 
+  /**
+   * Fade a piece in. It fades on private copies of its materials, then gets its own back:
+   * displays share materials with the room (steel, oak, paper…), and fading those used to
+   * make the back bar, the rack and the board frame blink — and could leave them see-through.
+   */
   appear(obj) {
-    const mats = [];
+    const copies = new Map(), swaps = [];
+    const copy = m => {
+      if (!copies.has(m)) { const c = m.clone(); c.transparent = true; c.opacity = 0; copies.set(m, c); }
+      return copies.get(m);
+    };
     obj.traverse(o => {
       if (!o.material) return;
-      for (const m of [].concat(o.material)) {
-        if (mats.includes(m)) continue;
-        m.userData.wasTransparent = m.transparent;
-        m.transparent = true;
-        m.opacity = 0;
-        mats.push(m);
-      }
+      swaps.push([o, o.material]);
+      o.material = Array.isArray(o.material) ? o.material.map(copy) : copy(o.material);
     });
-    this.fadeIns.push({ obj, mats, t: 0 });
+    this.fadeIns.push({ obj, mats: [...copies.values()], swaps, t: 0 });
   }
 
   facing(from, stationId) {
@@ -347,7 +352,7 @@ export class Displays {
       const img = await loadImage(shopifyImage(src, 360)).catch(() => null);
       if (!img) return;
       const { material } = this.photoMaterial(img, { width: 256, square: true });
-      const size = level === 0 ? 0.15 : 0.12;
+      const size = level === 0 ? 0.125 : 0.12; // the lower card stops under the case's middle shelf
       const g = new THREE.Group();
       const card = box(size + 0.014, size + 0.03, 0.003, this.M.paper);
       card.position.y = (size + 0.03) / 2;
@@ -494,6 +499,7 @@ export class Displays {
     });
     face.material = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.16 });
     face.userData.pick = { kind: 'menuBoard', station: 'counter' };
+    this.root.attach(face); // taps are looked for among the displays; it was out of reach in the furniture
     this.menuRows = rows.map(r => ({ ...r, W, H }));
     this.hotspot('counter', new THREE.Vector3(P.x - P.w / 2 + 0.12, P.y - P.h / 2 + 0.1, face.position.z + 0.04), 'The collection', 'Every piece, every price', { type: 'menu' });
   }
@@ -958,9 +964,18 @@ export class Displays {
     const img = await loadImage(shopifyImage(src, 1000)).catch(() => null);
     if (!img) return;
     const aspect = img.naturalWidth / img.naturalHeight;
-    const width = Math.min(V.w, (V.h - 0.1) * aspect);
+    // The frame (print + 0.13 m of mount and moulding) has to clear the arch: below the springing
+    // the opening is full width, above it the arch narrows.
+    const { sill, spring, w: archW } = L.VITRINE, r = archW / 2 - 0.04;
+    const fits = width => {
+      const fw = width + 0.13, fh = width / aspect + 0.13, top = V.y + fh;
+      if (fw / 2 > r) return false;
+      return top <= spring || Math.hypot(top - spring, fw / 2) <= r;
+    };
+    let width = Math.min(V.w, (V.h - 0.1) * aspect);
+    while (width > 0.3 && !fits(width)) width -= 0.02;
     const print = this.framedPrint(img, width, { mat: this.M.oak });
-    print.rotation.x = -0.06;
+    print.rotation.x = -leanFor(print, 0.06, V.z + 0.06 - this.A.vitrine.back - 0.02);
     print.position.set(V.x, V.y, V.z + 0.06);
     this.root.add(print);
   }
@@ -972,7 +987,7 @@ export class Displays {
     const img = await loadImage(shopifyImage(src, 900)).catch(() => null);
     if (!img) return;
     const print = this.framedPrint(img, 0.8);
-    print.rotation.x = -0.1;
+    print.rotation.x = -leanFor(print, 0.1, 0.12 - 0.015 - 0.01); // its top stops short of the wall
     const g = new THREE.Group();
     g.add(print);
     g.position.set(L.ROOM.x0 + 0.12, 0, L.CAMPAIGN_PRINT.z);
@@ -1010,6 +1025,12 @@ export class Displays {
 }
 
 // --- small utilities -----------------------------------------------------------------
+
+/** How far a framed piece can lean back (radians, up to `max`) before its top travels `room` metres. */
+function leanFor(obj, max, room) {
+  const h = new THREE.Box3().setFromObject(obj).getSize(new THREE.Vector3()).y;
+  return Math.max(0, Math.min(max, Math.asin(Math.min(1, Math.max(0, room) / Math.max(h, 0.01)))));
+}
 
 function hexRgb(hex) {
   const n = parseInt(hex.slice(1), 16);

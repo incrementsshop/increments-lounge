@@ -69,6 +69,9 @@ export async function bake({ canvas, times = ['morning', 'golden', 'evening'], s
   renderer.shadowMap.autoUpdate = false;
   const scene = world.scene;
   scene.fog = null;
+  // No background: each pass would paint every texel the surface doesn't cover with it, so the
+  // edge-filling below (dilate) found nothing to fill and edges bled toward beige.
+  scene.background = null;
   const M = createMaterials(renderer, quality);
   const room = buildRoom(scene, M, quality);
   const { anchors } = buildFurniture(scene, M, quality);
@@ -169,7 +172,8 @@ export async function bake({ canvas, times = ['morning', 'golden', 'evening'], s
     skylight.color.set(P.bake.skyColor);
     coves.forEach(c => c.color.set(P.bake.coveColor));
     ceils.forEach(c => c.color.set(P.bake.ceilingColor ?? 0xffe6c8));
-    const sunDir = P.sun ? new THREE.Vector3(...P.sun.position).normalize() : null; // points toward the sun
+    // Points toward the sun, exactly as the room's sun is aimed (at SUN.target, not the origin).
+    const sunDir = P.sun ? new THREE.Vector3(...P.sun.position).sub(new THREE.Vector3(...L.SUN.target)).normalize() : null;
 
     const makeTargets = list => list.map(s => {
       const opts = { type: THREE.FloatType, format: THREE.RGBAFormat, depthBuffer: false, magFilter: THREE.NearestFilter, minFilter: THREE.NearestFilter };

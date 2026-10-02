@@ -122,6 +122,7 @@ export class Lightmaps {
     this.scene = scene;
     this.loader = new THREE.TextureLoader();
     this.cache = new Map();
+    this.bakedMats = new Map();
     this.manifest = null;
     this.active = null;
     this.live = new Map(this.surfaces.map(s => [s, s.mesh.material]));
@@ -142,15 +143,22 @@ export class Lightmaps {
       const maps = await Promise.all(this.surfaces.map(s => this.#texture(`assets/lightmaps/${time}/${s.name}.webp?v=${this.manifest.version}`)));
       if (this.want !== time) return false;
       const intensity = SCALE * Math.PI * (this.manifest.gain ?? 1);
+      // One set of baked materials per time of day, made once (they used to be re-made, and
+      // never freed, on every change).
+      const baked = (key, live, map) => {
+        const k = `${time}:${key}`;
+        if (!this.bakedMats.has(k)) this.bakedMats.set(k, bakedMaterial(live, map, intensity));
+        return this.bakedMats.get(k);
+      };
       this.surfaces.forEach((s, i) => {
         bakeUVs(s);
-        s.mesh.material = bakedMaterial(this.live.get(s), maps[i], intensity);
+        s.mesh.material = baked(s.name, this.live.get(s), maps[i]);
       });
       const floorMap = maps[this.surfaces.findIndex(s => s.name === 'floor')];
-      for (const d of this.decals) {
+      this.decals.forEach((d, i) => {
         bakeUVs({ mesh: d.mesh, kind: 'floor', name: 'decal' });
-        d.mesh.material = bakedMaterial(d.live, floorMap, intensity);
-      }
+        d.mesh.material = baked(`decal-${i}`, d.live, floorMap);
+      });
       this.#fakes(false);
       this.active = time;
       return true;

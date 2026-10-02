@@ -115,7 +115,13 @@ export function buildRoom(scene, M, quality) {
   // Travertine skirting on the straight runs.
   const sk = 0.1;
   const skirt = (len, x, z, ry) => root.add(place(box(len, sk, 0.02, M.slabWarm, { cast: false }), x, sk / 2, z, ry));
-  skirt(x1 - x0 - 2 * R, 0, z0 + 0.01, 0);
+  // Back wall: broken at the fitting-room doorways (one long run left a kerb across each).
+  const gaps = FITTING_ROOMS.map(f => [f.x - f.w / 2, f.x + f.w / 2]).sort((a, b) => a[0] - b[0]);
+  let from = x0 + R;
+  for (const [a, b] of [...gaps, [x1 - R, x1 - R]]) {
+    if (a - from > 0.05) skirt(a - from, (from + a) / 2, z0 + 0.01, 0);
+    from = b;
+  }
   skirt(z1 - z0 - 2 * R, x1 - 0.01, 0, Math.PI / 2);
   skirt(DOOR.x - DOOR.w / 2 - (x0 + R), (x0 + R + DOOR.x - DOOR.w / 2) / 2, z1 - 0.01, 0);
   skirt(x1 - R - (DOOR.x + DOOR.w / 2), (x1 - R + DOOR.x + DOOR.w / 2) / 2, z1 - 0.01, 0);
