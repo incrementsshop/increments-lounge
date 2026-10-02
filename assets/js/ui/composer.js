@@ -37,13 +37,17 @@ export function openComposer(app) {
       const canvas = h('canvas', { width: 540, height: 960, 'aria-label': 'Preview of your card', role: 'img' });
       const preview = h('div', { class: 'composer__preview' }, canvas);
       const chips = h('div', { class: 'composer__prompts' }, PROMPTS.map(p => h('button', { class: 'pill', type: 'button', onclick: () => { area.value = p; update(); area.focus(); } }, p)));
-      let bgCache = null;
+      let bgCache = null, prerender = 0;
       const update = () => {
         text = area.value.trim().slice(0, MAX);
         count.textContent = `${area.value.length} / ${MAX}`;
         bgCache = bgCache || renderBackground(540, 960);
         drawCard(canvas, text || 'The next small step I’m taking is…', { bg: bgCache, placeholder: !text });
         body.dispatchEvent(new Event('text'));
+        // Have the full-size card ready before Share is pressed: Safari only lets a page open
+        // the share sheet straight after a tap, not after the second or so the card takes to draw.
+        clearTimeout(prerender);
+        if (text) prerender = setTimeout(() => { const t = text; renderFull(t).then(blob => { if (t === text) lastBlob = { text: t, blob }; }); }, 700);
       };
       area.addEventListener('input', update);
       let share = null;
@@ -61,7 +65,8 @@ export function openComposer(app) {
           who,
           h('p', { class: 'composer__fine' }, 'The Increments team reads every note before it goes up. No links or contact details, please.'));
       }
-      body.append(h('label', { for: id, class: 'sr-only' }, 'Your next increment'), area, count, chips, share, preview);
+      // (`share` is null when the shared board is off; append() would print it as "null".)
+      body.append(...[h('label', { for: id, class: 'sr-only' }, 'Your next increment'), area, count, chips, share, preview].filter(Boolean));
       requestAnimationFrame(update);
     },
     foot(foot, api) {
@@ -138,10 +143,12 @@ function renderBackground(w, hgt) {
   return map;
 }
 
+let fullBg = null;
 async function renderFull(text) {
   const c = document.createElement('canvas');
   c.width = 1080; c.height = 1920;
-  drawCard(c, text, { bg: renderBackground(1080, 1920) });
+  fullBg = fullBg || renderBackground(1080, 1920);
+  drawCard(c, text, { bg: fullBg });
   return new Promise(res => c.toBlob(res, 'image/png'));
 }
 

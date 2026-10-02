@@ -31,6 +31,10 @@ const $ = sel => document.querySelector(sel);
 const intro = $('#intro');
 const status = $('[data-intro-status]');
 const enterBtn = $('[data-enter]');
+// Station controls sit behind the intro until "Step inside"; keep them out of the tab order
+// too, or a keyboard user could change station while still standing on the street.
+const stationChrome = ['.topbar', '.dock', '.caption'].map($).filter(Boolean);
+stationChrome.forEach(el => { el.inert = true; });
 
 const app = {
   stations: STATIONS,
@@ -62,7 +66,8 @@ function progress(p, message) {
 }
 
 function windowState() {
-  const today = new Date().toISOString().slice(0, 10);
+  const d = new Date(); // the visitor's own calendar day (toISOString would be UTC's)
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   if (CONFIG.opensOn && today < CONFIG.opensOn) return 'soon';
   if (CONFIG.closesOn && today > CONFIG.closesOn) return 'closed';
   return 'open';
@@ -84,9 +89,11 @@ async function boot() {
 
   const state = windowState();
   progress(0.08, 'Warming the room…');
-  const [catalog] = await Promise.all([Catalog.load(), loadFonts()]);
-  app.catalog = catalog;
+  const fonts = loadFonts();
+  const catalog = app.catalog = await Catalog.load();
   bindChrome(); // the collection and bag work even while the room is still building
+  app.trayChanges = app.tray.sync(catalog);
+  await fonts;
 
   if (state !== 'open') return showClosed(state);
   if (!webglAvailable()) return showMenuOnly();
@@ -183,11 +190,16 @@ const frame = () => new Promise(r => { const t = setTimeout(r, 60); requestAnima
 
 async function enter() {
   app.entered = true;
+  stationChrome.forEach(el => { el.inert = false; });
   app.world.frameSkip = 1;
   document.body.classList.remove('is-loading');
   document.body.classList.add('is-entered');
   track('enter', { quality: app.world.quality.tier, station: app.rig.station.id, from: app.rig.outside ? 'street' : 'link' });
   app.stamps.earn('enter');
+  if (app.trayChanges?.removed.length) {
+    const n = app.trayChanges.removed.length;
+    app.hud.toast(`${n === 1 ? 'A piece in your bag has' : `${n} pieces in your bag have`} sold out since your last visit, so we took ${n === 1 ? 'it' : 'them'} out.`, 4200);
+  }
   if (app.audio.wanted) setSound(true);
   // Move focus into the experience for keyboard users.
   requestAnimationFrame(() => $('.dock__current').focus({ preventScroll: true }));
@@ -233,6 +245,19 @@ function showMenuOnly() {
   enterBtn.textContent = 'See the collection';
   enterBtn.onclick = () => openMenu(app);
   $('.intro__alt').hidden = true;
+  showIntroBag();
+}
+
+/** Fallbacks never show the top bar, so the bag gets a link on the intro (once there's something in it). */
+function showIntroBag() {
+  const alt = $('.intro__alt');
+  const sync = () => {
+    alt.hidden = !app.tray.count;
+    alt.textContent = `Your bag (${app.tray.count})`;
+    alt.dataset.open = 'tray';
+  };
+  app.tray.addEventListener('change', sync);
+  sync();
 }
 
 // ---------------------------------------------------------------------------
@@ -242,9 +267,9 @@ function showMenuOnly() {
 async function goTo(index, opts) {
   const n = STATIONS.length;
   index = ((index % n) + n) % n;
-  if (!app.rig || (index === app.rig.index && !app.rig.moving && !app.rig.focused)) return;
+  if (!app.rig || !app.entered || (index === app.rig.index && !app.rig.moving && !app.rig.focused)) return;
   app.hotspots.hide();
-  app.hud.caption.classList.remove('is-shown');
+  app.hud.hideCaption();
   const target = index;
   await app.rig.goTo(index, opts);
   if (app.rig.index === target && !app.rig.moving) arrive();
@@ -326,9 +351,11 @@ function runAction(action, pickStation, from) {
 // ---------------------------------------------------------------------------
 
 const _box = new THREE.Box3();
+let leaning = false;
 
 async function leanIn(from, open) {
   const rig = app.rig;
+  if (leaning) return; // a second tap while we step up to the piece
   if (!from || !rig || rig.moving) { open(); return; }
   let point, dims;
   if (from.object) {
@@ -341,8 +368,10 @@ async function leanIn(from, open) {
 
   app.hotspots.hide();
   document.body.classList.add('is-leaning');
+  leaning = true;
   const arrived = rig.focusOn(point, normal, { dims });
   await Promise.race([arrived, new Promise(r => setTimeout(r, 520))]);
+  leaning = false;
   const dlg = open(true);
   track('lean_in', { station: rig.station.id });
   if (!dlg) { stepBack(); return; }
@@ -605,8 +634,13 @@ function bindInput() {
     document.body.classList.toggle('is-pointer', !!pickAt(e.clientX, e.clientY, { occlusion: false }));
   });
 
-  // Anything that opens a panel ends the walk.
-  document.addEventListener('lounge:dialogs', () => { if (openDialogs().size) stopWalk('dialog'); });
+  // Anything that opens a panel ends the walk; closing the last one brings the hotspots back
+  // (e.g. product → "view your bag" → close: the step-back finished while the bag was open).
+  document.addEventListener('lounge:dialogs', () => {
+    if (openDialogs().size) { stopWalk('dialog'); return; }
+    const rig = app.rig;
+    if (app.entered && !rig.moving && !rig.focused && !app.hotspots.visible) app.hotspots.show(rig.station.id);
+  });
 
   // Don't burn battery rendering behind a full-screen menu; hush audio in background tabs.
   document.addEventListener('lounge:dialogs', () => {
@@ -661,5 +695,7 @@ boot().catch(err => {
   enterBtn.disabled = false;
   enterBtn.textContent = 'See the collection';
   enterBtn.onclick = () => (app.catalog ? openMenu(app) : (location.href = `https://${CONFIG.store.domain}`));
-  bindChrome();
+  if (app.catalog) bindChrome();
+  else document.querySelectorAll('[data-open="menu"]').forEach(el => { el.hidden = true; }); // no catalog, no list
+  if (app.catalog) showIntroBag();
 });

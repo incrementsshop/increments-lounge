@@ -36,7 +36,7 @@ export class Hotspots {
       h('span', { class: 'hotspot__label', 'aria-hidden': 'true' }, item.label, item.sub ? h('small', {}, item.sub) : null));
       this.container.append(btn);
       setTimeout(() => btn.classList.add('is-visible'), 120 + i * 70);
-      return { item, btn };
+      return { item, btn, label: btn.lastElementChild, labelW: 0, flipped: !!item.flip };
     });
     this.visible = true;
     this.update();
@@ -57,13 +57,21 @@ export class Hotspots {
   update() {
     if (!this.visible) return;
     const w = innerWidth, hgt = innerHeight;
-    for (const { item, btn } of this.active) {
+    for (const a of this.active) {
+      const { item, btn } = a;
       this.v.copy(item.position).project(this.camera);
       const off = this.v.z > 1 || Math.abs(this.v.x) > 1.05 || Math.abs(this.v.y) > 1.05;
       if (off) { btn.hidden = true; continue; }
       btn.hidden = false;
       const x = (this.v.x * 0.5 + 0.5) * w;
       const y = (-this.v.y * 0.5 + 0.5) * hgt - 22;
+      // Open the label on whichever side of the dot has room for it, so it never runs off the
+      // screen (on a phone, a label near the edge used to be cut in half).
+      a.labelW ||= a.label.offsetWidth;
+      const room = { right: w - x - 16, left: x - 16 };
+      let flip = !!item.flip;
+      if ((flip ? room.left : room.right) < a.labelW && (flip ? room.right : room.left) > (flip ? room.left : room.right)) flip = !flip;
+      if (flip !== a.flipped) { btn.classList.toggle('hotspot--flip', flip); a.flipped = flip; }
       btn.style.setProperty('--x', `${x.toFixed(1)}px`);
       btn.style.setProperty('--y', `${y.toFixed(1)}px`);
     }

@@ -25,27 +25,31 @@ export function openDialog({ variant = 'sheet', title, kicker, className = '', b
 
   let resolveClosed;
   const closed = new Promise(r => { resolveClosed = r; });
+  let finished = false;
+  const done = () => {
+    if (finished) return;
+    finished = true;
+    if (dlg.open) dlg.close();
+    dlg.remove();
+    open.delete(api);
+    onClose?.();
+    resolveClosed();
+    document.dispatchEvent(new CustomEvent('lounge:dialogs'));
+  };
   const close = () => {
     if (dlg.classList.contains('is-closing') || !dlg.open) return;
     dlg.classList.add('is-closing');
-    let finished = false;
-    const done = () => {
-      if (finished) return;
-      finished = true;
-      dlg.close();
-      dlg.remove();
-      open.delete(api);
-      onClose?.();
-      resolveClosed();
-      document.dispatchEvent(new CustomEvent('lounge:dialogs'));
-    };
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) done();
     else { dlg.addEventListener('animationend', done, { once: true }); setTimeout(done, 420); }
   };
 
   dlg.addEventListener('cancel', e => { e.preventDefault(); close(); });
+  // Browsers sometimes close a dialog themselves (Chrome lets a second Esc through without a
+  // cancel event); tidy up all the same, or the room stays paused and the keys stay dead.
+  dlg.addEventListener('close', done);
+  const openedAt = performance.now();
   dlg.addEventListener('click', e => {
-    if (e.target === dlg) close();
+    if (e.target === dlg && performance.now() - openedAt > 400) close(); // not the 2nd click of the tap that opened it
     if (e.target.closest('.close')) close();
   });
   if (variant === 'sheet') enableDrag(dlg, panel.querySelector('.sheet-grip'), close);

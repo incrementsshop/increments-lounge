@@ -170,6 +170,7 @@ body.is-leaning .caption { opacity: 0 !important; pointer-events: none !importan
   -webkit-tap-highlight-color: transparent;
 }
 .hotspot.is-visible { opacity: 1; }
+.hotspot:not(.is-visible) { pointer-events: none; } /* fading in or out: not a target */
 .hotspot[hidden] { display: none; }
 
 .hotspot__dot {
@@ -241,6 +242,10 @@ body.is-leaning .caption { opacity: 0 !important; pointer-events: none !importan
 .hotspot--flip .hotspot__dot { margin-left: 0; margin-right: -22px; }
 .hotspot--flip .hotspot__label { margin-left: 0; margin-right: -14px; transform: translateX(6px); }
 .hotspot--soldout .hotspot__dot::before { background: var(--travertine-deep); }
+@media (max-width: 600px) {
+  /* On a phone a long label wraps rather than running past the edge of the screen. */
+  .hotspot__label { white-space: normal; width: max-content; max-width: min(46vw, 210px); }
+}
 
 /* --------------------------------------------------------------------------
    Top bar
@@ -1464,4 +1469,7 @@ body.is-walking .hotspots { opacity: 0.85; }
 .consent.is-shown { opacity: 1; transform: none; }
 .consent p { margin: 0 0 10px; }
 .consent__actions { display: flex; gap: 6px; }
-@media (max-width: 600px) { .consent { left: calc(var(--safe-left) + var(--gutter)); right: auto; bottom: auto; top: calc(var(--safe-top) + 68px); transform: translateY(-10px); } }
+@media (max-width: 600px) {
+  .consent { left: calc(var(--safe-left) + var(--gutter)); right: auto; bottom: auto; top: calc(var(--safe-top) + 68px); transform: translateY(-10px); }
+  body.is-walking .consent { top: calc(var(--safe-top) + 126px); } /* below the walk bar and its Stop button */
+}

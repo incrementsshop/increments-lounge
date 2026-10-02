@@ -21,6 +21,11 @@ export class Hud {
     this.dots.append(...stations.map(() => h('i')));
   }
 
+  hideCaption() {
+    clearTimeout(this._capT);
+    this.caption.classList.remove('is-shown');
+  }
+
   setStation(station, index, actions = [], stamped = new Set()) {
     this.caption.classList.remove('is-shown');
     clearTimeout(this._capT);

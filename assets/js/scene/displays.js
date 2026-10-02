@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { CONFIG } from '../config.js';
 import { prepareProductImage, loadImage, shopifyImage } from './cutout.js';
 import { box, cyl, place, canvasTexture, pickable } from './helpers.js';
@@ -511,21 +512,48 @@ export class Displays {
     const shelves = this.A.archiveShelves;
     const chapters = this.catalog.archiveChapters();
     const M = this.M;
-    const spineGeo = (w, h, d) => new THREE.BoxGeometry(w, h, d);
     const rng = mulberry(11);
+
+    // Sixty-odd books make this the busiest corner of the room, so they're cheap to draw:
+    // every plain book is folded into one mesh, coloured per vertex, and each chapter's book
+    // is two parts — a body sharing that one material, and its own printed spine.
+    // (As six-sided boxes with a material per side they cost ~400 draw calls, from the street too.)
+    const bodyMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.85 });
+    const PAGES = new THREE.Color(0xefe6d4);
+    const plain = [];
+    // BoxGeometry builds its faces in the order +x, -x, +y, -y, +z, -z, four vertices each.
+    // Standing books show page edges top and bottom; books lying flat show them on three sides.
+    const bookGeometry = (w, h, d, cover, { flat = false } = {}) => {
+      const g = new THREE.BoxGeometry(w, h, d);
+      const col = new THREE.Color(cover), rgb = new Float32Array(g.attributes.position.count * 3);
+      for (let i = 0; i < g.attributes.position.count; i++) {
+        const face = Math.floor(i / 4);
+        const pages = flat ? face === 0 || face === 1 || face === 5 : face === 2 || face === 3;
+        (pages ? PAGES : col).toArray(rgb, i * 3);
+      }
+      g.setAttribute('color', new THREE.BufferAttribute(rgb, 3));
+      return g;
+    };
 
     const placeRow = (shelf, items, startX) => {
       let x = startX;
       for (const it of items) {
         const w = it.w, h = it.h, d = 0.22;
-        const mats = it.mats;
-        const b = new THREE.Mesh(spineGeo(w, h, d), mats);
-        b.position.set(x + w / 2, shelf.y + h / 2, shelf.z + 0.03);
-        b.rotation.z = it.lean || 0;
-        b.castShadow = b.receiveShadow = true;
-        if (it.pick) pickable(b, it.pick);
-        this.root.add(b);
-        it.mesh = b;
+        const g = bookGeometry(w, h, d, it.colour);
+        if (it.face) {
+          // Move the spine (+z) to the end of the index so the body is one draw and the spine another.
+          const idx = Array.from(g.index.array);
+          g.setIndex([...idx.slice(0, 24), ...idx.slice(30, 36), ...idx.slice(24, 30)]);
+          g.clearGroups(); g.addGroup(0, 30, 0); g.addGroup(30, 6, 1);
+          const b = new THREE.Mesh(g, [bodyMat, it.face]);
+          b.position.set(x + w / 2, shelf.y + h / 2, shelf.z + 0.03);
+          b.castShadow = b.receiveShadow = true;
+          if (it.pick) pickable(b, it.pick);
+          this.root.add(b);
+        } else {
+          g.translate(x + w / 2, shelf.y + h / 2, shelf.z + 0.03);
+          plain.push(g);
+        }
         x += w + 0.004;
       }
       return x;
@@ -562,18 +590,12 @@ export class Displays {
           ctx.beginPath(); ctx.moveTo(w / 2 - 12, 74); ctx.lineTo(w / 2, 64); ctx.lineTo(w / 2 + 12, 74); ctx.fillStyle = colour; ctx.fill();
         }
       });
-      const face = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.75 });
-      const cloth = new THREE.MeshStandardMaterial({ color: colour, roughness: 0.85 });
-      const pages = new THREE.MeshStandardMaterial({ color: 0xefe6d4, roughness: 0.9 });
-      // BoxGeometry groups: +x, -x, +y, -y, +z (spine, facing out), -z
-      return [cloth, cloth, pages, pages, face, cloth];
+      return { colour, face: new THREE.MeshStandardMaterial({ map: tex, roughness: 0.75 }) };
     };
 
     const fillers = (n, palette) => Array.from({ length: n }, () => {
-      const c = palette[(rng() * palette.length) | 0];
-      const m = new THREE.MeshStandardMaterial({ color: c, roughness: 0.85 });
-      const pages = new THREE.MeshStandardMaterial({ color: 0xefe6d4, roughness: 0.9 });
-      return { w: 0.03 + rng() * 0.03, h: 0.24 + rng() * 0.08, mats: [m, m, pages, pages, m, m] };
+      const colour = palette[(rng() * palette.length) | 0];
+      return { w: 0.03 + rng() * 0.03, h: 0.24 + rng() * 0.08, colour };
     });
 
     const plaque = (text, sub) => canvasTexture(320, 110, (ctx, w, h) => {
@@ -600,7 +622,7 @@ export class Displays {
     const eye = shelves[3], below = shelves[2];
     const first = chapters[0], second = chapters[1];
     if (first) {
-      const items = first.products.map(p => ({ w: 0.05 + rng() * 0.012, h: 0.3 + rng() * 0.03, mats: spineFor(p, first), pick: { kind: 'archive', handle: p.handle, station: 'archive' } }));
+      const items = first.products.map(p => ({ w: 0.05 + rng() * 0.012, h: 0.3 + rng() * 0.03, ...spineFor(p, first), pick: { kind: 'archive', handle: p.handle, station: 'archive' } }));
       const endX = placeRow(eye, items, eye.x0 + 0.12);
       standPlaque(plaque(first.name, String(first.year || '')), eye.x0 + 0.12 + (endX - eye.x0 - 0.12) / 2, eye, { kind: 'archive', chapter: first.name, station: 'archive' });
       this.hotspot('archive', new THREE.Vector3((eye.x0 + endX) / 2 + 0.06, eye.y + 0.2, eye.z + 0.16), first.name, `${first.year} · ${first.products.length} pieces`, { type: 'archive', chapter: first.name });
@@ -610,7 +632,7 @@ export class Displays {
     }
     if (second) {
       const half = Math.ceil(second.products.length / 2);
-      const mk = arr => arr.map(p => ({ w: 0.045 + rng() * 0.012, h: 0.28 + rng() * 0.04, mats: spineFor(p, second), pick: { kind: 'archive', handle: p.handle, station: 'archive' } }));
+      const mk = arr => arr.map(p => ({ w: 0.045 + rng() * 0.012, h: 0.28 + rng() * 0.04, ...spineFor(p, second), pick: { kind: 'archive', handle: p.handle, station: 'archive' } }));
       const startEye = eye.x1 - half * 0.058 - 0.1;
       placeRow(eye, mk(second.products.slice(0, half)), startEye);
       const endBelow = placeRow(below, mk(second.products.slice(half)), below.x0 + 0.1);
@@ -621,11 +643,10 @@ export class Displays {
       let top = below.y;
       stack.forEach((it, k) => {
         const t = it.w * 0.8, bw = 0.22 - k * 0.012;     // a little smaller as the pile rises
-        const b = new THREE.Mesh(spineGeo(bw, t, 0.25 - k * 0.01), it.mats);
-        b.position.set(below.x1 - 0.3, top + t / 2, below.z + 0.01);
-        b.rotation.y = (rng() - 0.5) * 0.25;
-        b.castShadow = true;
-        this.root.add(b);
+        const g = bookGeometry(bw, t, 0.25 - k * 0.01, it.colour, { flat: true });
+        g.rotateY((rng() - 0.5) * 0.25);
+        g.translate(below.x1 - 0.3, top + t / 2, below.z + 0.01);
+        plain.push(g);
         top += t;
       });
     }
@@ -676,6 +697,14 @@ export class Displays {
         this.root.add(bx);
       }
     });
+
+    if (plain.length) {
+      const books = new THREE.Mesh(mergeGeometries(plain), bodyMat);
+      books.name = 'archive-books';
+      books.castShadow = books.receiveShadow = true;
+      this.root.add(books);
+      plain.forEach(g => g.dispose());
+    }
   }
 
   /** Clear height above archive shelf `i`, up to the underside of the board (or the top) above it. */

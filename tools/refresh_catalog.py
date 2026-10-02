@@ -18,6 +18,8 @@ import html
 import json
 import re
 import sys
+import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,10 +30,28 @@ OUT = ROOT / "data" / "catalog.json"
 UA = "IncrementsLounge/1.0 (+catalog snapshot)"
 
 
-def fetch(url, accept="application/json"):
+def fetch(url, accept="application/json", attempts=4):
+    """GET a URL, retrying when the store is busy or briefly unreachable.
+
+    Shopify sometimes turns away requests from cloud runners (429/5xx, timeouts); a refused
+    hourly run used to fail outright. Waits 10, 30, then 90 s (or what Retry-After asks).
+    """
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
-    with urllib.request.urlopen(req, timeout=30) as res:
-        return res.read().decode("utf-8")
+    for attempt in range(attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as res:
+                return res.read().decode("utf-8")
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
+            status = getattr(exc, "code", None)
+            transient = status is None or status == 429 or status >= 500
+            if not transient or attempt == attempts - 1:
+                raise
+            wait = 10 * 3 ** attempt
+            retry_after = exc.headers.get("Retry-After") if getattr(exc, "headers", None) else None
+            if retry_after and retry_after.isdigit():
+                wait = min(int(retry_after), 300)
+            print(f"  {url}: {status or exc} — retrying in {wait} s", file=sys.stderr)
+            time.sleep(wait)
 
 
 def fetch_products(domain):

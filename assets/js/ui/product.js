@@ -41,6 +41,15 @@ export function openProduct(app, handle, { colour, from, lean = false } = {}) {
       renderGallery();
 
       const priceEl = h('span', { class: 'product__price' }, formatMoney(p.price));
+      // Options can cost different amounts (socks: single pairs and bundles); show the one chosen.
+      const prices = [...new Set(p.variants.map(v => v.price))];
+      const showPrice = () => {
+        const v = p.findVariant(state);
+        priceEl.textContent = v && (state.size || p.sizes.length <= 1) ? formatMoney(v.price)
+          : prices.length > 1 ? `From ${formatMoney(Math.min(...prices))}` : formatMoney(p.price);
+      };
+      body.addEventListener('selection', showPrice);
+      showPrice();
       body.append(...[
         gallery,
         !p.available ? h('span', { class: 'product__badge' }, p.zone === 'archive' ? 'Chapter closed' : 'Sold out') : null,

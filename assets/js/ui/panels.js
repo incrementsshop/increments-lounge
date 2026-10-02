@@ -116,7 +116,7 @@ export function openMenu(app, { zone } = {}) {
             h('div', { class: 'menu-item__row' },
               h('span', { class: 'menu-item__name' }, p.title),
               h('span', { class: 'menu-item__leader', 'aria-hidden': 'true' }),
-              h('span', { class: 'menu-item__price' }, p.available ? `$${formatShort(p.price)}` : 'Sold out')),
+              h('span', { class: 'menu-item__price' }, !p.available ? 'Sold out' : `${new Set(p.variants.map(v => v.price)).size > 1 ? 'from ' : ''}$${formatShort(Math.min(...p.variants.map(v => v.price)))}`)),
             h('div', { class: 'menu-item__sub' },
               p.colours.length ? h('span', { class: 'dots', 'aria-hidden': 'true' }, p.colours.slice(0, 5).map(c => h('i', { style: { '--sw': c.hex || '#ccc' } }))) : null,
               p.colours.length ? h('span', {}, p.colours.map(c => c.name).join(', ')) : null)))));

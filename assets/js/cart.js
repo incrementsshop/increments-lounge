@@ -54,6 +54,22 @@ export class Tray extends EventTarget {
   clear() { this.items = []; this.#changed('clear'); }
 
   /**
+   * Bring a saved bag up to date with today's catalog: prices follow the store, and pieces
+   * that have sold out (or gone) come out. Returns what changed.
+   */
+  sync(catalog) {
+    const removed = [], repriced = [];
+    this.items = this.items.filter(item => {
+      const variant = catalog.get(item.handle)?.variants.find(v => v.id === item.variantId);
+      if (!variant || !variant.available) { removed.push(item); return false; }
+      if (variant.price !== item.price) { repriced.push(item); item.price = variant.price; }
+      return true;
+    });
+    if (removed.length || repriced.length) this.#changed('sync', { removed: removed.length, repriced: repriced.length });
+    return { removed, repriced };
+  }
+
+  /**
    * @param {{discount?: string, storefront?: boolean}} opts
    *   storefront: land on the store's cart page instead of going straight to checkout.
    */
