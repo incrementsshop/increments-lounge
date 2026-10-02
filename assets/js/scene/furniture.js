@@ -457,7 +457,7 @@ function movement(M, A) {
     g.add(place(cyl(tube, tube, 1.96, M.steel), x + sx * w / 2, 0.98, z));
     g.add(place(box(0.04, 0.025, 0.5, M.steel), x + sx * w / 2, 0.0125, z));
   }
-  const bars = [1.93, 1.13];
+  const bars = [1.93]; // the look photos hang here; the folded pieces sit on the shelf below
   for (const by of bars) {
     const bar = cyl(0.013, 0.013, w, M.steel);
     bar.rotation.z = Math.PI / 2;
@@ -465,6 +465,11 @@ function movement(M, A) {
     g.add(bar);
   }
   A.rackBars = bars.map(y => ({ y, x0: x - w / 2 + 0.12, x1: x + w / 2 - 0.12, z }));
+  // A low oak shelf between the uprights for the folded pieces.
+  const shelfY = 0.42;
+  g.add(place(box(w - 0.03, 0.03, 0.42, M.oak, { r: 0.008, seg: 1 }), x, shelfY, z));
+  for (const sx of [-1, 1]) g.add(place(box(0.03, 0.025, 0.4, M.steel), x + sx * (w / 2 - 0.035), shelfY - 0.027, z));
+  A.rackShelf = { y: shelfY + 0.015, x0: x - w / 2 + 0.1, x1: x + w / 2 - 0.1, z };
   g.add(place(contactShadow(w, 0.4, { opacity: 0.3 }), x, 0, z));
   [0xd4c8b5, 0x9c8872].forEach((c, i) => {
     const mt = cyl(0.065, 0.065, 0.64, new THREE.MeshStandardMaterial({ color: c, roughness: 0.9 }));
@@ -665,14 +670,15 @@ function island(M, A) {
   let yy = topY;
   stack.forEach(([bw, bh, bd, c], i) => {
     const b = book(M, bw, bh, bd, c);
-    b.position.set(x - 0.55, yy + bh / 2, z + 0.05);
+    b.position.set(x - 0.95, yy + bh / 2, z + 0.05);
     b.rotation.y = 0.12 * (i - 1);
     g.add(b);
     yy += bh;
   });
   const bowl = trailingPlant(M, { seed: 27, strands: 14, bowl: true, pot: M.noce });
-  bowl.position.set(x + 0.5, topY, z - 0.05);
+  bowl.position.set(x + 0.98, topY, z - 0.05);
   g.add(bowl);
+  A.island = { x, z, topY, len, w }; // displays.js sets the folded hoodies down the middle
   return g;
 }
 
@@ -817,7 +823,7 @@ function wordsInLight(M, A) {
   const g = new THREE.Group();
   // Over the notice board, the brand's own line in warm neon script.
   const B = L.NOTICE_BOARD;
-  const neon = neonText('small steps, big accomplishments.', { w: 2.3, h: 0.28, glows: A.glows });
+  const neon = neonText('small steps, big accomplishments.', { w: 2.7, h: 0.34, glows: A.glows, daylight: true });
   neon.position.set(B.x, B.y + B.h / 2 + 0.44, B.z - 0.012);
   neon.rotation.y = Math.PI;
   g.add(neon);

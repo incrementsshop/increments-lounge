@@ -16,16 +16,16 @@ export function openTray(app) {
   openDialog({
     variant: 'sheet',
     title: 'Your <em>bag</em>',
-    kicker: 'Your order',
+    kicker: 'The Lounge',
     className: 'tray',
     build(body, api) {
       const render = () => {
         const { items } = app.tray;
-        const order = String(Math.abs(hash(items.map(i => i.variantId).join())) % 9000 + 1000);
         const receipt = h('div', { class: 'receipt' },
           h('div', { class: 'receipt__head' },
             h('div', { class: 'receipt__brand' }, 'Increments'),
-            h('div', { class: 'receipt__meta' }, `THE LOUNGE · ORDER #${order}`),
+            // Not an order yet — it only becomes one at checkout, so no order number here.
+            h('div', { class: 'receipt__meta' }, `THE LOUNGE · YOUR BAG · ${app.tray.count} ${app.tray.count === 1 ? 'PIECE' : 'PIECES'}`),
             h('div', { class: 'receipt__meta' }, new Date().toLocaleString(CONFIG.store.locale, { dateStyle: 'medium', timeStyle: 'short' })),
           ));
         if (!items.length) {
@@ -235,4 +235,3 @@ export function openArchive(app, { chapter } = {}) {
 }
 
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-function hash(s) { let x = 0; for (let i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) | 0; return x; }

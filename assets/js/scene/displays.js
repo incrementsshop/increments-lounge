@@ -40,6 +40,7 @@ export class Displays {
     this.plaque();
     this.archive();
     this.noticeBoard();
+    this.islandTable();
     this.stationSigns();
     const jobs = [
       () => this.windowDisplay(),
@@ -72,6 +73,67 @@ export class Displays {
   }
 
   // --- helpers ------------------------------------------------------------
+
+  /** One cotton material per colour, shared by every folded piece in it. */
+  cloth(hex) {
+    this._cloth ||= new Map();
+    if (!this._cloth.has(hex)) this._cloth.set(hex, new THREE.MeshStandardMaterial({ color: hex, roughness: 0.93 }));
+    return this._cloth.get(hex);
+  }
+
+  /**
+   * A neat stack of folded garments; `hexes` colours the pieces from the top down (the last
+   * colour repeats). Origin at the bottom centre; the folded edge faces +z.
+   */
+  foldedStack(hexes, { w = 0.32, d = 0.26, h = 0.065, count = 3, seed = 1 } = {}) {
+    const r = mulberry(seed);
+    const g = new THREE.Group();
+    let y = 0;
+    for (let i = 0; i < count; i++) {
+      const hex = hexes[Math.min(count - 1 - i, hexes.length - 1)];
+      const pw = w * (0.97 + r() * 0.05), pd = d * (0.96 + r() * 0.05);
+      const piece = box(pw, h, pd, this.cloth(hex), { r: Math.min(h * 0.45, 0.024), seg: 3 });
+      piece.position.set((r() - 0.5) * 0.012, y + h / 2, (r() - 0.5) * 0.01);
+      piece.rotation.y = (r() - 0.5) * 0.05;
+      piece.castShadow = piece.receiveShadow = true;
+      // The fold: a soft crease a third of the way back on top of each piece.
+      const crease = box(pw * 0.9, 0.002, 0.004, this.crease(hex), { cast: false });
+      crease.position.set(0, h / 2, -pd * 0.18);
+      piece.add(crease);
+      g.add(piece);
+      y += h * 0.96;
+    }
+    return g;
+  }
+
+  crease(hex) {
+    this._crease ||= new Map();
+    if (!this._crease.has(hex)) this._crease.set(hex, new THREE.MeshStandardMaterial({ color: new THREE.Color(hex).multiplyScalar(0.72), roughness: 0.95 }));
+    return this._crease.get(hex);
+  }
+
+  /**
+   * The island: the new chapter's hoodie folded in each of its colours down the middle of the
+   * table, with a price tent — the first thing you can pick up on the way in.
+   */
+  islandTable() {
+    const I = this.A.island;
+    const hoodie = this.catalog.zone('window').find(p => /hoodie/i.test(p.title) && p.available) || this.catalog.zone('window').find(p => p.available);
+    if (!I || !hoodie) return;
+    const colours = hoodie.colours.filter(c => c.available !== false).slice(0, 3);
+    colours.forEach((c, i) => {
+      const stack = this.foldedStack([c.hex || '#8a7a6c'], { w: 0.34, d: 0.27, h: 0.07, count: 3, seed: 7 + i });
+      stack.position.set(I.x + (i - (colours.length - 1) / 2) * 0.44, I.topY, I.z - 0.04);
+      stack.rotation.y = (i - 1) * 0.06;
+      pickable(stack, { kind: 'product', handle: hoodie.handle, colour: c.name });
+      this.root.add(stack);
+    });
+    const tent = this.priceTent(hoodie.title.replace(/^Still Becoming\s*/i, '') || 'Hoodie', formatShort(Math.min(...hoodie.variants.map(v => v.price))));
+    tent.position.set(I.x + 0.02, I.topY, I.z + I.w / 2 - 0.1);
+    tent.rotation.y = 0.15;
+    pickable(tent, { kind: 'product', handle: hoodie.handle, colour: colours[0]?.name });
+    this.root.add(tent);
+  }
 
   hotspot(station, position, label, sub, action, opts = {}) {
     this.hotspots.push({ station, position: position.clone(), label, sub, action, ...opts });
@@ -283,7 +345,24 @@ export class Displays {
   // --- Movement: photos pegged to the steel rack ------------------------------
 
   async movementRack() {
-    const products = this.catalog.zone('movement').filter(p => p.available);
+    const all = this.catalog.zone('movement').filter(p => p.available);
+    // Every Movement piece folded on the shelf, one fold per colourway, so the range is there
+    // in the round; the photos are on-model shots, so they hang above as the looks.
+    const shelf = this.A.rackShelf;
+    if (shelf && all.length) {
+      const pitch = (shelf.x1 - shelf.x0) / all.length;
+      all.forEach((p, i) => {
+        const colours = p.colours.filter(c => c.available !== false).slice(0, 4);
+        const hexes = colours.length ? colours.map(c => c.hex || '#8a7a6c') : ['#8a7a6c'];
+        const stack = this.foldedStack(hexes, { w: Math.min(0.2, pitch - 0.02), d: 0.24, h: 0.042, count: 4, seed: 40 + i });
+        stack.position.set(shelf.x0 + pitch * (i + 0.5), shelf.y, shelf.z + 0.02);
+        stack.rotation.y = (i % 2 ? 1 : -1) * 0.03;
+        pickable(stack, { kind: 'product', handle: p.handle, colour: colours[colours.length - 1]?.name, station: 'movement' });
+        this.root.add(stack);
+        if (i >= MOVEMENT_LOOKS) this.hotspot('movement', new THREE.Vector3(stack.position.x, shelf.y + 0.25, shelf.z + 0.14), p.title, `$${formatShort(p.price)}`, { type: 'product', handle: p.handle }, { flip: stack.position.x > (shelf.x0 + shelf.x1) / 2, compact: true, target: stack });
+      });
+    }
+    const products = all.slice(0, MOVEMENT_LOOKS);
     const bars = this.A.rackBars;
     const perRow = Math.ceil(products.length / bars.length);
     await Promise.all(products.map(async (p, i) => {
@@ -897,6 +976,12 @@ export class Displays {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(0.36, 0.245), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.14 }));
     m.position.set(b.x - u, b.y + v, b.z - 0.008 - index * 0.0006);
     m.rotation.set(0, Math.PI, rot);
+    if (card?.own) {
+      // The visitor's own note is the board's centrepiece: a size up, and on top of its neighbours.
+      m.scale.setScalar(1.3);
+      m.position.z -= 0.006;
+      if (index === 0) this.ownCard = m;
+    }
     pickable(m, card ? { kind: 'board', station: 'board' } : { kind: 'compose', station: 'board' });
     const pinM = new THREE.Mesh(new THREE.SphereGeometry(0.011, 10, 8), new THREE.MeshStandardMaterial({ color: card?.own ? 0x8c2027 : [0x2a1d16, 0xb48f55, 0xefe6d8][index % 3], roughness: 0.3 }));
     pinM.position.set(0, 0.1, 0.012); // local +z faces the room (the card is turned to face you)
@@ -1017,12 +1102,16 @@ export class Displays {
       ['lounge', [L.BANQUETTE.x - 0.3, 2.3, L.BANQUETTE.z + 1.2], 'The Lounge', 'Worn'],
       ['movement', [L.MOVEMENT_RACK.x, 2.15, L.MOVEMENT_RACK.z], 'Movement', 'By the fitting rooms'],
       ['archive', [L.ARCHIVE_SHELF.x - 0.4, 2.1, L.ROOM.z0 + 0.5], 'The Archive', 'Past chapters'],
+      ['board', [L.NOTICE_BOARD.x, 2.4, L.NOTICE_BOARD.z - 0.4], 'Notice Board', 'Pin your next step'],
     ];
+    // `edge`: when a sign is out of view it waits at the side of the screen, pointing the way.
     for (const [id, pos, label, sub] of signs) {
-      this.hotspot('entrance', new THREE.Vector3(...pos), label, sub, { type: 'station', id }, { flip: pos[0] > 1 });
+      this.hotspot('entrance', new THREE.Vector3(...pos), label, sub, { type: 'station', id }, { flip: pos[0] > 1, edge: true });
     }
   }
 }
+
+const MOVEMENT_LOOKS = 5; // on-model photos on the rack; the rest are folded on the shelf
 
 // --- small utilities -----------------------------------------------------------------
 

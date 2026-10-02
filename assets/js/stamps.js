@@ -6,10 +6,10 @@ const KEY = 'increments-lounge:stamps:v1';
 export const STAMPS = [
   { id: 'enter',     label: 'Step inside' },
   { id: 'window',    label: 'The Steps' },
-  { id: 'counter',   label: 'The Collection' },
-  { id: 'lounge',    label: 'The Lounge' },
   { id: 'movement',  label: 'Movement' },
+  { id: 'counter',   label: 'The Collection' },
   { id: 'archive',   label: 'The Archive' },
+  { id: 'lounge',    label: 'The Lounge' },
   { id: 'tray',      label: 'Order something' },
   { id: 'increment', label: 'Pin your increment' },
 ];

@@ -92,6 +92,7 @@ export function openComposer(app) {
         list.push({ text, at: Date.now() });
         try { localStorage.setItem(KEY, JSON.stringify(list.slice(-4))); } catch { /* ignore */ }
         app.displays?.pinIncrement(text);
+        app.justPinned = true; // main.js steps the camera up to the new card once this closes
         app.stamps.earn('increment');
         track('increment_created', { length: text.length, shared: sharing });
         if (!sharing) {

@@ -242,6 +242,24 @@ body.is-leaning .caption { opacity: 0 !important; pointer-events: none !importan
 .hotspot--flip .hotspot__dot { margin-left: 0; margin-right: -22px; }
 .hotspot--flip .hotspot__label { margin-left: 0; margin-right: -14px; transform: translateX(6px); }
 .hotspot--soldout .hotspot__dot::before { background: var(--travertine-deep); }
+/* Out-of-view wayfinding: the label waits at the side of the screen, an arrow pointing the way. */
+.hotspot--edge .hotspot__dot::after { display: none; }
+.hotspot--edge .hotspot__dot::before {
+  width: 9px; height: 9px;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border-top: 2px solid var(--paper);
+  border-left: 2px solid var(--paper);
+  filter: drop-shadow(0 1px 3px rgba(42, 29, 22, 0.55));
+  transform: rotate(-45deg);
+}
+.hotspot--edge-right .hotspot__dot::before { transform: rotate(135deg); }
+.hotspot--edge:hover .hotspot__dot::before,
+.hotspot--edge:focus-visible .hotspot__dot::before { transform: rotate(-45deg) scale(1.2); background: none; }
+.hotspot--edge-right:hover .hotspot__dot::before,
+.hotspot--edge-right:focus-visible .hotspot__dot::before { transform: rotate(135deg) scale(1.2); }
+.hotspot--edge .hotspot__label { opacity: 0.94; transform: none; }
 @media (max-width: 600px) {
   /* On a phone a long label wraps rather than running past the edge of the screen. */
   .hotspot__label { white-space: normal; width: max-content; max-width: min(46vw, 210px); }

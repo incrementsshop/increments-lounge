@@ -50,8 +50,11 @@ export const TIMES = {
     sun: null,
     hemi: { sky: 0x33405a, ground: 0x5c4838, intensity: 0.34 },
     fill: 0.08,
-    exposure: 1.12,
-    env: 0.14,
+    // More of the room's own glow on the furniture (it reads as the ceiling lights catching
+    // it), a touch less exposure overall: same dim evening, but the pieces no longer sit dark
+    // on a bright floor.
+    exposure: 1.04,
+    env: 0.28,
     glow: 1.15,
     background: 0x1c1b1f,
     sky: { pane: 0x55648a, color: 0x8ea2cf, intensity: 7 },
@@ -181,7 +184,7 @@ export class Lighting {
     this.world.scene.environmentIntensity = lerp(a.env, b.env);
     this.glowLevel = lerp(a.glow, b.glow);
     for (const m of this.glows) {
-      const k = this.glowLevel;
+      const k = Math.max(this.glowLevel, m.userData.glowMin ?? 0);
       if (m.userData.glowBase != null) m.opacity = Math.min(1, m.userData.glowBase * k);
       else if (m.userData.glowEmissive != null) m.emissiveIntensity = m.userData.glowEmissive * k;
       else if (m.userData.glowColor) m.color.setRGB(1, 0.906, 0.769).multiplyScalar(0.72 + 0.28 * Math.min(1, k));

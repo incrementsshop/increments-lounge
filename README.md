@@ -12,11 +12,11 @@ A one-off, walk-in digital boutique for [Increments](https://increments.ca): you
 
 ![Inside — establishing shot](docs/shots/desktop-01-entrance.jpg)
 
-| The Steps — *Still Becoming* | The Collection | The Lounge — *Worn* |
+| The Steps — *Still Becoming* | Movement | The Collection |
 |---|---|---|
-| ![](docs/shots/desktop-02-window.jpg) | ![](docs/shots/desktop-03-counter.jpg) | ![](docs/shots/desktop-04-lounge.jpg) |
-| **Movement** | **The Archive** | **Notice Board** |
-| ![](docs/shots/desktop-05-movement.jpg) | ![](docs/shots/desktop-06-archive.jpg) | ![](docs/shots/desktop-07-board.jpg) |
+| ![](docs/shots/desktop-02-window.jpg) | ![](docs/shots/desktop-03-movement.jpg) | ![](docs/shots/desktop-04-counter.jpg) |
+| **The Archive** | **The Lounge — *Worn*** | **Notice Board** |
+| ![](docs/shots/desktop-05-archive.jpg) | ![](docs/shots/desktop-06-lounge.jpg) | ![](docs/shots/desktop-07-board.jpg) |
 
 The room follows the visitor's clock — morning, golden hour, evening — with light that's pre-calculated for each:
 
@@ -24,11 +24,11 @@ The room follows the visitor's clock — morning, golden hour, evening — with 
 |---|---|---|
 | ![](docs/shots/time-morning.jpg) | ![](docs/shots/time-golden.jpg) | ![](docs/shots/time-evening.jpg) |
 
-On a phone, every station has its own portrait framing (the board is shown with `?boardDemo` sample notes):
+On a phone, every station has its own portrait framing:
 
-| | | | | | | |
-|---|---|---|---|---|---|---|
-| ![](docs/shots/mobile-00-street.jpg) | ![](docs/shots/mobile-01-entrance.jpg) | ![](docs/shots/mobile-02-window.jpg) | ![](docs/shots/mobile-03-counter.jpg) | ![](docs/shots/mobile-04-lounge.jpg) | ![](docs/shots/mobile-06-archive.jpg) | ![](docs/shots/mobile-07-board.jpg) |
+| | | | | | | | |
+|---|---|---|---|---|---|---|---|
+| ![](docs/shots/mobile-00-street.jpg) | ![](docs/shots/mobile-01-entrance.jpg) | ![](docs/shots/mobile-02-window.jpg) | ![](docs/shots/mobile-03-movement.jpg) | ![](docs/shots/mobile-04-counter.jpg) | ![](docs/shots/mobile-05-archive.jpg) | ![](docs/shots/mobile-06-lounge.jpg) | ![](docs/shots/mobile-07-board.jpg) |
 
 ---
 
@@ -39,13 +39,13 @@ The brand speaks in steps and chapters: "Small steps, big accomplishments", "The
 | Station | What's there | What it does for the shop |
 |---|---|---|
 | **The street** | A limewashed facade: black steel arched doors, a shop window onto the Steps, the campaign lit in an arched vitrine, INCREMENTS in halo-lit letters, olives, a café table, an A-frame | First impression; the doors swing open as you step in |
-| **01 Step inside** | The whole room: fabric waves under the floating ceiling, glowing cove, curved corners, soft light from the ceiling over the middle of the room | Orientation; the stamp card starts |
+| **01 Step inside** | The whole room: fabric waves under the floating ceiling, glowing cove, curved corners; on the island, the *Still Becoming* hoodie folded in its three colours. Every other stop is signposted — the ones out of view wait at the edge of the screen, pointing the way | Orientation; the stamp card starts |
 | **02 The Steps** | *Still Becoming* in Midnight, Evergreen and Scarlet, rising on nine curved travertine steps around an olive under a round skylight | The new drop |
-| **03 The Collection** | A rough-hewn travertine counter before a black split-stone wall, greenery trailing from a hung planter; behind it a fluted oak espresso bar with the machine, grinder and cups; every piece and price carved into a travertine plaque; socks & caps in the glass case "at the till"; a fluted travertine island set with lookbooks and a bowl of trailing greens | The whole range, and easy add-ons |
-| **04 The Lounge** | Sand leather banquette with pampas at either end, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
-| **05 Movement** | Steel rack of pegged prints in front of two arched fitting rooms outlined in light, a pill lightbox: *Take your time* | Activewear |
-| **06 The Archive** | Travertine shelves lit from within, one book spine per past piece; *Life unfolds in increments. You define your story.* raised on the stone above | Brand story; the last few pieces still in stock |
-| **07 Notice Board** | Under *small steps, big accomplishments.* in warm neon: team quotes, Polaroids, "Your next increment", and *Notes from the Lounge* — other visitors' next steps, approved by the team | Community + shareable UGC |
+| **03 Movement** | A steel rack in front of two arched fitting rooms outlined in light: the on-model looks hang from the bar, and every piece sits folded on the oak shelf below in its colourways; a pill lightbox: *Take your time* | Activewear |
+| **04 The Collection** | A rough-hewn travertine counter before a black split-stone wall, greenery trailing from a hung planter; behind it a fluted oak espresso bar with the machine, grinder and cups; every piece and price carved into a travertine plaque (tap a line to open it); socks & caps in the glass case "at the till" | The whole range, and easy add-ons |
+| **05 The Archive** | Travertine shelves lit from within, one book spine per past piece; *Life unfolds in increments. You define your story.* raised on the stone above | Brand story; the last few pieces still in stock |
+| **06 The Lounge** | Sand leather banquette with pampas at either end, travertine tables, bouclé chairs; *Worn* hung inside a lit rounded niche | Loungewear |
+| **07 Notice Board** | Under *small steps, big accomplishments.* in amber neon: team quotes, Polaroids, "Your next increment", and *Notes from the Lounge* — other visitors' next steps, approved by the team. Pin yours and the camera steps up to it, a size larger than the rest | Community + shareable UGC; the walk ends here, by the door |
 
 Three mechanics tie it to the name:
 
@@ -55,7 +55,7 @@ Three mechanics tie it to the name:
 
 ## Moving through the room
 
-A guided visit, not a video game: one open room, 18 × 12 m under a 4.4 m ceiling, and seven framed stations you glide between, with room to linger.
+A guided visit, not a video game: one open room, 18 × 12 m under a 4.4 m ceiling, and seven framed stations in a clockwise loop from the door and back, with room to linger.
 
 - **Arrive.** Every visit (except deep links) starts on the street. "Step inside" swings the doors open and walks you in, one continuous move; any key or tap mid-walk hands control back.
 - **Stations.** Arrows in the dock, swipe, the station list, ←/→ or 1–7. Every move is a slow, composed camera glide.

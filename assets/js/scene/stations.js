@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import { ROOM, STREET, STEPS, COUNTER, BANQUETTE, MOVEMENT_RACK, ARCHIVE_SHELF, NOTICE_BOARD } from './layout.js';
 
-// The seven stations, and the camera rig that glides between them.
+// The seven stations, in the order of a clockwise loop round the room (door → Steps →
+// Movement → Collection → Archive → Lounge → Notice Board, back by the door), and the
+// camera rig that glides between them.
 // `pos`/`target` are authored for a 16:9 screen; `fit` is the width (m) that must stay
 // in view, so on a phone held upright the camera eases back instead of cropping the display.
 // Each shot is set relative to the piece it looks at, so moving a piece in layout.js moves its shot.
@@ -24,20 +26,6 @@ export const STATIONS = [
     portrait: { pos: near(STEPS, 3.45, 1.8, 2.8), target: near(STEPS, -0.1, 1.85, -0.55), fit: 4.3 },
   },
   {
-    id: 'counter', stamp: 'counter', name: 'The Collection',
-    eyebrow: 'Every piece', title: 'The <em>Collection</em>',
-    body: 'Every piece and price, carved into the stone. Tap a line to see it. Socks and caps wait at the till.',
-    pos: near(COUNTER, 0, 1.62, 4.1), target: near(COUNTER, 0, 1.8, -1.2), fit: 5.4,
-    portrait: { pos: near(COUNTER, -0.1, 1.55, 3.4), target: near(COUNTER, -0.1, 1.75, -1.2), fit: 3.4 },
-  },
-  {
-    id: 'lounge', stamp: 'lounge', name: 'The Lounge',
-    eyebrow: 'Worn, all day', title: 'Worn in, <em>not worn out</em>',
-    body: 'Garment-washed and faded in Cloudstone, Chestnut and Charcoal, hung in the lit niche. Pull up a chair.',
-    pos: near(BANQUETTE, -4.42, 1.62, 0.4), target: near(BANQUETTE, 0.28, 2.0, 0), fit: 5.4,
-    portrait: { pos: near(BANQUETTE, -3.12, 1.62, 0.2), target: near(BANQUETTE, 0.58, 2.15, 0.15), fit: 3.1 },
-  },
-  {
     id: 'movement', stamp: 'movement', name: 'Movement',
     eyebrow: 'For the next step', title: '<em>Movement</em>',
     body: 'Leggings, long sleeves and sets built to move. The fitting rooms are just behind.',
@@ -45,11 +33,25 @@ export const STATIONS = [
     portrait: { pos: near(MOVEMENT_RACK, 0.5, 1.5, 2.8), target: near(MOVEMENT_RACK, 0, 1.5, -0.8), fit: 2.35 },
   },
   {
+    id: 'counter', stamp: 'counter', name: 'The Collection',
+    eyebrow: 'Every piece', title: 'The <em>Collection</em>',
+    body: 'Every piece and price, carved into the stone. Tap a line to see it. Socks and caps wait at the till.',
+    pos: near(COUNTER, 0, 1.62, 4.1), target: near(COUNTER, 0, 1.8, -1.2), fit: 5.4,
+    portrait: { pos: near(COUNTER, -0.1, 1.55, 3.4), target: near(COUNTER, -0.1, 1.75, -1.2), fit: 3.4 },
+  },
+  {
     id: 'archive', stamp: 'archive', name: 'The Archive',
     eyebrow: 'Past chapters', title: 'The <em>Archive</em>',
     body: 'Every chapter we’ve closed, shelved in the stone. A couple of pieces are still on it.',
     pos: near(ARCHIVE_SHELF, -1.2, 1.7, 4.6, ROOM.z0), target: near(ARCHIVE_SHELF, 0, 2.15, 0.1, ROOM.z0), fit: 3.6,
     portrait: { pos: near(ARCHIVE_SHELF, -0.65, 1.62, 3.6, ROOM.z0), target: near(ARCHIVE_SHELF, 0.15, 2.2, 0.1, ROOM.z0), fit: 2.8 },
+  },
+  {
+    id: 'lounge', stamp: 'lounge', name: 'The Lounge',
+    eyebrow: 'Worn, all day', title: 'Worn in, <em>not worn out</em>',
+    body: 'Garment-washed and faded in Cloudstone, Chestnut and Charcoal, hung in the lit niche. Pull up a chair.',
+    pos: near(BANQUETTE, -4.42, 1.62, 0.4), target: near(BANQUETTE, 0.28, 2.0, 0), fit: 5.4,
+    portrait: { pos: near(BANQUETTE, -3.12, 1.62, 0.2), target: near(BANQUETTE, 0.58, 2.15, 0.15), fit: 3.1 },
   },
   {
     id: 'board', stamp: null, name: 'Notice Board',

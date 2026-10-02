@@ -303,7 +303,7 @@ function captionActions(s) {
     case 'lounge': return productPills('lounge');
     case 'movement': return [{ label: 'See all Movement', primary: true, onClick: () => openMenu(app, { zone: 'movement' }) }];
     case 'archive': return [{ label: 'Browse the archive', primary: true, onClick: () => openArchive(app) }];
-    case 'board': return [{ label: 'Pin your increment', primary: true, onClick: () => openComposer(app) }, { label: 'Read the board', onClick: () => openBoardPanel(app, { openComposer }) }];
+    case 'board': return [{ label: 'Pin your increment', primary: true, onClick: () => compose() }, { label: 'Read the board', onClick: () => openBoardPanel(app, { openComposer: compose }) }];
     default: return [];
   }
 }
@@ -335,11 +335,11 @@ function runAction(action, pickStation, from) {
       break;
     case 'compose':
       if (pickStation && pickStation !== here) { go(pickStation); return; }
-      openComposer(app);
+      compose();
       break;
     case 'board':
       if (pickStation && pickStation !== here) { go(pickStation); return; }
-      openBoardPanel(app, { openComposer });
+      openBoardPanel(app, { openComposer: compose });
       break;
     case 'station': go(action.id); break;
     default: break;
@@ -389,6 +389,28 @@ async function stepBack() {
 }
 
 // ---------------------------------------------------------------------------
+// The board's moment: pin a note and the camera steps up to it
+// ---------------------------------------------------------------------------
+
+function compose() {
+  app.justPinned = false;
+  const api = openComposer(app);
+  api?.closed.then(async () => {
+    const card = app.justPinned && app.displays.ownCard;
+    app.justPinned = false;
+    if (!card || app.rig.station.id !== 'board' || app.rig.moving || openDialogs().size) return;
+    const p = card.getWorldPosition(new THREE.Vector3());
+    app.hotspots.hide();
+    await app.rig.focusOn(p, new THREE.Vector3(0, 0, -1), { dims: new THREE.Vector3(0.9, 0.6, 0.05) });
+    app.hud.toast('There it is. Small steps.', 2600);
+    await new Promise(r => setTimeout(r, 2600));
+    if (!app.rig.focused || openDialogs().size) return;
+    await app.rig.unfocus();
+    if (!app.rig.focused && !app.rig.moving && !openDialogs().size) app.hotspots.show(app.rig.station.id);
+  });
+}
+
+// ---------------------------------------------------------------------------
 // The walk: a slow, guided loop through every station
 // ---------------------------------------------------------------------------
 
@@ -434,7 +456,7 @@ function endWalk(reason) {
   bar.classList.remove('is-shown');
   setTimeout(() => { if (!walk.active) bar.hidden = true; }, 500);
   track('walk_end', { reason, leg: walk.leg });
-  if (reason === 'complete') app.hud.toast('That’s the walk. Take your time — everything stays where it is.', 3600);
+  if (reason === 'complete') app.hud.toast('That’s the walk. Before you go — pin your next increment to the board.', 4200);
 }
 
 /** Runs every frame: the slow push-in while the walk lingers, and the progress line. */

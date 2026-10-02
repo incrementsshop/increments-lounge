@@ -23,7 +23,7 @@ function textCanvasSize(w, h, pxPerM) {
  * Neon script on a wall: a bright tube core with its own soft falloff, plus a wider
  * additive bloom behind it. `w`/`h` in metres; the text is fitted to the width.
  */
-export function neonText(text, { w = 2.4, h = 0.36, font = 'italic 400 {px}px "Bodoni Moda", serif', glows } = {}) {
+export function neonText(text, { w = 2.4, h = 0.36, font = 'italic 400 {px}px "Bodoni Moda", serif', glows, daylight = false } = {}) {
   const [cw, ch] = textCanvasSize(w, h, 900);
   // Fit the text to the width once, then draw the core and the bloom at the same scale.
   const probe = document.createElement('canvas').getContext('2d');
@@ -34,6 +34,17 @@ export function neonText(text, { w = 2.4, h = 0.36, font = 'italic 400 {px}px "B
   const core = canvasTexture(cw, ch, (ctx, W, H) => {
     ctx.font = font.replace('{px}', px);
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    if (daylight) {
+      // Real neon stands a little off the wall; by day it's the tube's soft shadow and its
+      // amber glass that make it read against pale plaster.
+      ctx.save();
+      ctx.filter = `blur(${Math.max(2, Math.round(H * 0.025))}px)`;
+      ctx.fillStyle = 'rgba(74, 46, 26, 0.42)';
+      ctx.fillText(text, W / 2 + H * 0.02, H * 0.52 + H * 0.05);
+      ctx.restore();
+      ctx.fillStyle = 'rgba(232, 128, 52, 0.95)';
+      ctx.fillText(text, W / 2, H * 0.52);
+    }
     ctx.shadowColor = 'rgba(255,170,90,0.9)';
     for (const [blur, alpha] of [[H * 0.1, 0.5], [H * 0.04, 0.8]]) {
       ctx.shadowBlur = blur; ctx.fillStyle = `rgba(255,214,160,${alpha})`;
@@ -55,6 +66,7 @@ export function neonText(text, { w = 2.4, h = 0.36, font = 'italic 400 {px}px "B
   const g = new THREE.Group();
   const coreMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: core, transparent: true, depthWrite: false, toneMapped: false, fog: false }));
   const bloomMesh = new THREE.Mesh(new THREE.PlaneGeometry(w * (bw + padX * 2) / bw, h * (bh + padY * 2) / bh), glowMaterial(bloom, 0.8, glows));
+  if (daylight) bloomMesh.material.userData.glowMin = 0.7; // still visibly lit at noon
   bloomMesh.position.z = -0.002;
   coreMesh.position.z = 0.004;
   coreMesh.renderOrder = bloomMesh.renderOrder = 5;
