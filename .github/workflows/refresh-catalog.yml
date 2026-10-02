@@ -1,5 +1,6 @@
 # Keeps data/catalog.json in step with the live Shopify store (prices, stock,
-# new colourways). Runs hourly; commits only when something actually changed,
+# new colourways). Scheduled hourly (GitHub often runs it only every few hours);
+# the script retries when Shopify is busy. Commits only when something actually changed,
 # which then triggers the Pages deploy.
 
 name: Refresh catalog
