@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: read   # to look up when the last good refresh was
 
 concurrency:
   group: refresh-catalog
@@ -25,8 +26,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # If Shopify doesn't answer (it turns cloud runners away for hours at a time), keep the
+      # last snapshot and pass with a warning; only fail — and email — once the catalog
+      # hasn't refreshed for a whole day.
       - name: Snapshot the store
-        run: python3 tools/refresh_catalog.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          python3 tools/refresh_catalog.py
+          code=$?
+          if [ "$code" -eq 75 ]; then
+            last=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow refresh-catalog.yml --status success --limit 1 --json createdAt --jq '.[0].createdAt')
+            age=$(( $(date +%s) - $(date -d "${last:-now}" +%s) ))
+            if [ "$age" -lt 86400 ]; then
+              echo "::warning::Shopify didn't answer this time; keeping the last snapshot (last good refresh: ${last:-unknown})."
+              exit 0
+            fi
+            echo "::error::The store hasn't answered for over a day (last good refresh: ${last:-unknown}). Prices and stock in the Lounge are going stale."
+          fi
+          exit "$code"
 
       - name: Commit if changed
         id: commit

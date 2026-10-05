@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 MERCH = ROOT / "data" / "merch.json"
 OUT = ROOT / "data" / "catalog.json"
 UA = "IncrementsLounge/1.0 (+catalog snapshot)"
+STORE_UNREACHABLE = 75  # exit code: the store didn't answer (see the workflow)
 
 
 def fetch(url, accept="application/json", attempts=4):
@@ -43,7 +44,7 @@ def fetch(url, accept="application/json", attempts=4):
                 return res.read().decode("utf-8")
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
             status = getattr(exc, "code", None)
-            transient = status is None or status == 429 or status >= 500
+            transient = status is None or status in (429, 430) or status >= 500
             if not transient or attempt == attempts - 1:
                 raise
             wait = 10 * 3 ** attempt
@@ -185,7 +186,14 @@ def main():
     merch = json.loads(MERCH.read_text())
     domain = merch["store"]["domain"]
 
-    raw = fetch_products(domain)
+    try:
+        raw = fetch_products(domain)
+    except (urllib.error.URLError, TimeoutError, ValueError) as exc:
+        # Shopify sometimes refuses cloud runners for hours at a time. Say why, and exit with
+        # a code the workflow recognises so one refused run keeps the last snapshot quietly.
+        status = getattr(exc, "code", None)
+        print(f"Couldn't read the store: {status or ''} {exc}".strip(), file=sys.stderr)
+        sys.exit(STORE_UNREACHABLE)
     hidden = set(merch.get("hide", []))
     products = [normalise(p, merch) for p in raw if p["handle"] not in hidden]
 
