@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-15T18:21:49Z",
+ "generatedAt": "2026-10-15T22:25:33Z",
  "store": "increments.ca",
  "currency": "CAD",
  "featured": {
@@ -452,9 +452,14 @@
      "h": 1350
     },
     {
-     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/EE29CD04-3AC6-47E0-9A33-D964169E466D.png",
-     "w": 1024,
-     "h": 1536
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_5421.jpg",
+     "w": 1290,
+     "h": 1932
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/3.png",
+     "w": 1080,
+     "h": 1350
     },
     {
      "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/1.png",
@@ -462,9 +467,14 @@
      "h": 1350
     },
     {
-     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/3.png",
-     "w": 1080,
-     "h": 1350
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/IMG_54222.jpg",
+     "w": 1290,
+     "h": 839
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/EE29CD04-3AC6-47E0-9A33-D964169E466D.png",
+     "w": 1024,
+     "h": 1536
     }
    ],
    "publishedAt": "2026-05-03T03:11:47-04:00"
@@ -627,6 +637,11 @@
      "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/7.png",
      "w": 1080,
      "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623410_7edf25bd-fdac-49eb-a44e-709e7515f238.webp",
+     "w": 2048,
+     "h": 3071
     }
    ],
    "publishedAt": "2026-05-03T02:49:05-04:00"
