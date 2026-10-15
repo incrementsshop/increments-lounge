@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T01:35:49Z",
+ "generatedAt": "2026-10-15T18:21:49Z",
  "store": "increments.ca",
  "currency": "CAD",
  "featured": {
@@ -298,6 +298,11 @@
      "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/12.png",
      "w": 1080,
      "h": 1350
+    },
+    {
+     "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/Increments_03152623410_7edf25bd-fdac-49eb-a44e-709e7515f238.webp",
+     "w": 2048,
+     "h": 3071
     },
     {
      "src": "https://cdn.shopify.com/s/files/1/0575/3326/8117/files/8.png",
